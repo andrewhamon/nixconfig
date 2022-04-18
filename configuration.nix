@@ -142,6 +142,10 @@ in
       # Uncomment to enable dns logs. They are quite noisy.
       # log-queries
 
+      # never forward queries for plain names, without dots or domain parts, to
+      # upstream nameservers
+      domain-needed
+
       # Don't listen on WAN
       except-interface=${wanInterface}
 
