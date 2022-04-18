@@ -22,10 +22,10 @@ let
   lanV4DhcpStart = "10.1.1.100";
   lanV4DhcpEnd = "10.1.1.200";
 
-  # "Routed /64" in tunnelbroker.net 
-  lanV6Address = "2001:470:67:382::1";
+  # "Routed /48" in tunnelbroker.net is 2001:470:4ac8::/48
+  # Taking the first /64 for this subnet
+  lanV6Address = "2001:470:4ac8:1::1";
   lanV6PrefixLength = 64;
-  lanV6Cidr = "2001:470:67:382::/64";
 
   tunnelBrokerInterface = "6bone";
 
