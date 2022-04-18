@@ -27,7 +27,7 @@ let
   lanV6Address = "2001:470:4ac8:1::1";
   lanV6PrefixLength = 64;
 
-  tunnelBrokerInterface = "6bone";
+  tunnelBrokerInterface = "tunnelBroker";
 
   tunnelBrokerAccountName = "andham95";
   tunnelBrokerTunnelID = "760000";
