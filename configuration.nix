@@ -154,7 +154,7 @@ in
       domain=lan.${domain}
 
       enable-ra
-      dhcp-range=::2,::100,constructor:${lanInterface},slaac,ra-names,12h
+      dhcp-range=::,constructor:${lanInterface},ra-stateless,ra-names
 
       dhcp-range=${lanV4DhcpStart},${lanV4DhcpEnd},12h
       dhcp-option=option:router,${lanV4Address}
