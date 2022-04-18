@@ -117,6 +117,8 @@ in
         allowedUDPPorts = [
           53 # DNS server
           67 # DHCP server
+          547 # DHCPv6 ?
+          546 # DHCPv6 ?
         ];
       };
     };
@@ -150,6 +152,9 @@ in
 
       local=/lan.${domain}/
       domain=lan.${domain}
+
+      enable-ra
+      dhcp-range=::2,::100,constructor:${lanInterface},slaac,ra-names,12h
 
       dhcp-range=${lanV4DhcpStart},${lanV4DhcpEnd},12h
       dhcp-option=option:router,${lanV4Address}
