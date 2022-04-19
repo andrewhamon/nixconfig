@@ -16,11 +16,11 @@ let
   lanInterface = "enp2s0";
 
   # Anything from the private IP space
-  lanV4Address = "10.1.1.1";
+  lanV4Address = "10.69.42.1";
   lanV4PrefixLength = 24;
-  lanV4Cidr = "10.1.1.0/24";
-  lanV4DhcpStart = "10.1.1.100";
-  lanV4DhcpEnd = "10.1.1.200";
+  lanV4Cidr = "10.69.42.0/24";
+  lanV4DhcpStart = "10.69.42.100";
+  lanV4DhcpEnd = "10.69.42.200";
 
   # "Routed /48" in tunnelbroker.net is 2001:470:4ac8::/48
   # Taking the first /64 for this subnet
