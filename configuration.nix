@@ -27,6 +27,12 @@ let
   lanV6Address = "2001:470:4ac8:1::1";
   lanV6PrefixLength = 64;
 
+  wg0V4Cidr = "10.69.43.1/24";
+  wg0V6Cidr = "2001:470:4ac8:2::1/64";
+  # Use something less common/blockable for wireguard. Might need to reconsider
+  # once nginx supports quic/HTTP3.
+  wgListenPort = 443;
+
   tunnelBrokerInterface = "tunnelBroker";
 
   tunnelBrokerAccountName = "andham95";
@@ -112,6 +118,7 @@ in
 
     firewall.enable = true;
     firewall.allowedTCPPorts = [ 80 443 ];
+    firewall.allowedUDPPorts = [wgListenPort];
     firewall.interfaces = {
       "${lanInterface}" = {
         allowedUDPPorts = [
@@ -122,12 +129,33 @@ in
         ];
       };
     };
+    firewall.trustedInterfaces = ["wg0"];
 
     nat = {
       enable = true;
       externalInterface = wanInterface;
-      internalInterfaces = [lanInterface];
-      internalIPs = [lanV4Cidr];
+      internalInterfaces = [lanInterface "wg0"];
+      internalIPs = [lanV4Cidr wg0V4Cidr];
+    };
+
+    wireguard = {
+      interfaces = {
+        wg0 = {
+          ips = [ wg0V6Cidr wg0V4Cidr ];
+          listenPort = wgListenPort;
+          generatePrivateKeyFile = true;
+
+          # Public key: MxzCIL6xpx/2YjrN7ekWjq3MOJOXmeSzU11cDDNMmFE=
+          privateKeyFile = "/etc/secrets/wireguard_key";
+
+          peers = [
+            {
+              publicKey = "Q/vPUaZxI2pPt6z5V4PgxETswdKJqdT4uomVcfAH4Qg=";
+              allowedIPs = [ "10.69.43.2/32" "2001:470:4ac8:2::2/128" ];
+            }
+          ];
+        };
+      };
     };
   };
 
