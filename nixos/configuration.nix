@@ -32,6 +32,7 @@ let
   # Use something less common/blockable for wireguard. Might need to reconsider
   # once nginx supports quic/HTTP3.
   wgListenPort = 443;
+  wgMullvadListenPort = 444;
 
   tunnelBrokerInterface = "tunnelBroker";
 
@@ -54,7 +55,19 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ./seedbox.nix
   ];
+
+  services.seedbox.enable = true;
+  services.seedbox.netNamespaceHostIP = "10.69.44.1";
+  services.seedbox.netNamespaceSeedboxIP = "10.69.44.2";
+  services.seedbox.wgIps = ["10.66.194.204/32" "fc00:bbbb:bbbb:bb01::3:c2cb/128"];
+  services.seedbox.wgListenPort = wgMullvadListenPort;
+  services.seedbox.wgPrivateKeyFile = "/etc/secrets/wireguard_mullvad_key";
+  services.seedbox.wgPeerPublicKey = "+JJBzQMxFFQ2zu+WN8rbFH4ZpqY2u6WNBGBFHwsxkzs=";
+  services.seedbox.wgPeerEndpoint = "142.147.89.240:51820";
+  services.seedbox.basicAuthFile = "/etc/secrets/htpasswd";
+  services.seedbox.transmissionPeerPort = 59307;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -118,7 +131,7 @@ in
 
     firewall.enable = true;
     firewall.allowedTCPPorts = [ 80 443 ];
-    firewall.allowedUDPPorts = [wgListenPort];
+    firewall.allowedUDPPorts = [wgListenPort wgMullvadListenPort];
     firewall.interfaces = {
       "${lanInterface}" = {
         allowedUDPPorts = [
@@ -161,7 +174,11 @@ in
 
   services.dnsmasq = {
     enable = true;
-    resolveLocalQueries = true;
+    # TODO: this used to be true, which set resolv.conf to 127.0.0.1. But once
+    # I added transmission in its own network namespace, it was having issues
+    # resolving DNS queries. The easy way around this is to not use dnsmasq in
+    # resolv.conf, but that isn't particularly elegant.
+    resolveLocalQueries = false;
     servers = dnsServers;
     extraConfig = ''
       # Enable DHCP logs
@@ -197,12 +214,26 @@ in
 
   services.ddclient = {
     enable = true;
-    domains = ["router.adh.io"];
+    domains = [
+      "router.adh.io" 
+      "media.adh.io" 
+
+      "jackett.adh.io" 
+      "jellyfin.adh.io"
+      "lidarr.adh.io"
+      "login.adh.io"
+      "prowlarr.adh.io"
+      "radarr.adh.io" 
+      "sonarr.adh.io" 
+      "transmission.adh.io"
+
+      "grafana.adh.io"
+    ];
     protocol = "Cloudflare";
     zone = "adh.io";
     username = "and.ham95@gmail.com";
     passwordFile = "/etc/secrets/cloudflare.txt";
-    interval = "1min";
+    interval = "10min";
     use = "if, if=${wanInterface}";
   };
 
@@ -216,6 +247,22 @@ in
         forceSSL = true;
         enableACME = true;
         root = "/var/www/router.adh.io";
+      };
+
+      "grafana.adh.io" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.grafana.port}";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header   Host               $host;
+            proxy_set_header   X-Real-IP          $remote_addr;
+            proxy_set_header   X-Forwarded-Proto  $scheme;
+            proxy_set_header   X-Forwarded-For    $proxy_add_x_forwarded_for;
+          '';
+        };
+
       };
     };
   };
@@ -261,4 +308,37 @@ in
 
   # See https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion
   system.stateVersion = "21.11"; # Did you read the comment?
+
+
+  services.grafana = {
+    enable = true;
+    domain = "grafana.adh.io";
+    port = 2342;
+    addr = "127.0.0.1";
+  };
+
+  services.prometheus = {
+    enable = true;
+    port = 9001;
+
+    exporters = {
+      node = {
+        enable = true;
+        enabledCollectors = [ "systemd" ];
+        port = 9002;
+      };
+      process = {
+        enable = true;
+      };
+    };
+
+    scrapeConfigs = [
+      {
+        job_name = "router_adh_io";
+        static_configs = [{
+          targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ];
+        }];
+      }
+    ];
+  };
 }
