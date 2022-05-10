@@ -222,6 +222,7 @@ in
       "jellyfin.adh.io"
       "lidarr.adh.io"
       "login.adh.io"
+      "nzb.adh.io"
       "prowlarr.adh.io"
       "radarr.adh.io" 
       "sonarr.adh.io" 

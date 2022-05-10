@@ -146,6 +146,26 @@ in {
       };
     };
 
+    nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "unrar"
+    ];
+
+    services.nzbget = {
+      enable = true;
+      user = cfg.user;
+      group = cfg.group;
+    };
+
+    services.nginx.virtualHosts."nzb.adh.io" = {
+      enableACME = true;
+      forceSSL = true;
+      basicAuthFile = cfg.basicAuthFile;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:6789";
+        proxyWebsockets = true;
+      };
+    };
+
     # Sonarr, Radarr, Prowlarr configs. These don't need to be behind a VPN.
     # Most config happens in the UI, not much to see here.
 
