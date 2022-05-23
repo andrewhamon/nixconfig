@@ -2,6 +2,25 @@
 with lib;                      
 let
   cfg = config.services.seedbox;
+  authfishVirtualHostBase = {
+    extraConfig = ''
+      auth_request /auth_request;
+      error_page 401 /authfish_login;
+    '';
+    locations."/auth_request" = {
+      proxyPass = "http://localhost:${toString config.services.authfish.port}/check";
+      extraConfig = ''
+        internal;
+      '';
+    };
+    locations."/authfish_login" = {
+      proxyPass = "http://localhost:${toString config.services.authfish.port}/login";
+      extraConfig = ''
+        auth_request off;
+        proxy_set_header X-Authfish-Login-Path /authfish_login;
+      '';
+    };
+  };
 in {
   options.services.seedbox = {
     enable = mkEnableOption "Seedbox services";
@@ -139,11 +158,13 @@ in {
     services.nginx.virtualHosts."transmission.adh.io" = {
       enableACME = true;
       forceSSL = true;
-      basicAuthFile = cfg.basicAuthFile;
       locations."/" = {
         proxyPass = "http://${cfg.netNamespaceSeedboxIP}:8080";
         proxyWebsockets = true;
       };
+      extraConfig = authfishVirtualHostBase.extraConfig;
+      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
+      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
     nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
@@ -159,11 +180,13 @@ in {
     services.nginx.virtualHosts."nzb.adh.io" = {
       enableACME = true;
       forceSSL = true;
-      basicAuthFile = cfg.basicAuthFile;
       locations."/" = {
         proxyPass = "http://127.0.0.1:6789";
         proxyWebsockets = true;
       };
+      extraConfig = authfishVirtualHostBase.extraConfig;
+      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
+      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
     # Sonarr, Radarr, Prowlarr configs. These don't need to be behind a VPN.
@@ -179,11 +202,13 @@ in {
     services.nginx.virtualHosts."sonarr.adh.io" = {
       enableACME = true;
       forceSSL = true;
-      basicAuthFile = cfg.basicAuthFile;
       locations."/" = {
         proxyPass = "http://127.0.0.1:8989";
         proxyWebsockets = true;
       };
+      extraConfig = authfishVirtualHostBase.extraConfig;
+      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
+      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
     # Enable radarr
@@ -197,11 +222,13 @@ in {
     services.nginx.virtualHosts."radarr.adh.io" = {
       enableACME = true;
       forceSSL = true;
-      basicAuthFile = cfg.basicAuthFile;
       locations."/" = {
         proxyPass = "http://127.0.0.1:7878";
         proxyWebsockets = true;
       };
+      extraConfig = authfishVirtualHostBase.extraConfig;
+      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
+      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
     # Port 9696 by default
@@ -210,17 +237,18 @@ in {
     services.nginx.virtualHosts."prowlarr.adh.io" = {
       enableACME = true;
       forceSSL = true;
-      basicAuthFile = cfg.basicAuthFile;
       locations."/" = {
         proxyPass = "http://127.0.0.1:9696";
         proxyWebsockets = true;
       };
+      extraConfig = authfishVirtualHostBase.extraConfig;
+      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
+      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
     services.nginx.virtualHosts."media.adh.io" = {
       forceSSL = true;
       enableACME = true;
-      basicAuthFile = cfg.basicAuthFile;
       locations."/"= {
         root = "/media";
         extraConfig = ''
@@ -230,6 +258,16 @@ in {
           dav_ext_methods PROPFIND OPTIONS;
         '';
       };
+
+      # Annoyingly, Infuse will always make an unauthenticated request first,
+      # and then only send auth creds if the server responds with a 401 + the
+      # WWW-Authenticate: Basic header. That means "secret basic auth" doesn't
+      # work with Infuse. To work around that, manually set this header.
+      extraConfig = authfishVirtualHostBase.extraConfig + ''
+        add_header WWW-Authenticate Basic always;
+      '';
+      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
+      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
     users.users = mkIf (cfg.user == "media") {

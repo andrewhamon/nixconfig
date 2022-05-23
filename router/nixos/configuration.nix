@@ -22,6 +22,9 @@ let
   lanV4DhcpStart = "10.69.42.100";
   lanV4DhcpEnd = "10.69.42.200";
 
+  nasIpAddress = "10.69.42.2";
+  nasMacAddress = "00:25:90:f2:43:da";
+
   # "Routed /48" in tunnelbroker.net is 2001:470:4ac8::/48
   # Taking the first /64 for this subnet
   lanV6Address = "2001:470:4ac8:1::1";
@@ -56,7 +59,10 @@ in
   imports = [
     ./hardware-configuration.nix
     ./seedbox.nix
+    ./authfish.nix
   ];
+
+  services.authfish.enable = true;
 
   services.seedbox.enable = true;
   services.seedbox.netNamespaceHostIP = "10.69.44.1";
@@ -207,6 +213,8 @@ in
 
       dhcp-range=${lanV4DhcpStart},${lanV4DhcpEnd},12h
       dhcp-option=option:router,${lanV4Address}
+
+      dhcp-host=${nasMacAddress},${nasIpAddress}
 
       dhcp-authoritative
     '';
