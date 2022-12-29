@@ -270,6 +270,27 @@ in {
       locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
+    # Enable bazarr
+    # Port 6767 by default
+    services.bazarr = {
+      enable = true;
+      user = cfg.user;
+      group = cfg.group;
+    };
+
+    services.nginx.virtualHosts."bazarr.adh.io" = {
+      enableACME = true;
+      listen = proxyProtocolListen;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:6767";
+        proxyWebsockets = true;
+      };
+      extraConfig = authfishVirtualHostBase.extraConfig;
+      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
+      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
+    };
+
     # virtualisation.oci-containers.containers.radar1080 = {
     #   image = "linuxserver/radarr:4.1.0";
     #   ports = ["17878:7878"];

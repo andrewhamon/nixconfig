@@ -10,7 +10,7 @@
 
   services.httpd.adminAddr = "and.ham95@gmail.com";
   services.httpd.virtualHosts."jwst.me" = {
-    documentRoot = "/var/www/jwst.me";
+    documentRoot = "/home/jwst/jwst.me";
     listen = [
       {
         ip = "127.0.0.1";

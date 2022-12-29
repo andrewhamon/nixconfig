@@ -68,12 +68,26 @@ in
   networking.domain = "lan.adh.io";
   networking.hostId = "e20e1d8d";
 
+  services.tailscale.enable = true;
+  
+  services.octoprint.enable = true;
+
+
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
   networking.interfaces.enp38s0.useDHCP = true;
-  networking.interfaces.enp39s0.useDHCP = true;
+  
+  networking.interfaces.enp39s0.useDHCP = false;
+  networking.interfaces.enp39s0.ipv4.addresses = [{
+    address = "10.69.43.2";
+    prefixLength = 24;
+  }];
+
+  networking.defaultGateway.address = "10.69.43.1";
+  networking.defaultGateway.interface = "enp39s0";
+  networking.defaultGateway.metric = 10;
 
   # Virtual USB etherent from the motherboard. IPMI related. Disabling DHCP
   # since it was adding routes for 169.254.0.0/16, which seemed a bit sketchy.
@@ -84,7 +98,7 @@ in
   services.nginx.enable = true;
   services.nginx.statusPage = true;
 
-  networking.firewall.allowedTCPPorts = [ 80 443 8081 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 8081 5000 ];
 
   time.timeZone = "America/Los_Angeles";
 

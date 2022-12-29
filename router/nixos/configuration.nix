@@ -24,6 +24,8 @@ let
 
   nasIpAddress = "10.69.42.2";
   nasMacAddress = "a8:a1:59:c6:68:aa";
+
+  nasDirectIpAddress = "10.69.43.2";
 in
 
 {
@@ -51,7 +53,6 @@ in
       # Wan, get IP address from ISP
       "${wanInterface}".useDHCP = true;
 
-      enp3s0.useDHCP = false;
       enp4s0.useDHCP = false;
 
       "${lanInterface}" = {
@@ -63,6 +64,13 @@ in
         }];
       };
 
+      enp3s0 = {
+        useDHCP = false;
+        ipv4.addresses = [{
+          address = "10.69.43.1";
+          prefixLength = 24;
+        }];
+      };
     };
 
     firewall.enable = true;
@@ -79,7 +87,7 @@ in
     nat = {
       enable = true;
       externalInterface = wanInterface;
-      internalInterfaces = [lanInterface];
+      internalInterfaces = [lanInterface "enp3s0"];
       internalIPs = [lanV4Cidr];
     };
   };
@@ -135,6 +143,7 @@ in
       "radarr1080.adh.io"
       "sonarr.adh.io"
       "sonarr1080.adh.io"
+      "bazarr.adh.io"
       "transmission.adh.io"
 
       "grafana.adh.io"
@@ -162,10 +171,10 @@ in
         default_backend nas_https
     
       backend nas_http
-        server s1 ${nasIpAddress}:80
+        server s1 ${nasDirectIpAddress}:80
 
       backend nas_https
-        server s1 ${nasIpAddress}:443 send-proxy-v2
+        server s1 ${nasDirectIpAddress}:443 send-proxy-v2
     '';
   };
 
