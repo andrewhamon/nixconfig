@@ -24,8 +24,8 @@ in
 
   nixpkgs.config.packageOverrides = pkgs: {
     arc = import (builtins.fetchTarball {
-      url = "https://github.com/andrewhamon/nixexprs/archive/59fe48c47e782354f92c2dd5f4c7693868d72f08.tar.gz";
-      sha256 = "sha256:1xs5rb6s4zyzlygvsszpir8isg3n5s5qyv1j3pp1knjpgwcc6sr6";
+      url = "https://github.com/arcnmx/nixexprs/archive/08a680c787becec40bb773a34ff6f7075222f003.tar.gz";
+      sha256 = "sha256:056bg096r4dd93bwg6rk2m5qx1ghgzsy5df4jz9jagfk88bwmpfx";
     }) {
       inherit pkgs;
     };
@@ -115,16 +115,16 @@ in
   system.stateVersion = "22.05"; # Did you read the comment?
 
   services.grafana.enable = true;
-  services.grafana.domain = "grafana.adh.io";
-  services.grafana.protocol = "http";
-  services.grafana.security.secretKeyFile = "/etc/secrets/grafana_secret";
+  services.grafana.settings.server.domain = "grafana.adh.io";
+  services.grafana.settings.server.protocol = "http";
+  services.grafana.settings.security.secret_key = "$__file{/etc/secrets/grafana_secret}";
 
   services.nginx.virtualHosts."grafana.adh.io" = {
     enableACME = true;
     listen = proxyProtocolListen;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.grafana.port}";
+      proxyPass = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
       proxyWebsockets = true;
       extraConfig = ''
           proxy_set_header   Host               $host;

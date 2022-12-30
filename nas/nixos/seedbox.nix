@@ -1,4 +1,4 @@
-{ lib, pkgs, nixpkgsUnstable, config, ... }:
+{ lib, pkgs, config, ... }:
 with lib;                      
 let
   cfg = config.services.seedbox;
@@ -32,8 +32,6 @@ let
           extraParameters = ["proxy_protocol"];
         }
       ];
-
-  jellyfinPkg = nixpkgsUnstable.jellyfin;
 in {
   imports = [
   ];
@@ -161,7 +159,6 @@ in {
     };
 
     services.jellyfin.enable = true;
-    services.jellyfin.package = jellyfinPkg;
 
     # https://github.com/NixOS/nixpkgs/issues/152008#issuecomment-1029281497
     # systemd.services."jellyfin".serviceConfig = {
