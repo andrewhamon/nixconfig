@@ -4,11 +4,11 @@
   outputs = { self, nixpkgs}: {
     nixosConfigurations.nas = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = [ ./nas/nixos/configuration.nix ];
+      modules = [ ./nas/configuration.nix ];
     };
     nixosConfigurations.router = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = [ ./router/nixos/configuration.nix ];
+      modules = [ ./router/configuration.nix ];
     };
   };
 }
