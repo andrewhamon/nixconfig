@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, nixpkgsUnstable, config, ... }:
 with lib;                      
 let
   cfg = config.services.seedbox;
@@ -32,12 +32,8 @@ let
           extraParameters = ["proxy_protocol"];
         }
       ];
-  nixpkgsUnstable = import
-    (builtins.fetchTarball {
-      url = "https://github.com/NixOS/nixpkgs/tarball/2da64a81275b68fdad38af669afeda43d401e94b";
-      sha256 = "sha256:1k71lmzdaa48yqkmsnd22n177qmxxi4gj2qcmdbv0mc6l4f27wd0";
-    })
-    { };
+
+  jellyfinPkg = nixpkgsUnstable.jellyfin;
 in {
   imports = [
   ];
@@ -165,7 +161,7 @@ in {
     };
 
     services.jellyfin.enable = true;
-    services.jellyfin.package = nixpkgsUnstable.jellyfin;
+    services.jellyfin.package = jellyfinPkg;
 
     # https://github.com/NixOS/nixpkgs/issues/152008#issuecomment-1029281497
     # systemd.services."jellyfin".serviceConfig = {
