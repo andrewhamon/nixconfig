@@ -42,8 +42,6 @@ in
     "net.ipv4.conf.all.forwarding" = 1;
   };
 
-  time.timeZone = "America/Los_Angeles";
-
   networking = {
     hostName = hostName;
     domain = domain;
@@ -178,29 +176,6 @@ in
         server s1 ${nasDirectIpAddress}:443 send-proxy-v2
     '';
   };
-
-  security.sudo.wheelNeedsPassword = false;
-  users.users.andrewhamon = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINNcsvEP/ZAEHTYgqahtTUoWpw18qoo3G4iObCGVwCGq"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIkO+UDBJuvpmTa6EriH1TJdJTx+YB/4uv4LmM+5mOp5"
-    ];
-  };
-  users.users.root.openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINNcsvEP/ZAEHTYgqahtTUoWpw18qoo3G4iObCGVwCGq"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIkO+UDBJuvpmTa6EriH1TJdJTx+YB/4uv4LmM+5mOp5"
-    ];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim
-  ];
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
 
   # See https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion
   system.stateVersion = "21.11"; # Did you read the comment?

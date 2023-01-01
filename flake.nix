@@ -28,19 +28,19 @@
           overlays = [];
         };
       };
+      defaults = {
+        imports = [
+          agenix.nixosModule
+          ./common/configuration.nix
+        ];
+      };
       nas = {
         deployment.targetHost = "nas.lan.adh.io";
-        imports = [
-          ./nas/configuration.nix
-          agenix.nixosModule
-        ];
+        imports = [ ./nas/configuration.nix ];
       };
       router = {
         deployment.targetHost = "router.adh.io";
-        imports = [
-          ./router/configuration.nix
-          agenix.nixosModule
-        ];
+        imports = [ ./router/configuration.nix ];
       };
     };
     darwinConfigurations."andrewhamon-NNF39W2LMJ-mbp" = let

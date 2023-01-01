@@ -102,16 +102,6 @@ in
 
   networking.firewall.allowedTCPPorts = [ 80 443 8081 5000 ];
 
-  time.timeZone = "America/Los_Angeles";
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    sysstat
-  ];
 
   # See https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion
   system.stateVersion = "22.05"; # Did you read the comment?
