@@ -127,6 +127,7 @@ in
     '';
   };
 
+  age.secrets.cloudflare.file = ../secrets/cloudflare.age;
   services.ddclient = {
     enable = true;
     domains = [
@@ -151,7 +152,7 @@ in
     protocol = "Cloudflare";
     zone = "adh.io";
     username = "and.ham95@gmail.com";
-    passwordFile = "/etc/secrets/cloudflare.txt";
+    passwordFile = config.age.secrets.cloudflare.path;
     interval = "10min";
     use = "if, if=${wanInterface}";
   };

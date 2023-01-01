@@ -47,11 +47,13 @@ in
   services.authfish.enable = true;
   services.authfish.domains = ".adh.io";
 
+  age.secrets.mulvad.file = ../secrets/mulvad.age;
+
   services.seedbox.enable = true;
   services.seedbox.netNamespaceHostIP = "10.69.44.1";
   services.seedbox.netNamespaceSeedboxIP = "10.69.44.2";
   services.seedbox.wgIps = ["10.66.194.204/32" "fc00:bbbb:bbbb:bb01::3:c2cb/128"];
-  services.seedbox.wgPrivateKeyFile = "/etc/secrets/wireguard_mullvad_key";
+  services.seedbox.wgPrivateKeyFile = config.age.secrets.mulvad.path;
   services.seedbox.wgPeerPublicKey = "+JJBzQMxFFQ2zu+WN8rbFH4ZpqY2u6WNBGBFHwsxkzs=";
   services.seedbox.wgPeerEndpoint = "142.147.89.240:51820";
   services.seedbox.transmissionPeerPort = 59307;
@@ -114,10 +116,13 @@ in
   # See https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion
   system.stateVersion = "22.05"; # Did you read the comment?
 
+  age.secrets.grafana.file = ../secrets/grafana.age;
+  age.secrets.grafana.owner = "grafana";
+
   services.grafana.enable = true;
   services.grafana.settings.server.domain = "grafana.adh.io";
   services.grafana.settings.server.protocol = "http";
-  services.grafana.settings.security.secret_key = "$__file{/etc/secrets/grafana_secret}";
+  services.grafana.settings.security.secret_key = "$__file{${config.age.secrets.grafana.path}}";
 
   services.nginx.virtualHosts."grafana.adh.io" = {
     enableACME = true;
