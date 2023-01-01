@@ -2,13 +2,21 @@
   inputs.nixpkgs.url = "nixpkgs/nixos-22.11";
   
   outputs = { self, nixpkgs}: {
-    nixosConfigurations.nas = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [ ./nas/configuration.nix ];
-    };
-    nixosConfigurations.router = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [ ./router/configuration.nix ];
+    colmena = {
+      meta = {
+        nixpkgs = import nixpkgs {
+          system = "x86_64-linux";
+          overlays = [];
+        };
+      };
+      nas = {
+        deployment.targetHost = "nas.lan.adh.io";
+        imports = [ ./nas/configuration.nix ];
+      };
+      router = {
+        deployment.targetHost = "router.adh.io";
+        imports = [ ./router/configuration.nix ];
+      };
     };
   };
 }
