@@ -34,6 +34,7 @@ let
       ];
 in {
   imports = [
+    ./namespaced-wg.nix
   ];
 
   options.services.seedbox = {
@@ -65,9 +66,6 @@ in {
     wgIps = mkOption {
       type = types.listOf types.str;
     };
-    wgListenPort = mkOption {
-      type = types.int;
-    };
     wgPrivateKeyFile = mkOption {
       type = types.str;
     };
@@ -76,10 +74,6 @@ in {
     };
     wgPeerEndpoint = mkOption {
       type = types.str;
-    };
-    wgPeerAllowedIps = mkOption {
-      type = types.listOf types.str;
-      default = [ "0.0.0.0/0" "::/0" ];
     };
     basicAuthFile = mkOption {
       type = types.str;
@@ -91,6 +85,16 @@ in {
 
   # Set up transmission
   config = mkIf cfg.enable {
+    services.namespaced-wg.enable = true;
+    services.namespaced-wg.name = cfg.netNamespaceName;
+    services.namespaced-wg.ips = cfg.wgIps;
+    services.namespaced-wg.peerPublicKey = cfg.wgPeerPublicKey;
+    services.namespaced-wg.peerEndpoint = cfg.wgPeerEndpoint;
+    services.namespaced-wg.privateKeyFile = cfg.wgPrivateKeyFile;
+    services.namespaced-wg.guestPortalIp = cfg.netNamespaceSeedboxIP;
+    services.namespaced-wg.hostPortalIp = cfg.netNamespaceHostIP;
+
+
     services.transmission = {
       enable = true;
       user = cfg.user;
@@ -109,54 +113,7 @@ in {
     };
 
     # Run transmission in a special network namespace. See the wireguard config down below
-    systemd = {
-      services.transmission.after = ["network.target" "seedbox_netns_${cfg.netNamespaceName}.service"];
-      services.transmission.bindsTo = ["seedbox_netns_${cfg.netNamespaceName}.service"];
-      services.transmission.partOf = ["seedbox_netns_${cfg.netNamespaceName}.service"];
-      services.transmission.serviceConfig.NetworkNamespacePath = "/var/run/netns/${cfg.netNamespaceName}";
-
-      services."wireguard-${cfg.netNamespaceName}" = {
-        after = ["network.target" "network-online.target" "seedbox_netns_${cfg.netNamespaceName}.service"];
-        bindsTo = ["seedbox_netns_${cfg.netNamespaceName}.service"];
-        partOf = ["seedbox_netns_${cfg.netNamespaceName}.service"];
-      };
-
-      services."seedbox_netns_${cfg.netNamespaceName}" = {
-        description = "seedbox_netns network namespace";
-        before = [ "network.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStop = "ip netns del ${cfg.netNamespaceName}";
-        };
-        script = ''
-            ipCmd="${pkgs.iproute}/bin/ip"
-            touch /tmp/i_was_here
-            set -x
-
-            # Delete the ns if it already exists. Mostly handy for developemt, in
-            # case this setup fails partway through and leaves things in an odd
-            # state.
-            ($ipCmd netns list | grep ${cfg.netNamespaceName}) && $ipCmd netns delete ${cfg.netNamespaceName}
-
-            $ipCmd netns add ${cfg.netNamespaceName}
-
-            sleep 10
-
-            $ipCmd link add ${cfg.netNamespaceName}_portal type veth peer host_portal
-            $ipCmd link set dev host_portal netns ${cfg.netNamespaceName}
-
-            $ipCmd addr add ${cfg.netNamespaceHostIP}/32 dev ${cfg.netNamespaceName}_portal
-            $ipCmd netns exec ${cfg.netNamespaceName} $ipCmd addr add ${cfg.netNamespaceSeedboxIP}/32 dev host_portal
-
-            $ipCmd link set dev ${cfg.netNamespaceName}_portal up
-            $ipCmd route add ${cfg.netNamespaceSeedboxIP}/32 dev ${cfg.netNamespaceName}_portal
-
-            $ipCmd netns exec ${cfg.netNamespaceName} $ipCmd link set dev host_portal up
-            $ipCmd netns exec ${cfg.netNamespaceName} $ipCmd route add ${cfg.netNamespaceHostIP}/32 dev host_portal
-          '';
-      };
-    };
+    systemd.services.transmission = config.services.namespaced-wg.systemdMods;
 
     services.jellyfin.enable = true;
 
@@ -381,20 +338,6 @@ in {
       media = {
         gid = 993;
       };
-    };
-
-    networking.wireguard.interfaces."${cfg.netNamespaceName}" = {
-      ips = cfg.wgIps;
-      # listenPort = cfg.wgListenPort;
-      privateKeyFile = cfg.wgPrivateKeyFile;
-      interfaceNamespace = cfg.netNamespaceName;
-      peers = [
-        {
-          publicKey = cfg.wgPeerPublicKey;
-          allowedIPs = cfg.wgPeerAllowedIps;
-          endpoint = cfg.wgPeerEndpoint;
-        }
-      ];
     };
   };
 }
