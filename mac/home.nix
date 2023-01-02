@@ -23,8 +23,6 @@
       pkgs.ripgrep
       pkgs.postgresql_11
       pkgs.redis
-      pkgs.colmena
-      extraFlakes.agenix
     ];
 
     home.sessionPath = [

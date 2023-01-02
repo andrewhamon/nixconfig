@@ -13,12 +13,15 @@
   inputs.homeage.url = "github:jordanisaacs/homeage";
   inputs.homeage.inputs.nixpkgs.follows = "nixpkgs";
 
+  inputs.flake-utils.url = "github:numtide/flake-utils";
+
   outputs = {
     self,
     agenix,
     darwin,
-    homeage,
+    flake-utils,
     home-manager,
+    homeage,
     nixpkgs,
   }: {
     colmena = {
@@ -46,7 +49,6 @@
     darwinConfigurations."andrewhamon-NNF39W2LMJ-mbp" = let
       specialArgs = {
             extraFlakes = {
-              agenix =  agenix.defaultPackage.aarch64-darwin;
               homeageModule = homeage.homeManagerModules.homeage;
             };
           };
@@ -63,5 +65,14 @@
           }
       ];
     };
-  };
+  } // flake-utils.lib.eachDefaultSystem
+    (system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+        agenixPkg = agenix.defaultPackage."${system}";
+      in
+      {
+        devShells.default = import ./shell.nix { inherit pkgs agenixPkg; };
+      }
+    );
 }
