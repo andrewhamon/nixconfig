@@ -1,5 +1,5 @@
 { lib, pkgs, config, ... }:
-with lib;                      
+with lib;
 let
   cfg = config.services.seedbox;
   authfishVirtualHostBase = {
@@ -25,14 +25,15 @@ let
   };
 
   proxyProtocolListen = [
-        {
-          addr = "0.0.0.0";
-          port = 443;
-          ssl = true;
-          extraParameters = ["proxy_protocol"];
-        }
-      ];
-in {
+    {
+      addr = "0.0.0.0";
+      port = 443;
+      ssl = true;
+      extraParameters = [ "proxy_protocol" ];
+    }
+  ];
+in
+{
   imports = [
     ./namespaced-wg.nix
   ];
@@ -163,12 +164,14 @@ in {
       group = cfg.group;
     };
 
+    systemd.services.nzbget = config.services.namespaced-wg.systemdMods;
+
     services.nginx.virtualHosts."nzb.adh.io" = {
       enableACME = true;
       listen = proxyProtocolListen;
       forceSSL = true;
       locations."/" = {
-        proxyPass = "http://127.0.0.1:6789";
+        proxyPass = "http://${config.services.namespaced-wg.guestPortalIp}:6789";
         proxyWebsockets = true;
       };
       extraConfig = authfishVirtualHostBase.extraConfig;
@@ -288,7 +291,7 @@ in {
       enableACME = true;
       listen = proxyProtocolListen;
       forceSSL = true;
-      locations."/"= {
+      locations."/" = {
         root = "/media";
         extraConfig = ''
           autoindex on;

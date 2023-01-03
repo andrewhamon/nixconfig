@@ -34,6 +34,10 @@ in
     hostPortalIp = mkOption {
       type = types.str;
     };
+    namespaceDns = mkOption {
+      type = types.str;
+      default = "1.1.1.1";
+    };
 
     # This isn't exactly config, but I couldn't think of a better way to easily
     # let us reference this attrset elsewhere. This is used to mod the systemd
@@ -42,14 +46,17 @@ in
     systemdMods = mkOption {
       type = types.anything;
       default = {
-        after = ["network.target" "netns_${config.services.namespaced-wg.name}.service"];
-        bindsTo = ["netns_${config.services.namespaced-wg.name}.service"];
-        partOf = ["netns_${config.services.namespaced-wg.name}.service"];
+        after = [ "network.target" "netns_${config.services.namespaced-wg.name}.service" ];
+        bindsTo = [ "netns_${config.services.namespaced-wg.name}.service" ];
+        partOf = [ "netns_${config.services.namespaced-wg.name}.service" ];
         serviceConfig.NetworkNamespacePath = "/var/run/netns/${config.services.namespaced-wg.name}";
       };
     };
   };
   config = mkIf cfg.enable {
+    environment.etc = {
+      "netns/${cfg.name}/resolv.conf".text = "nameserver ${cfg.namespaceDns}\n";
+    };
     networking.wireguard.interfaces."${cfg.name}" = {
       ips = cfg.ips;
       privateKeyFile = cfg.privateKeyFile;
@@ -68,9 +75,9 @@ in
     # to be active. This ensures that the network namespace has already been set
     # up before creating the wireguard interface.
     systemd.services."wireguard-${cfg.name}" = {
-      after = ["network.target" "network-online.target" "netns_${cfg.name}.service"];
-      bindsTo = ["netns_${cfg.name}.service"];
-      partOf = ["netns_${cfg.name}.service"];
+      after = [ "network.target" "network-online.target" "netns_${cfg.name}.service" ];
+      bindsTo = [ "netns_${cfg.name}.service" ];
+      partOf = [ "netns_${cfg.name}.service" ];
     };
 
     # Create a systemd service that does the following:
@@ -97,33 +104,33 @@ in
         ExecStop = "ip netns del ${cfg.name}";
       };
       script = ''
-          ipCmd="${pkgs.iproute}/bin/ip"
-          set -x
+        ipCmd="${pkgs.iproute}/bin/ip"
+        set -x
 
-          # Delete the ns if it already exists. Mostly handy for developemt, in
-          # case this setup fails partway through and leaves things in an odd
-          # state.
-          ($ipCmd netns list | grep ${cfg.name}) && $ipCmd netns delete ${cfg.name}
+        # Delete the ns if it already exists. Mostly handy for developemt, in
+        # case this setup fails partway through and leaves things in an odd
+        # state.
+        ($ipCmd netns list | grep ${cfg.name}) && $ipCmd netns delete ${cfg.name}
 
-          $ipCmd netns add ${cfg.name}
+        $ipCmd netns add ${cfg.name}
 
-          # It seems like netns delete doesn't immediately clean up all the
-          # related resources. If we are too fast, recreating interfaces with
-          # the same name will fail. RIP.
-          sleep 3
+        # It seems like netns delete doesn't immediately clean up all the
+        # related resources. If we are too fast, recreating interfaces with
+        # the same name will fail. RIP.
+        sleep 3
 
-          $ipCmd link add ${cfg.name}_portal type veth peer ${cfg.name}_hportal
-          $ipCmd link set dev ${cfg.name}_hportal netns ${cfg.name}
+        $ipCmd link add ${cfg.name}_portal type veth peer ${cfg.name}_hportal
+        $ipCmd link set dev ${cfg.name}_hportal netns ${cfg.name}
 
-          $ipCmd addr add ${cfg.hostPortalIp}/32 dev ${cfg.name}_portal
-          $ipCmd netns exec ${cfg.name} $ipCmd addr add ${cfg.guestPortalIp}/32 dev ${cfg.name}_hportal
+        $ipCmd addr add ${cfg.hostPortalIp}/32 dev ${cfg.name}_portal
+        $ipCmd netns exec ${cfg.name} $ipCmd addr add ${cfg.guestPortalIp}/32 dev ${cfg.name}_hportal
 
-          $ipCmd link set dev ${cfg.name}_portal up
-          $ipCmd route add ${cfg.guestPortalIp}/32 dev ${cfg.name}_portal
+        $ipCmd link set dev ${cfg.name}_portal up
+        $ipCmd route add ${cfg.guestPortalIp}/32 dev ${cfg.name}_portal
 
-          $ipCmd netns exec ${cfg.name} $ipCmd link set dev ${cfg.name}_hportal up
-          $ipCmd netns exec ${cfg.name} $ipCmd route add ${cfg.hostPortalIp}/32 dev ${cfg.name}_hportal
-        '';
+        $ipCmd netns exec ${cfg.name} $ipCmd link set dev ${cfg.name}_hportal up
+        $ipCmd netns exec ${cfg.name} $ipCmd route add ${cfg.hostPortalIp}/32 dev ${cfg.name}_hportal
+      '';
     };
   };
 }

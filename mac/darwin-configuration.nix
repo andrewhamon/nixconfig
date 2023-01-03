@@ -18,6 +18,7 @@ in
     systems = [
       "x86_64-linux"
       "i686-linux"
+      "aarch64-linux"
     ];
     sshUser = "root";
     sshKey = "/Users/andrewhamon/.ssh/id_ed25519";
@@ -61,7 +62,7 @@ in
     '';
   };
 
-  environment.systemPath = [ 
+  environment.systemPath = [
     "/Users/andrewhamon/.nix-profile/bin"
     "/run/current-system/sw/bin"
     "/nix/var/nix/profiles/default/bin"
@@ -70,7 +71,7 @@ in
     "/usr/sbin"
     "/bin"
     "/sbin"
-   ];
+  ];
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

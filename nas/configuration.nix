@@ -1,13 +1,13 @@
 { config, pkgs, ... }:
 let
   proxyProtocolListen = [
-        {
-          addr = "0.0.0.0";
-          port = 443;
-          ssl = true;
-          extraParameters = ["proxy_protocol"];
-        }
-      ];
+    {
+      addr = "0.0.0.0";
+      port = 443;
+      ssl = true;
+      extraParameters = [ "proxy_protocol" ];
+    }
+  ];
 in
 {
   imports =
@@ -22,13 +22,17 @@ in
 
   boot.loader.systemd-boot.enable = true;
 
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   nixpkgs.config.packageOverrides = pkgs: {
-    arc = import (builtins.fetchTarball {
-      url = "https://github.com/arcnmx/nixexprs/archive/08a680c787becec40bb773a34ff6f7075222f003.tar.gz";
-      sha256 = "sha256:056bg096r4dd93bwg6rk2m5qx1ghgzsy5df4jz9jagfk88bwmpfx";
-    }) {
-      inherit pkgs;
-    };
+    arc = import
+      (builtins.fetchTarball {
+        url = "https://github.com/arcnmx/nixexprs/archive/08a680c787becec40bb773a34ff6f7075222f003.tar.gz";
+        sha256 = "sha256:056bg096r4dd93bwg6rk2m5qx1ghgzsy5df4jz9jagfk88bwmpfx";
+      })
+      {
+        inherit pkgs;
+      };
   };
 
   hardware.nvidia.package = pkgs.arc.packages.nvidia-patch.override {
@@ -52,12 +56,11 @@ in
   services.seedbox.enable = true;
   services.seedbox.netNamespaceHostIP = "10.69.44.1";
   services.seedbox.netNamespaceSeedboxIP = "10.69.44.2";
-  services.seedbox.wgIps = ["10.66.194.204/32" "fc00:bbbb:bbbb:bb01::3:c2cb/128"];
+  services.seedbox.wgIps = [ "10.67.187.190/32" "fc00:bbbb:bbbb:bb01::4:bbbd/128" ];
   services.seedbox.wgPrivateKeyFile = config.age.secrets.mulvad.path;
-  services.seedbox.wgPeerPublicKey = "+JJBzQMxFFQ2zu+WN8rbFH4ZpqY2u6WNBGBFHwsxkzs=";
-  services.seedbox.wgPeerEndpoint = "142.147.89.240:51820";
-  services.seedbox.transmissionPeerPort = 59307;
-
+  services.seedbox.wgPeerPublicKey = "m0PSpvahFXuYOtGZ9hFAMErzKW7vhwqyd82rw+yBHz0=";
+  services.seedbox.wgPeerEndpoint = "66.115.165.215:51820";
+  services.seedbox.transmissionPeerPort = 57942;
 
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.devNodes = "/dev/";
@@ -71,7 +74,7 @@ in
   networking.hostId = "e20e1d8d";
 
   services.tailscale.enable = true;
-  
+
   services.octoprint.enable = true;
 
 
@@ -80,7 +83,7 @@ in
   # replicates the default behaviour.
   networking.useDHCP = false;
   networking.interfaces.enp38s0.useDHCP = true;
-  
+
   networking.interfaces.enp39s0.useDHCP = false;
   networking.interfaces.enp39s0.ipv4.addresses = [{
     address = "10.69.43.2";
@@ -122,10 +125,10 @@ in
       proxyPass = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
       proxyWebsockets = true;
       extraConfig = ''
-          proxy_set_header   Host               $host;
-          proxy_set_header   X-Real-IP          $proxy_protocol_addr;
-          proxy_set_header   X-Forwarded-Proto  $scheme;
-          proxy_set_header   X-Forwarded-For    $proxy_protocol_addr;
+        proxy_set_header   Host               $host;
+        proxy_set_header   X-Real-IP          $proxy_protocol_addr;
+        proxy_set_header   X-Forwarded-Proto  $scheme;
+        proxy_set_header   X-Forwarded-For    $proxy_protocol_addr;
       '';
     };
     # extraConfig = authfishVirtualHostBase.extraConfig;
