@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 
-{  
+{
   users.users.jwst = {
     isNormalUser = true;
     homeMode = "755";

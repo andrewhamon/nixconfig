@@ -17,11 +17,11 @@
 
   services.mosquitto = {
     enable = true;
-    listeners = [ {
+    listeners = [{
       acl = [ "pattern readwrite #" ];
       omitPasswordAuth = true;
       settings.allow_anonymous = true;
-    } ];
+    }];
   };
 
   users.users.homebridge = {
@@ -36,7 +36,7 @@
 
   virtualisation.oci-containers.containers.homebridge = {
     image = "oznu/homebridge:latest";
-    ports = ["17878:7878"];
+    ports = [ "17878:7878" ];
     volumes = [
       "/var/lib/homebridge:/homebridge"
     ];
@@ -46,9 +46,9 @@
       HOMEBRIDGE_CONFIG_UI = toString 1;
       HOMEBRIDGE_CONFIG_UI_PORT = toString 8581;
     };
-    extraOptions = ["--network=host"];
+    extraOptions = [ "--network=host" ];
   };
 
-    networking.firewall.allowedTCPPorts = [8581 51522];
-    networking.firewall.allowedUDPPorts = [51522];
+  networking.firewall.allowedTCPPorts = [ 8581 51522 ];
+  networking.firewall.allowedUDPPorts = [ 51522 ];
 }

@@ -7,9 +7,9 @@ let
   allUsers = [ andrewhamon ];
 in
 {
-  "cloudflare.age".publicKeys = allUsers ++ [router];
-  "grafana.age".publicKeys = allUsers ++ [nas];
-  "mulvad.age".publicKeys = allUsers ++ [nas];
+  "cloudflare.age".publicKeys = allUsers ++ [ router ];
+  "grafana.age".publicKeys = allUsers ++ [ nas ];
+  "mulvad.age".publicKeys = allUsers ++ [ nas ];
   "buildkite_api_key.age".publicKeys = allUsers;
   "jupyter_token.age".publicKeys = allUsers;
 }

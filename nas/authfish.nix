@@ -1,11 +1,11 @@
 { lib, pkgs, config, ... }:
-with lib;                      
+with lib;
 let
   cfg = config.services.authfish;
   authfishSrc = pkgs.fetchFromGitHub {
-    owner  = "andrewhamon";
-    repo   = "authfish";
-    rev    = "bc4a5e97a8ab555e423e3f7cc611bac5c1c2b05e";
+    owner = "andrewhamon";
+    repo = "authfish";
+    rev = "bc4a5e97a8ab555e423e3f7cc611bac5c1c2b05e";
     sha256 = "sha256-plnoYgMkZmtnUf8LjELMa5cFaAmWRKTrL4Q2tobKbM4=";
   };
   authfish = import "${authfishSrc}/default.nix" { pkgs = pkgs; };
@@ -70,7 +70,7 @@ in
     };
 
     users.groups = mkIf (cfg.group == "authfish") {
-      authfish = {};
+      authfish = { };
     };
 
     services.nginx.virtualHosts."login.adh.io" = {

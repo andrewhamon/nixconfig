@@ -55,7 +55,7 @@ in
 
       "${lanInterface}" = {
         useDHCP = false;
-        
+
         ipv4.addresses = [{
           address = lanV4Address;
           prefixLength = lanV4PrefixLength;
@@ -85,8 +85,8 @@ in
     nat = {
       enable = true;
       externalInterface = wanInterface;
-      internalInterfaces = [lanInterface "enp3s0"];
-      internalIPs = [lanV4Cidr];
+      internalInterfaces = [ lanInterface "enp3s0" ];
+      internalIPs = [ lanV4Cidr ];
     };
   };
 
@@ -129,10 +129,10 @@ in
   services.ddclient = {
     enable = true;
     domains = [
-      "router.adh.io" 
-      "media.adh.io" 
+      "router.adh.io"
+      "media.adh.io"
 
-      "jackett.adh.io" 
+      "jackett.adh.io"
       "jellyfin.adh.io"
       "lidarr.adh.io"
       "login.adh.io"
