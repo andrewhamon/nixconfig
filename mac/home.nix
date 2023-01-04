@@ -40,8 +40,7 @@
   };
 
   home.shellAliases = {
-    gs = "git status -uno";
-    gsa = "git status";
+    gs = "git status";
     nix-system-configuration = "code ~/.config/nix";
     idea = "open -na \"IntelliJ IDEA.app\"";
     bastion = "/Users/andrewhamon/flexport/flexport/env-improvement/bin/bastion";
