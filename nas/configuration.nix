@@ -39,14 +39,15 @@ in
     nvidia_x11 = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
+    "nvidia-patch"
+    "nvidia-settings"
+    "nvidia-x11"
+    "unrar"
+  ];
+
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl.enable = true;
-  hardware.opengl.driSupport32Bit = true;
-
-  virtualisation.docker.enable = true;
-  virtualisation.docker.enableNvidia = true;
-  virtualisation.oci-containers.backend = "docker";
 
   services.authfish.enable = true;
   services.authfish.domains = ".adh.io";

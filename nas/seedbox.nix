@@ -154,10 +154,6 @@ in
       locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
-    nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "unrar"
-    ];
-
     services.nzbget = {
       enable = true;
       user = cfg.user;
