@@ -103,7 +103,7 @@ in
   services.nginx.enable = true;
   services.nginx.statusPage = true;
 
-  networking.firewall.allowedTCPPorts = [ 80 443 8081 5000 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 5000 ];
 
 
   # See https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion
