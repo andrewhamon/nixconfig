@@ -12,12 +12,13 @@ in
 {
   imports =
     [
-      ./hardware-configuration.nix
-      ./seedbox.nix
+      ./acme.nix
       ./authfish.nix
-      ./users.nix
-      ./smart-home.nix
+      ./hardware-configuration.nix
       ./jwst.nix
+      ./seedbox.nix
+      ./smart-home.nix
+      ./users.nix
     ];
 
   boot.loader.systemd-boot.enable = true;
@@ -99,8 +100,6 @@ in
   # since it was adding routes for 169.254.0.0/16, which seemed a bit sketchy.
   # networking.interfaces.enp42s0f3u5u3c2.useDHCP = false;
 
-  security.acme.defaults.email = "and.ham95@gmail.com";
-  security.acme.acceptTerms = true;
   services.nginx.enable = true;
   services.nginx.statusPage = true;
 

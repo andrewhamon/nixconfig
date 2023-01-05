@@ -12,4 +12,5 @@ in
   "mulvad.age".publicKeys = allUsers ++ [ nas ];
   "buildkite_api_key.age".publicKeys = allUsers;
   "jupyter_token.age".publicKeys = allUsers;
+  "lego_cloudflare_env.age".publicKeys = allUsers ++ [ nas ];
 }
