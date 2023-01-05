@@ -130,22 +130,6 @@ in
     enable = true;
     domains = [
       "router.adh.io"
-      "media.adh.io"
-
-      "jackett.adh.io"
-      "jellyfin.adh.io"
-      "lidarr.adh.io"
-      "login.adh.io"
-      "nzb.adh.io"
-      "prowlarr.adh.io"
-      "radarr.adh.io"
-      "radarr1080.adh.io"
-      "sonarr.adh.io"
-      "sonarr1080.adh.io"
-      "bazarr.adh.io"
-      "transmission.adh.io"
-
-      "grafana.adh.io"
     ];
     protocol = "Cloudflare";
     zone = "adh.io";
