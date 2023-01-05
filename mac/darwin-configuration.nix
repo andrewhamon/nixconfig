@@ -73,6 +73,23 @@ in
     "/sbin"
   ];
 
+  environment.etc."sudoers.d/000-sudo-touchid" = {
+    text = ''
+      Defaults pam_service=sudo-touchid
+      Defaults pam_login_service=sudo-touchid
+    '';
+  };
+  environment.etc."pam.d/sudo-touchid" = {
+    text = ''
+      auth       sufficient     pam_tid.so
+      auth       sufficient     pam_smartcard.so
+      auth       required       pam_opendirectory.so
+      account    required       pam_permit.so
+      password   required       pam_deny.so
+      session    required       pam_permit.so
+    '';
+  };
+
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
