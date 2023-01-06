@@ -47,6 +47,10 @@ in
     "unrar"
   ];
 
+  environment.systemPackages = with pkgs; [
+    smartmontools
+  ];
+
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl.enable = true;
 
