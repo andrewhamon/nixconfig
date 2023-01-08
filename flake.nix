@@ -38,32 +38,8 @@
     , nixpkgs
     , rnix-lsp
     ,
-    }: {
-      colmena = {
-        meta = {
-          nixpkgs = import nixpkgs {
-            system = "x86_64-linux";
-            overlays = [ ];
-          };
-        };
-        defaults = {
-          imports = [
-            agenix.nixosModule
-            ./common/configuration.nix
-          ];
-        };
-        nas = {
-          deployment.targetHost = "nas.platypus-banana.ts.net";
-          imports = [
-            authfish.nixosModules.default
-            ./nas/configuration.nix
-          ];
-        };
-        router = {
-          deployment.targetHost = "router.adh.io";
-          imports = [ ./router/configuration.nix ];
-        };
-      };
+    }@inputs: {
+      colmena = import ./hive.nix inputs;
       darwinConfigurations."andrewhamon-NNF39W2LMJ-mbp" =
         let
           specialArgs = {
