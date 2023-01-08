@@ -14,7 +14,7 @@ in
   services.nix-daemon.enable = true;
 
   nix.buildMachines = [{
-    hostName = "nas.lan.adh.io";
+    hostName = "nas.platypus-banana.ts.net";
     systems = [
       "x86_64-linux"
       "i686-linux"
