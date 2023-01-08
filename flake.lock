@@ -20,6 +20,29 @@
         "type": "github"
       }
     },
+    "authfish": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1673141178,
+        "narHash": "sha256-c7+NqCV+SK5b8H0/cJvPK2Y70Fy+J08cNAFCeldrjX0=",
+        "owner": "andrewhamon",
+        "repo": "authfish",
+        "rev": "d7125e03f90f2d16b343c150e710d14d9cab93d5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "andrewhamon",
+        "repo": "authfish",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -196,6 +219,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "authfish": "authfish",
         "darwin": "darwin",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",

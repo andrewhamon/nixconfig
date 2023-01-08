@@ -22,16 +22,21 @@
   inputs.nixos-generators.url = "github:nix-community/nixos-generators";
   inputs.nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
+  inputs.authfish.url = "github:andrewhamon/authfish";
+  inputs.authfish.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.authfish.inputs.flake-utils.follows = "flake-utils";
+
   outputs =
     { self
     , agenix
+    , authfish
     , darwin
     , flake-utils
     , home-manager
     , homeage
+    , nixos-generators
     , nixpkgs
     , rnix-lsp
-    , nixos-generators
     ,
     }: {
       colmena = {
@@ -48,8 +53,11 @@
           ];
         };
         nas = {
-          deployment.targetHost = "nas.lan.adh.io";
-          imports = [ ./nas/configuration.nix ];
+          deployment.targetHost = "nas.platypus-banana.ts.net";
+          imports = [
+            authfish.nixosModules.default
+            ./nas/configuration.nix
+          ];
         };
         router = {
           deployment.targetHost = "router.adh.io";

@@ -13,7 +13,6 @@ in
   imports =
     [
       ./acme.nix
-      ./authfish.nix
       ./hardware-configuration.nix
       ./jwst.nix
       ./seedbox.nix
@@ -56,6 +55,9 @@ in
 
   services.authfish.enable = true;
   services.authfish.domains = ".adh.io";
+  services.authfish.virtualHostName = "login.adh.io";
+  services.authfish.enableACME = true;
+  services.authfish.forceSSL = true;
 
   age.secrets.mulvad.file = ../secrets/mulvad.age;
 
