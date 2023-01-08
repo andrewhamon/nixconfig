@@ -30,11 +30,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1673141178,
-        "narHash": "sha256-c7+NqCV+SK5b8H0/cJvPK2Y70Fy+J08cNAFCeldrjX0=",
+        "lastModified": 1673159000,
+        "narHash": "sha256-+bLOL0xFkmbfxkzeplJWAdTURl/Onaz+qT+UtiG7aMs=",
         "owner": "andrewhamon",
         "repo": "authfish",
-        "rev": "d7125e03f90f2d16b343c150e710d14d9cab93d5",
+        "rev": "ffff96431cc315affac833ec842f20998b0a8608",
         "type": "github"
       },
       "original": {

@@ -1,26 +1,6 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, inputs, ... }:
 let
-  authfishVirtualHostBase = {
-    extraConfig = ''
-      auth_request /auth_request;
-      error_page 401 /authfish_login;
-    '';
-    locations."/auth_request" = {
-      proxyPass = "http://localhost:${toString config.services.authfish.port}/check";
-      extraConfig = ''
-        internal;
-        proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
-      '';
-    };
-    locations."/authfish_login" = {
-      proxyPass = "http://localhost:${toString config.services.authfish.port}/login";
-      extraConfig = ''
-        auth_request off;
-        proxy_set_header X-Authfish-Login-Path /authfish_login;
-        proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
-      '';
-    };
-  };
+  protectWithAuthfish = inputs.authfish.lib.protectWithAuthfish;
 in
 {
   imports =
@@ -41,16 +21,13 @@ in
     let
       uiPort = config.services.zigbee2mqtt.settings.frontend.port;
     in
-    {
+    protectWithAuthfish config {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:${toString uiPort}";
         proxyWebsockets = true;
       };
-      extraConfig = authfishVirtualHostBase.extraConfig;
-      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
   services.mosquitto = {
@@ -91,16 +68,13 @@ in
     let
       uiPort = config.virtualisation.oci-containers.containers.homebridge.environment.HOMEBRIDGE_CONFIG_UI_PORT;
     in
-    {
+    protectWithAuthfish config {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:${uiPort}";
         proxyWebsockets = true;
       };
-      extraConfig = authfishVirtualHostBase.extraConfig;
-      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
   networking.firewall.allowedTCPPorts = [ 51522 ];

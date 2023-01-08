@@ -3,10 +3,13 @@
 , authfish
 , nixpkgs
 , ...
-}:
+}@inputs:
 {
   meta = {
     nixpkgs = import nixpkgs { };
+    specialArgs = {
+      inherit inputs;
+    };
   };
   defaults = {
     imports = [

@@ -1,28 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, config, inputs, ... }:
 with lib;
 let
   cfg = config.services.seedbox;
-  authfishVirtualHostBase = {
-    extraConfig = ''
-      auth_request /auth_request;
-      error_page 401 /authfish_login;
-    '';
-    locations."/auth_request" = {
-      proxyPass = "http://localhost:${toString config.services.authfish.port}/check";
-      extraConfig = ''
-        internal;
-        proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
-      '';
-    };
-    locations."/authfish_login" = {
-      proxyPass = "http://localhost:${toString config.services.authfish.port}/login";
-      extraConfig = ''
-        auth_request off;
-        proxy_set_header X-Authfish-Login-Path /authfish_login;
-        proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
-      '';
-    };
-  };
+  protectWithAuthfish = inputs.authfish.lib.protectWithAuthfish;
 in
 {
   imports = [
@@ -131,16 +111,13 @@ in
       };
     };
 
-    services.nginx.virtualHosts."transmission.adh.io" = {
+    services.nginx.virtualHosts."transmission.adh.io" = protectWithAuthfish config {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://${cfg.netNamespaceSeedboxIP}:8080";
         proxyWebsockets = true;
       };
-      extraConfig = authfishVirtualHostBase.extraConfig;
-      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
     services.nzbget = {
@@ -151,16 +128,13 @@ in
 
     systemd.services.nzbget = config.services.namespaced-wg.systemdMods;
 
-    services.nginx.virtualHosts."nzb.adh.io" = {
+    services.nginx.virtualHosts."nzb.adh.io" = protectWithAuthfish config {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://${config.services.namespaced-wg.guestPortalIp}:6789";
         proxyWebsockets = true;
       };
-      extraConfig = authfishVirtualHostBase.extraConfig;
-      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
     # Sonarr, Radarr, Prowlarr configs. These don't need to be behind a VPN.
@@ -173,16 +147,13 @@ in
       group = cfg.group;
     };
 
-    services.nginx.virtualHosts."sonarr.adh.io" = {
+    services.nginx.virtualHosts."sonarr.adh.io" = protectWithAuthfish config {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:8989";
         proxyWebsockets = true;
       };
-      extraConfig = authfishVirtualHostBase.extraConfig;
-      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
     # Enable radarr
@@ -193,16 +164,13 @@ in
       group = cfg.group;
     };
 
-    services.nginx.virtualHosts."radarr.adh.io" = {
+    services.nginx.virtualHosts."radarr.adh.io" = protectWithAuthfish config {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:7878";
         proxyWebsockets = true;
       };
-      extraConfig = authfishVirtualHostBase.extraConfig;
-      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
     # Enable bazarr
@@ -213,60 +181,28 @@ in
       group = cfg.group;
     };
 
-    services.nginx.virtualHosts."bazarr.adh.io" = {
+    services.nginx.virtualHosts."bazarr.adh.io" = protectWithAuthfish config {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:6767";
         proxyWebsockets = true;
       };
-      extraConfig = authfishVirtualHostBase.extraConfig;
-      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
-
-    # virtualisation.oci-containers.containers.radar1080 = {
-    #   image = "linuxserver/radarr:4.1.0";
-    #   ports = ["17878:7878"];
-    #   volumes = [
-    #     "/var/lib/radarr1080/.config/Radarr:/config"
-    #     "/media/movies1080:/media/movies1080"
-    #     "/home/media/downloads/dst/Movies1080:/home/media/downloads/dst/Movies1080"
-    #   ];
-    #   environment = {
-    #     PUID = toString config.users.users.media.uid;
-    #     PGID = toString config.users.groups.media.gid;
-    #   };
-    # };
-
-    # services.nginx.virtualHosts."radarr1080.adh.io" = {
-    #   enableACME = true;
-    #   forceSSL = true;
-    #   locations."/" = {
-    #     proxyPass = "http://127.0.0.1:17878";
-    #     proxyWebsockets = true;
-    #   };
-    #   extraConfig = authfishVirtualHostBase.extraConfig;
-    #   locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-    #   locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
-    # };
 
     # Port 9696 by default
     services.prowlarr.enable = true;
 
-    services.nginx.virtualHosts."prowlarr.adh.io" = {
+    services.nginx.virtualHosts."prowlarr.adh.io" = protectWithAuthfish config {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:9696";
         proxyWebsockets = true;
       };
-      extraConfig = authfishVirtualHostBase.extraConfig;
-      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-      locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
     };
 
-    services.nginx.virtualHosts."media.adh.io" = {
+    services.nginx.virtualHosts."media.adh.io" = protectWithAuthfish config {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -276,33 +212,6 @@ in
           autoindex_exact_size off;
           autoindex_localtime on;
           dav_ext_methods PROPFIND OPTIONS;
-        '';
-      };
-      # extraConfig = authfishVirtualHostBase.extraConfig;
-
-      extraConfig = ''
-        auth_request /auth_request;
-        error_page 401 /authfish_login;
-      '';
-
-      # Annoyingly, Infuse will always make an unauthenticated request first,
-      # and then only send auth creds if the server responds with a 401 + the
-      # WWW-Authenticate: Basic header. That means "secret basic auth" doesn't
-      # work with Infuse. To work around that, manually set this header.
-      # extraConfig = authfishVirtualHostBase.extraConfig + ''
-      #   if ($http_user_agent = ""){
-      #       add_header WWW-Authenticate Basic always;
-      #     }
-      # '';
-      locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-      locations."/authfish_login" = {
-        proxyPass = "http://localhost:${toString config.services.authfish.port}/login";
-        extraConfig = ''
-          auth_request off;
-          if ($http_user_agent = ""){
-            add_header WWW-Authenticate Basic always;
-          }
-          proxy_set_header X-Authfish-Login-Path /authfish_login;
         '';
       };
     };

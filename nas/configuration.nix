@@ -127,9 +127,6 @@
         proxy_set_header   X-Forwarded-For    $proxy_protocol_addr;
       '';
     };
-    # extraConfig = authfishVirtualHostBase.extraConfig;
-    # locations."/auth_request" = authfishVirtualHostBase.locations."/auth_request";
-    # locations."/authfish_login" = authfishVirtualHostBase.locations."/authfish_login";
   };
 
   services.prometheus = {
