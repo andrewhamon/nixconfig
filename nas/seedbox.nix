@@ -23,15 +23,6 @@ let
       '';
     };
   };
-
-  proxyProtocolListen = [
-    {
-      addr = "0.0.0.0";
-      port = 443;
-      ssl = true;
-      extraParameters = [ "proxy_protocol" ];
-    }
-  ];
 in
 {
   imports = [
@@ -127,7 +118,6 @@ in
 
     services.nginx.virtualHosts."jellyfin.adh.io" = {
       enableACME = true;
-      listen = proxyProtocolListen;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://localhost:8096";
@@ -143,7 +133,6 @@ in
 
     services.nginx.virtualHosts."transmission.adh.io" = {
       enableACME = true;
-      listen = proxyProtocolListen;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://${cfg.netNamespaceSeedboxIP}:8080";
@@ -164,7 +153,6 @@ in
 
     services.nginx.virtualHosts."nzb.adh.io" = {
       enableACME = true;
-      listen = proxyProtocolListen;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://${config.services.namespaced-wg.guestPortalIp}:6789";
@@ -187,7 +175,6 @@ in
 
     services.nginx.virtualHosts."sonarr.adh.io" = {
       enableACME = true;
-      listen = proxyProtocolListen;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:8989";
@@ -208,7 +195,6 @@ in
 
     services.nginx.virtualHosts."radarr.adh.io" = {
       enableACME = true;
-      listen = proxyProtocolListen;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:7878";
@@ -229,7 +215,6 @@ in
 
     services.nginx.virtualHosts."bazarr.adh.io" = {
       enableACME = true;
-      listen = proxyProtocolListen;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:6767";
@@ -256,7 +241,6 @@ in
 
     # services.nginx.virtualHosts."radarr1080.adh.io" = {
     #   enableACME = true;
-    #   listen = proxyProtocolListen;
     #   forceSSL = true;
     #   locations."/" = {
     #     proxyPass = "http://127.0.0.1:17878";
@@ -272,7 +256,6 @@ in
 
     services.nginx.virtualHosts."prowlarr.adh.io" = {
       enableACME = true;
-      listen = proxyProtocolListen;
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:9696";
@@ -285,7 +268,6 @@ in
 
     services.nginx.virtualHosts."media.adh.io" = {
       enableACME = true;
-      listen = proxyProtocolListen;
       forceSSL = true;
       locations."/" = {
         root = "/media";

@@ -25,14 +25,6 @@
 
   services.nginx.virtualHosts."jwst.me" = {
     enableACME = true;
-    listen = [
-      {
-        addr = "0.0.0.0";
-        port = 443;
-        ssl = true;
-        extraParameters = [ "proxy_protocol" ];
-      }
-    ];
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:45654";

@@ -1,20 +1,11 @@
 { config, pkgs, ... }:
-let
-  proxyProtocolListen = [
-    {
-      addr = "0.0.0.0";
-      port = 443;
-      ssl = true;
-      extraParameters = [ "proxy_protocol" ];
-    }
-  ];
-in
 {
   imports =
     [
       ./acme.nix
       ./hardware-configuration.nix
       ./jwst.nix
+      ./nginx-default-listen.nix
       ./seedbox.nix
       ./smart-home.nix
       ./users.nix
@@ -125,7 +116,6 @@ in
 
   services.nginx.virtualHosts."grafana.adh.io" = {
     enableACME = true;
-    listen = proxyProtocolListen;
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
