@@ -1,6 +1,6 @@
 { config, lib, pkgs, modulesPath, inputs, ... }:
 let
-  protectWithAuthfish = inputs.authfish.lib.protectWithAuthfish;
+  protectWithAuthfish = inputs.authfish.lib.protectWithAuthfish config;
 in
 {
   imports =
@@ -21,7 +21,7 @@ in
     let
       uiPort = config.services.zigbee2mqtt.settings.frontend.port;
     in
-    protectWithAuthfish config {
+    protectWithAuthfish {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -68,7 +68,7 @@ in
     let
       uiPort = config.virtualisation.oci-containers.containers.homebridge.environment.HOMEBRIDGE_CONFIG_UI_PORT;
     in
-    protectWithAuthfish config {
+    protectWithAuthfish {
       enableACME = true;
       forceSSL = true;
       locations."/" = {

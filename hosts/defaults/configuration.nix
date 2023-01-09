@@ -1,5 +1,9 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
+  imports = [
+    inputs.agenix.nixosModule
+  ];
+
   environment.systemPackages = with pkgs; [
     dig
     git

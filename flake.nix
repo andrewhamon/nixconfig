@@ -28,58 +28,35 @@
 
   outputs =
     { self
-    , agenix
-    , authfish
     , darwin
     , flake-utils
-    , home-manager
-    , homeage
     , nixos-generators
     , nixpkgs
-    , rnix-lsp
-    ,
+    , ...
     }@inputs: {
-      colmena = import ./hive.nix inputs;
-      darwinConfigurations."andrewhamon-NNF39W2LMJ-mbp" =
-        let
-          specialArgs = {
-            extraFlakes = {
-              homeageModule = homeage.homeManagerModules.homeage;
-            };
-          };
-        in
-        darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
-          modules = [
-            ./mac/darwin-configuration.nix
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.andrewhamon = import ./mac/home.nix;
-              home-manager.extraSpecialArgs = specialArgs;
-            }
-          ];
-        };
+      colmena = import ./hive.nix { inherit inputs; };
+      darwinConfigurations."andrewhamon-NNF39W2LMJ-mbp" = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/andrewhamon-NNF39W2LMJ-mbp/darwin-configuration.nix
+        ];
+      };
     } // flake-utils.lib.eachDefaultSystem
       (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        agenixPkg = agenix.defaultPackage."${system}";
-        rnix-lspPkg = rnix-lsp.defaultPackage."${system}";
       in
       {
-        devShells.default = import ./shell.nix { inherit pkgs agenixPkg rnix-lspPkg; };
-      }
-      ) // {
-      packages.x86_64-linux = {
-        installIso = nixos-generators.nixosGenerate {
+        devShells.default = import ./shell.nix { inherit pkgs inputs; };
+        packages.installIso = nixos-generators.nixosGenerate {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
-            ./common/configuration.nix
+            ./hosts/defaults/configuration.nix
           ];
           format = "install-iso";
         };
-      };
-    };
+      }
+      );
 }

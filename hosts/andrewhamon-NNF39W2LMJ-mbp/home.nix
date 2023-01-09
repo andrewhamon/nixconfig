@@ -1,6 +1,8 @@
-{ config, pkgs, extraFlakes, ... }:
+{ config, pkgs, inputs, ... }:
 {
-  imports = [ extraFlakes.homeageModule ];
+  imports = [
+    inputs.homeage.homeManagerModules.homeage
+  ];
 
   homeage = {
     identityPaths = [ "~/.ssh/id_ed25519" ];
@@ -9,12 +11,12 @@
 
     file.buildkite_api_key = {
       # Path to encrypted file tracked by the git repository
-      source = ../secrets/buildkite_api_key.age;
+      source = ../../secrets/buildkite_api_key.age;
     };
 
     file.jupyter_token = {
       # Path to encrypted file tracked by the git repository
-      source = ../secrets/jupyter_token.age;
+      source = ../../secrets/jupyter_token.age;
     };
   };
 

@@ -29,6 +29,9 @@ let
 in
 
 {
+  deployment.targetHost = "router.adh.io";
+  nixpkgs.system = "x86_64-linux";
+
   imports = [
     ./hardware-configuration.nix
   ];
@@ -125,7 +128,7 @@ in
     '';
   };
 
-  age.secrets.cloudflare.file = ../secrets/cloudflare.age;
+  age.secrets.cloudflare.file = ../../secrets/cloudflare.age;
   services.ddclient = {
     enable = true;
     domains = [

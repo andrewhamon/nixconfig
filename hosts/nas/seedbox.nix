@@ -2,7 +2,7 @@
 with lib;
 let
   cfg = config.services.seedbox;
-  protectWithAuthfish = inputs.authfish.lib.protectWithAuthfish;
+  protectWithAuthfish = inputs.authfish.lib.protectWithAuthfish config;
 in
 {
   imports = [
@@ -111,7 +111,7 @@ in
       };
     };
 
-    services.nginx.virtualHosts."transmission.adh.io" = protectWithAuthfish config {
+    services.nginx.virtualHosts."transmission.adh.io" = protectWithAuthfish {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -128,7 +128,7 @@ in
 
     systemd.services.nzbget = config.services.namespaced-wg.systemdMods;
 
-    services.nginx.virtualHosts."nzb.adh.io" = protectWithAuthfish config {
+    services.nginx.virtualHosts."nzb.adh.io" = protectWithAuthfish {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -147,7 +147,7 @@ in
       group = cfg.group;
     };
 
-    services.nginx.virtualHosts."sonarr.adh.io" = protectWithAuthfish config {
+    services.nginx.virtualHosts."sonarr.adh.io" = protectWithAuthfish {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -164,7 +164,7 @@ in
       group = cfg.group;
     };
 
-    services.nginx.virtualHosts."radarr.adh.io" = protectWithAuthfish config {
+    services.nginx.virtualHosts."radarr.adh.io" = protectWithAuthfish {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -181,7 +181,7 @@ in
       group = cfg.group;
     };
 
-    services.nginx.virtualHosts."bazarr.adh.io" = protectWithAuthfish config {
+    services.nginx.virtualHosts."bazarr.adh.io" = protectWithAuthfish {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -193,7 +193,7 @@ in
     # Port 9696 by default
     services.prowlarr.enable = true;
 
-    services.nginx.virtualHosts."prowlarr.adh.io" = protectWithAuthfish config {
+    services.nginx.virtualHosts."prowlarr.adh.io" = protectWithAuthfish {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -202,7 +202,7 @@ in
       };
     };
 
-    services.nginx.virtualHosts."media.adh.io" = protectWithAuthfish config {
+    services.nginx.virtualHosts."media.adh.io" = protectWithAuthfish {
       enableACME = true;
       forceSSL = true;
       locations."/" = {

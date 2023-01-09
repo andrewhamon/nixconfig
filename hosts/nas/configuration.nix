@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, lib, ... }:
 {
+  deployment.targetHost = "nas.platypus-banana.ts.net";
+  nixpkgs.system = "x86_64-linux";
+
   imports =
     [
       ./acme.nix
@@ -9,8 +12,8 @@
       ./seedbox.nix
       ./smart-home.nix
       ./users.nix
+      inputs.authfish.nixosModules.default
     ];
-
   boot.loader.systemd-boot.enable = true;
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -50,7 +53,7 @@
   services.authfish.enableACME = true;
   services.authfish.forceSSL = true;
 
-  age.secrets.mulvad.file = ../secrets/mulvad.age;
+  age.secrets.mulvad.file = ../../secrets/mulvad.age;
 
   services.seedbox.enable = true;
   services.seedbox.netNamespaceHostIP = "10.69.44.1";
@@ -106,7 +109,7 @@
   # See https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion
   system.stateVersion = "22.05"; # Did you read the comment?
 
-  age.secrets.grafana.file = ../secrets/grafana.age;
+  age.secrets.grafana.file = ../../secrets/grafana.age;
   age.secrets.grafana.owner = "grafana";
 
   services.grafana.enable = true;

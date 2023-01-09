@@ -1,33 +1,10 @@
-{ self
-, agenix
-, authfish
-, nixpkgs
-, ...
-}@inputs:
+{ inputs }:
 {
   meta = {
-    nixpkgs = import nixpkgs { };
-    specialArgs = {
-      inherit inputs;
-    };
+    nixpkgs = import inputs.nixpkgs { };
+    specialArgs = { inherit inputs; };
   };
-  defaults = {
-    imports = [
-      agenix.nixosModule
-      ./common/configuration.nix
-    ];
-  };
-  nas = {
-    deployment.targetHost = "nas.platypus-banana.ts.net";
-    nixpkgs.system = "x86_64-linux";
-    imports = [
-      authfish.nixosModules.default
-      ./nas/configuration.nix
-    ];
-  };
-  router = {
-    deployment.targetHost = "router.adh.io";
-    nixpkgs.system = "x86_64-linux";
-    imports = [ ./router/configuration.nix ];
-  };
+  defaults.imports = [ ./hosts/defaults/configuration.nix ];
+  nas.imports = [ ./hosts/nas/configuration.nix ];
+  router.imports = [ ./hosts/router/configuration.nix ];
 }

@@ -1,8 +1,17 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 let
   postgresPkg = pkgs.postgresql_11;
 in
 {
+  imports = [
+    inputs.home-manager.darwinModules.home-manager
+  ];
+
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.users.andrewhamon = import ./home.nix;
+  home-manager.extraSpecialArgs = { inherit inputs; };
+
   users.users.andrewhamon = {
     name = "andrewhamon";
     home = "/Users/andrewhamon";
