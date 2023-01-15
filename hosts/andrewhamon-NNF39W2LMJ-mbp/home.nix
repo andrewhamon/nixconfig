@@ -26,6 +26,7 @@
     pkgs.postgresql_11
     pkgs.redis
     pkgs.direnv
+    pkgs.nixpkgs-fmt
   ];
 
   home.sessionPath = [
