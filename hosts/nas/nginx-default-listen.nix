@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, ... }:
 with lib;
 {
   # nas owns all the virtual hosts, but its actually behind NAT so can't
@@ -20,6 +20,8 @@ with lib;
           extraParameters = [ "proxy_protocol" ];
         }
       ];
+
+      config.acmeRoot = lib.mkDefault null;
     });
   };
 }
