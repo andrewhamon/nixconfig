@@ -8,7 +8,7 @@
       ./acme.nix
       ./hardware-configuration.nix
       ./jwst.nix
-      ./nginx-default-listen.nix
+      ./nginx-defaults.nix
       ./seedbox.nix
       ./smart-home.nix
       ./users.nix
