@@ -10,6 +10,9 @@
     htop
     iftop
     iperf
+    nmap
+    pciutils
+    ethtool
     pstree
     speedtest-cli
     traceroute
