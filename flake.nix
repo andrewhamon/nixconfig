@@ -26,6 +26,9 @@
   inputs.authfish.inputs.nixpkgs.follows = "nixpkgs";
   inputs.authfish.inputs.flake-utils.follows = "flake-utils";
 
+  inputs.arc.url = "github:arcnmx/nixexprs";
+  inputs.arc.inputs.nixpkgs.follows = "nixpkgs";
+
   outputs =
     { self
     , darwin

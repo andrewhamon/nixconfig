@@ -20,6 +20,26 @@
         "type": "github"
       }
     },
+    "arc": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1671574154,
+        "narHash": "sha256-3d3KF0LTPSXTl8S14vV/8IWOSxUzm8fXSK2RbBJ4yxQ=",
+        "owner": "arcnmx",
+        "repo": "nixexprs",
+        "rev": "08a680c787becec40bb773a34ff6f7075222f003",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arcnmx",
+        "repo": "nixexprs",
+        "type": "github"
+      }
+    },
     "authfish": {
       "inputs": {
         "flake-utils": [
@@ -219,6 +239,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "arc": "arc",
         "authfish": "authfish",
         "darwin": "darwin",
         "flake-utils": "flake-utils",

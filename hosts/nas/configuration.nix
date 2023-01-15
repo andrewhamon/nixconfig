@@ -18,18 +18,7 @@
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  nixpkgs.config.packageOverrides = pkgs: {
-    arc = import
-      (builtins.fetchTarball {
-        url = "https://github.com/arcnmx/nixexprs/archive/08a680c787becec40bb773a34ff6f7075222f003.tar.gz";
-        sha256 = "sha256:056bg096r4dd93bwg6rk2m5qx1ghgzsy5df4jz9jagfk88bwmpfx";
-      })
-      {
-        inherit pkgs;
-      };
-  };
-
-  hardware.nvidia.package = pkgs.arc.packages.nvidia-patch.override {
+  hardware.nvidia.package = inputs.arc.packages.x86_64-linux.nvidia-patch.override {
     nvidia_x11 = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
