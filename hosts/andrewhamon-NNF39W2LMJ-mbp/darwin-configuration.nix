@@ -23,7 +23,7 @@ in
   services.nix-daemon.enable = true;
 
   nix.buildMachines = [{
-    hostName = "nas.platypus-banana.ts.net";
+    hostName = "nas.lan.adh.io";
     systems = [
       "x86_64-linux"
       "i686-linux"
@@ -41,8 +41,12 @@ in
     extra-platforms = x86_64-darwin aarch64-darwin
   '';
 
+  # nix.settings.substituters = [
+  #   "https://artifactory.flexport.io/artifactory/nix-binary-cache-dev/?trusted=1&priority=50"
+  # ];
+
   programs.zsh = {
-    enable = true;
+    enable = true;  
     promptInit = "";
     enableCompletion = false;
     enableBashCompletion = false;
@@ -56,7 +60,7 @@ in
     enable = true;
     package = postgresPkg;
     port = 5432;
-    dataDir = "/Users/andrewhamon/.pgdata/${postgresPkg.version}";
+    dataDir = "/Users/andrewhamon/.pgdata";
     enableTCPIP = true;
     extraPlugins = [ pkgs.postgresql11Packages.postgis ];
   };

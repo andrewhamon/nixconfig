@@ -67,25 +67,25 @@ in
     services.namespaced-wg.hostPortalIp = cfg.netNamespaceHostIP;
 
 
-    services.transmission = {
-      enable = true;
-      user = cfg.user;
-      group = cfg.group;
-      settings = {
-        rpc-bind-address = "0.0.0.0";
-        rpc-port = 8080;
-        rpc-host-whitelist-enabled = false;
-        rpc-whitelist-enabled = false;
-        rpc-authentication-required = false;
-        watch-dir-enabled = true;
-        peer-port = cfg.transmissionPeerPort;
-        ratio-limit-enabled = true;
-        ratio-limit = 0;
-      };
-    };
+    # services.transmission = {
+    #   enable = false;
+    #   user = cfg.user;
+    #   group = cfg.group;
+    #   settings = {
+    #     rpc-bind-address = "0.0.0.0";
+    #     rpc-port = 8080;
+    #     rpc-host-whitelist-enabled = false;
+    #     rpc-whitelist-enabled = false;
+    #     rpc-authentication-required = false;
+    #     watch-dir-enabled = true;
+    #     peer-port = cfg.transmissionPeerPort;
+    #     ratio-limit-enabled = true;
+    #     ratio-limit = 0;
+    #   };
+    # };
 
-    # Run transmission in a special network namespace. See the wireguard config down below
-    systemd.services.transmission = config.services.namespaced-wg.systemdMods;
+    # # Run transmission in a special network namespace. See the wireguard config down below
+    # systemd.services.transmission = config.services.namespaced-wg.systemdMods;
 
     services.jellyfin.enable = true;
 
@@ -126,13 +126,13 @@ in
       group = cfg.group;
     };
 
-    systemd.services.nzbget = config.services.namespaced-wg.systemdMods;
+    # systemd.services.nzbget = config.services.namespaced-wg.systemdMods;
 
     services.nginx.virtualHosts."nzb.adh.io" = protectWithAuthfish {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
-        proxyPass = "http://${config.services.namespaced-wg.guestPortalIp}:6789";
+        proxyPass = "http://127.0.0.1:6789";
         proxyWebsockets = true;
       };
     };

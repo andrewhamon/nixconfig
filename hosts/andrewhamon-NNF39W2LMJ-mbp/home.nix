@@ -21,12 +21,17 @@
   };
 
   home.packages = [
+    pkgs.cargo
+    pkgs.direnv
     pkgs.flyctl
-    pkgs.ripgrep
+    pkgs.nixpkgs-fmt
+    pkgs.nmap
     pkgs.postgresql_11
     pkgs.redis
-    pkgs.direnv
-    pkgs.nixpkgs-fmt
+    pkgs.ripgrep
+    pkgs.ruby
+    pkgs.tree
+    pkgs.wget
   ];
 
   home.sessionPath = [
@@ -41,6 +46,7 @@
     MPR_SKIP_BUNDLE = "1";
     BUILDKITE_API_TOKEN = "$(cat ${config.homeage.file.buildkite_api_key.path})";
     JUPYTER_TOKEN = "$(cat ${config.homeage.file.jupyter_token.path})";
+    DIRENV_LOG_FORMAT = "";
   };
 
   home.shellAliases = {
@@ -77,7 +83,7 @@
 
   programs.vim.enable = true;
   programs.direnv.enable = true;
-  programs.direnv.nix-direnv.enable = true;
+  programs.direnv.nix-direnv.enable = false;
 
   programs.alacritty = {
     enable = true;

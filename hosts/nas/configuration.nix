@@ -1,6 +1,6 @@
 { config, pkgs, inputs, lib, ... }:
 {
-  deployment.targetHost = "nas.platypus-banana.ts.net";
+  deployment.targetHost = "nas.lan.adh.io";
   nixpkgs.system = "x86_64-linux";
 
   imports =
@@ -75,15 +75,15 @@
   networking.useDHCP = false;
   networking.interfaces.enp38s0.useDHCP = true;
 
-  networking.interfaces.enp39s0.useDHCP = false;
-  networking.interfaces.enp39s0.ipv4.addresses = [{
-    address = "10.69.43.2";
-    prefixLength = 24;
-  }];
+  # networking.interfaces.enp39s0.useDHCP = false;
+  # networking.interfaces.enp39s0.ipv4.addresses = [{
+  #   address = "10.69.43.2";
+  #   prefixLength = 24;
+  # }];
 
-  networking.defaultGateway.address = "10.69.43.1";
-  networking.defaultGateway.interface = "enp39s0";
-  networking.defaultGateway.metric = 10;
+  # networking.defaultGateway.address = "10.69.43.1";
+  # networking.defaultGateway.interface = "enp39s0";
+  # networking.defaultGateway.metric = 10;
 
   # Virtual USB etherent from the motherboard. IPMI related. Disabling DHCP
   # since it was adding routes for 169.254.0.0/16, which seemed a bit sketchy.
@@ -93,7 +93,6 @@
   services.nginx.statusPage = true;
 
   networking.firewall.allowedTCPPorts = [ 80 443 5000 ];
-
 
   # See https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion
   system.stateVersion = "22.05"; # Did you read the comment?

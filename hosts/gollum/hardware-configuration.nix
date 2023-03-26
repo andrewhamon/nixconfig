@@ -28,11 +28,11 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.interfaces.eno1.useDHCP = lib.mkDefault true;
-  networking.interfaces.eno2.useDHCP = lib.mkDefault true;
-  networking.interfaces.eno3.useDHCP = lib.mkDefault true;
-  networking.interfaces.eno4.useDHCP = lib.mkDefault true;
-  networking.interfaces.eno5.useDHCP = lib.mkDefault true;
-  networking.interfaces.eno6.useDHCP = lib.mkDefault true;
+  networking.interfaces.eno2.useDHCP = false;
+  networking.interfaces.eno3.useDHCP = false;
+  networking.interfaces.eno4.useDHCP = false;
+  networking.interfaces.eno5.useDHCP = false;
+  networking.interfaces.eno6.useDHCP = false;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

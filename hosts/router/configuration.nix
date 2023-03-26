@@ -24,12 +24,10 @@ let
 
   nasIpAddress = "10.69.42.2";
   nasMacAddress = "a8:a1:59:c6:68:aa";
-
-  nasDirectIpAddress = "10.69.43.2";
 in
 
 {
-  deployment.targetHost = "router.adh.io";
+  deployment.targetHost = "10.69.42.1";
   nixpkgs.system = "x86_64-linux";
 
   imports = [
@@ -157,10 +155,10 @@ in
         default_backend nas_https
     
       backend nas_http
-        server s1 ${nasDirectIpAddress}:80
+        server s1 ${nasIpAddress}:80
 
       backend nas_https
-        server s1 ${nasDirectIpAddress}:443 send-proxy-v2
+        server s1 ${nasIpAddress}:443 send-proxy-v2
     '';
   };
 
