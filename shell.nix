@@ -6,6 +6,7 @@ let
 in
 mkShell {
   buildInputs = [
+    age-plugin-yubikey
     agenixPkg
     colmena
     cowsay
