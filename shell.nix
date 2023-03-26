@@ -6,6 +6,7 @@ let
 in
 mkShell {
   buildInputs = [
+    rage
     age-plugin-yubikey
     agenixPkg
     colmena
