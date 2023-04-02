@@ -38,4 +38,4 @@ colmena apply test
 
 Secrets are managed and deployed to nixos hosts with [agenix](https://github.com/ryantm/agenix).
 
-For macOS hosts, run `script/activate-macos-secrets`
+For macOS hosts, run `activate-macos-secrets` inside a nix shell.
