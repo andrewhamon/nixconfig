@@ -7,6 +7,8 @@ in
     inputs.home-manager.darwinModules.home-manager
   ];
 
+  homebrew = import ./homebrew.nix;
+
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.andrewhamon = import ./home.nix;
