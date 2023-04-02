@@ -39,3 +39,9 @@ colmena apply test
 Secrets are managed and deployed to nixos hosts with [agenix](https://github.com/ryantm/agenix).
 
 For macOS hosts, run `activate-macos-secrets` inside a nix shell.
+
+### Edit a secret
+
+```
+agenix -e secrets/your_secret.age
+```

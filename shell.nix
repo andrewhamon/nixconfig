@@ -8,12 +8,21 @@ let
     runtimeInputs = [ rage age-plugin-yubikey ];
     text = builtins.readFile ./script/activate-macos-secrets;
   };
+
+  # Wrap agenix to point it at the yubikey identity
+  agenix = writeShellApplication {
+    name = "agenix";
+    runtimeInputs = [ rage age-plugin-yubikey ];
+    text = ''
+      exec "${agenixPkg}/bin/agenix" -i ${./secrets/keychain-yubikey-identity.txt} "$@"
+    '';
+  };
 in
 mkShell {
   buildInputs = [
     activate-macos-secrets
     age-plugin-yubikey
-    agenixPkg
+    agenix
     colmena
     cowsay
     nixpkgs-fmt

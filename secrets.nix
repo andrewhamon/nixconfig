@@ -9,10 +9,10 @@ let
   allUsers = [ andrewhamon yubikey ];
 in
 {
-  "cloudflare.age".publicKeys = allUsers ++ [ router ];
-  "grafana.age".publicKeys = allUsers ++ [ nas ];
-  "mulvad.age".publicKeys = allUsers ++ [ nas ];
-  "buildkite_api_key.age".publicKeys = allUsers;
-  "jupyter_token.age".publicKeys = allUsers;
-  "lego_cloudflare_env.age".publicKeys = allUsers ++ [ nas ];
+  "secrets/buildkite_api_key.age".publicKeys = allUsers;
+  "secrets/cloudflare.age".publicKeys = allUsers ++ [ router ];
+  "secrets/grafana.age".publicKeys = allUsers ++ [ nas ];
+  "secrets/jupyter_token.age".publicKeys = allUsers;
+  "secrets/lego_cloudflare_env.age".publicKeys = allUsers ++ [ nas ];
+  "secrets/mulvad.age".publicKeys = allUsers ++ [ nas ];
 }
