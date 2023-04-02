@@ -1,26 +1,9 @@
 { config, pkgs, inputs, ... }:
 {
-  imports = [
-    inputs.homeage.homeManagerModules.homeage
-  ];
-
-  homeage = {
-    identityPaths = [ "~/.ssh/id_ed25519" ];
-    installationType = "activation";
-    mount = "/Users/andrewhamon/.config/secrets";
-
-    file.buildkite_api_key = {
-      # Path to encrypted file tracked by the git repository
-      source = ../../secrets/buildkite_api_key.age;
-    };
-
-    file.jupyter_token = {
-      # Path to encrypted file tracked by the git repository
-      source = ../../secrets/jupyter_token.age;
-    };
-  };
+  imports = [];
 
   home.packages = [
+    pkgs.yubikey-manager
     pkgs.cargo
     pkgs.direnv
     pkgs.flyctl
@@ -35,17 +18,15 @@
   ];
 
   home.sessionPath = [
-    "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
     "/opt/homebrew/bin"
-    "/opt/homebrew/sbin"
   ];
 
   home.sessionVariables = {
     EDITOR = "vim";
     FLEXPORT_EMAIL = "andrew.hamon@flexport.com";
     MPR_SKIP_BUNDLE = "1";
-    BUILDKITE_API_TOKEN = "$(cat ${config.homeage.file.buildkite_api_key.path})";
-    JUPYTER_TOKEN = "$(cat ${config.homeage.file.jupyter_token.path})";
+    BUILDKITE_API_TOKEN = "$(cat ~/.config/secrets/buildkite_api_key)";
+    JUPYTER_TOKEN = "$(cat ~/.config/secrets/jupyter_token)";
     DIRENV_LOG_FORMAT = "";
   };
 
@@ -56,16 +37,24 @@
     bastion = "/Users/andrewhamon/flexport/flexport/env-improvement/bin/bastion";
     mpr = "./mpr --branch-prefix=ah";
     snowflake = "/Applications/SnowSQL.app/Contents/MacOS/snowsql --accountname FLEXPORT --username \"ANDREW.HAMON@FLEXPORT.COM\" --rolename ENGINEERING_ROLE --warehouse REPORTING_WH --authenticator externalbrowser";
+    nixconfig = "cd ~/code/nixconfig; code .";
+    nixpkgs = "cd ~/code/nixpkgs; code .";
+    flexport = "cd ~/flexport/flexport; code .";
   };
 
   programs.zsh = {
     enable = true;
     dotDir = ".config/zsh";
-    enableSyntaxHighlighting = false;
-    enableAutosuggestions = false;
-    enableCompletion = false;
+    enableSyntaxHighlighting = true;
+    enableAutosuggestions = true;
+    enableCompletion = true;
     autocd = false;
   };
+
+  programs.zsh.oh-my-zsh.enable = true;
+  programs.zsh.oh-my-zsh.theme = "robbyrussell";
+
+  programs.fzf.enable = true;
 
   programs.git = {
     enable = true;

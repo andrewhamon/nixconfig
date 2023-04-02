@@ -18,6 +18,10 @@ in
   };
 
   environment.shells = [ pkgs.zsh pkgs.bash ];
+  environment.systemPackages = with pkgs; [
+    git
+    openssh
+  ];
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
@@ -41,9 +45,9 @@ in
     extra-platforms = x86_64-darwin aarch64-darwin
   '';
 
-  # nix.settings.substituters = [
-  #   "https://artifactory.flexport.io/artifactory/nix-binary-cache-dev/?trusted=1&priority=50"
-  # ];
+  nix.settings.substituters = [
+    "https://artifactory.flexport.io/artifactory/nix-binary-cache-dev/?trusted=1&priority=50"
+  ];
 
   programs.zsh = {
     enable = true;  
@@ -60,9 +64,14 @@ in
     enable = true;
     package = postgresPkg;
     port = 5432;
-    dataDir = "/Users/andrewhamon/.pgdata";
+    dataDir = "/Users/andrewhamon/.pgdata/";
     enableTCPIP = true;
     extraPlugins = [ pkgs.postgresql11Packages.postgis ];
+    authentication = ''
+      local all all              trust
+      host  all all 127.0.0.1/32 trust
+      host  all all ::1/128      trust
+    '';
   };
 
   services.redis = {
@@ -70,9 +79,9 @@ in
     port = 6379;
     bind = "127.0.0.1";
     dataDir = "/Users/andrewhamon/.redisData/";
-    extraConfig = ''
-      requirepass redis-pwd
-    '';
+    # extraConfig = ''
+    #   requirepass redis-pwd
+    # '';
   };
 
   environment.systemPath = [
@@ -102,6 +111,11 @@ in
       session    required       pam_permit.so
     '';
   };
+
+  system.defaults.dock.autohide = true;
+  system.defaults.dock.tilesize = 8;
+  system.defaults.dock.launchanim = false;
+  system.defaults.finder.AppleShowAllFiles = true;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

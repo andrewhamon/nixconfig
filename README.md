@@ -38,4 +38,4 @@ colmena apply test
 
 Secrets are managed and deployed to nixos hosts with [agenix](https://github.com/ryantm/agenix).
 
-For nix-darwin, those same age-envrypted secrets managed with agenix can be decrypted and used using [homeage](https://github.com/jordanisaacs/homeage).
+For macOS hosts, run `script/activate-macos-secrets`

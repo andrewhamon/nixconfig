@@ -10,9 +10,6 @@
   inputs.agenix.url = "github:ryantm/agenix";
   inputs.agenix.inputs.nixpkgs.follows = "nixpkgs";
 
-  inputs.homeage.url = "github:jordanisaacs/homeage";
-  inputs.homeage.inputs.nixpkgs.follows = "nixpkgs";
-
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
   inputs.rnix-lsp.url = "github:nix-community/rnix-lsp";
@@ -43,6 +40,13 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/andrewhamon-NNF39W2LMJ-mbp/darwin-configuration.nix
+        ];
+      };
+      darwinConfigurations."andrewhamon-V269DF914J-mbp" = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/andrewhamon-V269DF914J-mbp/darwin-configuration.nix
         ];
       };
     } // flake-utils.lib.eachDefaultSystem
