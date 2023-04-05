@@ -3,7 +3,6 @@
   imports = [];
 
   home.packages = [
-    pkgs.yubikey-manager
     pkgs.cargo
     pkgs.direnv
     pkgs.flyctl
@@ -13,8 +12,10 @@
     pkgs.redis
     pkgs.ripgrep
     pkgs.ruby
+    pkgs.tmate
     pkgs.tree
     pkgs.wget
+    pkgs.yubikey-manager
   ];
 
   home.sessionPath = [
