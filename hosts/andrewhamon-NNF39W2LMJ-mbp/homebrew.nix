@@ -10,6 +10,7 @@
     "1password"
     "alacritty"
     "element"
+    "virtualbuddy"
     "visual-studio-code"
   ];
   masApps = {

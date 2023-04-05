@@ -62,30 +62,6 @@ in
     enable = true;
   };
 
-  services.postgresql = {
-    enable = true;
-    package = postgresPkg;
-    port = 5432;
-    dataDir = "/Users/andrewhamon/.pgdata/";
-    enableTCPIP = true;
-    extraPlugins = [ pkgs.postgresql11Packages.postgis ];
-    authentication = ''
-      local all all              trust
-      host  all all 127.0.0.1/32 trust
-      host  all all ::1/128      trust
-    '';
-  };
-
-  services.redis = {
-    enable = true;
-    port = 6379;
-    bind = "127.0.0.1";
-    dataDir = "/Users/andrewhamon/.redisData/";
-    # extraConfig = ''
-    #   requirepass redis-pwd
-    # '';
-  };
-
   environment.systemPath = [
     "/Users/andrewhamon/.nix-profile/bin"
     "/run/current-system/sw/bin"

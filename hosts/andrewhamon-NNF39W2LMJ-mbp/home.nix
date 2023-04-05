@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, lib, ... }:
 {
   imports = [];
 
@@ -73,6 +73,8 @@
   programs.vim.enable = true;
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = false;
+
+  programs.ssh = import ./ssh;
 
   programs.alacritty = {
     enable = true;
