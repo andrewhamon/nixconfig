@@ -14,7 +14,10 @@ let
     name = "agenix";
     runtimeInputs = [ rage age-plugin-yubikey ];
     text = ''
-      exec "${agenixPkg}/bin/agenix" -i ${./secrets/keychain-yubikey-identity.txt} "$@"
+      yubikey_identities="$(mktemp)"
+      age-plugin-yubikey --identity > "$yubikey_identities"
+      "${agenixPkg}/bin/agenix" -i "$yubikey_identities" "$@"
+      rm "$yubikey_identities"
     '';
   };
 in

@@ -5,14 +5,16 @@ let
   yubikey = "age1yubikey1q22jrgz9lpsg6qswva505mrl7gk40vv39acc9cfdkwz8ffa7ytsf5qanlrj";
   allSystems = [ nas router ];
 
-  andrewhamon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIkO+UDBJuvpmTa6EriH1TJdJTx+YB/4uv4LmM+5mOp5";
-  allUsers = [ andrewhamon yubikey ];
+  management = [
+    "age1yubikey1q22jrgz9lpsg6qswva505mrl7gk40vv39acc9cfdkwz8ffa7ytsf5qanlrj"
+    "age1yubikey1q0e6wwr0cwnsqvvaazfgkhmt43j44glwzvyygsa7tdmtgp98qczjcdtwmjp"
+  ];
 in
 {
-  "secrets/buildkite_api_key.age".publicKeys = allUsers;
-  "secrets/cloudflare.age".publicKeys = allUsers ++ [ router ];
-  "secrets/grafana.age".publicKeys = allUsers ++ [ nas ];
-  "secrets/jupyter_token.age".publicKeys = allUsers;
-  "secrets/lego_cloudflare_env.age".publicKeys = allUsers ++ [ nas ];
-  "secrets/mulvad.age".publicKeys = allUsers ++ [ nas ];
+  "secrets/buildkite_api_key.age".publicKeys = management;
+  "secrets/cloudflare.age".publicKeys = management ++ [ router ];
+  "secrets/grafana.age".publicKeys = management ++ [ nas ];
+  "secrets/jupyter_token.age".publicKeys = management;
+  "secrets/lego_cloudflare_env.age".publicKeys = management ++ [ nas ];
+  "secrets/mulvad.age".publicKeys = management ++ [ nas ];
 }
