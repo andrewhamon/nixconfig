@@ -27,6 +27,8 @@
     FLEXPORT_EMAIL = "andrew.hamon@flexport.com";
     MPR_SKIP_BUNDLE = "1";
     BUILDKITE_API_TOKEN = "$(cat ~/.config/secrets/buildkite_api_key)";
+    BUILDKITE_TOKEN = "$(cat ~/.config/secrets/buildkite_api_key)";
+    GITHUB_TOKEN = "$(cat ~/.config/secrets/github_token)";
     JUPYTER_TOKEN = "$(cat ~/.config/secrets/jupyter_token)";
     DIRENV_LOG_FORMAT = "";
   };
