@@ -43,6 +43,8 @@ in
     "net.ipv4.conf.all.forwarding" = 1;
   };
 
+  services.tailscale.enable = true;
+
   networking = {
     hostName = hostName;
     domain = domain;

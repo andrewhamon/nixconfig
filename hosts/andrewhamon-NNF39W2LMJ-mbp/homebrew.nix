@@ -14,6 +14,7 @@
     "prusaslicer"
     "psst"
     "snowflake-snowsql"
+    "tailscale"
     "virtualbuddy"
     "visual-studio-code"
   ];
