@@ -17,4 +17,7 @@ in
   "secrets/jupyter_token.age".publicKeys = management;
   "secrets/lego_cloudflare_env.age".publicKeys = management ++ [ nas ];
   "secrets/mulvad.age".publicKeys = management ++ [ nas ];
+
+  # Public key is ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG5CE0VhsvrW6vV8oDiwXVfg4CPRjpmBpcvIryhAwA07
+  "secrets/nix_remote_builder_id_ed25519.age".publicKeys = management;
 }

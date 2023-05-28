@@ -35,8 +35,8 @@ in
       "i686-linux"
       "aarch64-linux"
     ];
-    sshUser = "root";
-    sshKey = "/Users/andrewhamon/.ssh/id_ed25519";
+    sshUser = "remotebuilder";
+    sshKey = "/Users/andrewhamon/.config/secrets/nix_remote_builder_id_ed25519";
     maxJobs = 16;
   }];
 

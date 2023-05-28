@@ -89,6 +89,11 @@
   # since it was adding routes for 169.254.0.0/16, which seemed a bit sketchy.
   # networking.interfaces.enp42s0f3u5u3c2.useDHCP = false;
 
+  nix.settings.trusted-users = [
+    "root"
+    "remotebuilder"
+  ];
+
   services.nginx.enable = true;
   services.nginx.statusPage = true;
 
