@@ -22,6 +22,7 @@ let
   };
 in
 mkShell {
+  NIXPKGS_ALLOW_UNFREE = "1";
   buildInputs = [
     activate-macos-secrets
     age-plugin-yubikey
