@@ -5,6 +5,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    ccze
     dig
     ethtool
     git
