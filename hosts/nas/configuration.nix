@@ -12,6 +12,7 @@
       ./seedbox.nix
       ./smart-home.nix
       ./users.nix
+      ./vtt/vtt.nix
       inputs.authfish.nixosModules.default
     ];
   boot.loader.systemd-boot.enable = true;
@@ -41,6 +42,12 @@
   services.authfish.virtualHostName = "login.adh.io";
   services.authfish.enableACME = true;
   services.authfish.forceSSL = true;
+
+  services.vtt.enable = true;
+  services.vtt.deployKeyAgeFile = ../../secrets/vtt_deploy_id_ed25519.age;
+  services.vtt.virtualHostName = "vtt.adh.io";
+  services.vtt.enableACME = true;
+  services.vtt.forceSSL = true;
 
   age.secrets.mulvad.file = ../../secrets/mulvad.age;
 

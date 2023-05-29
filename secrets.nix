@@ -20,4 +20,7 @@ in
 
   # Public key is ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG5CE0VhsvrW6vV8oDiwXVfg4CPRjpmBpcvIryhAwA07
   "secrets/nix_remote_builder_id_ed25519.age".publicKeys = management;
+
+  # Public key is ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBNIRHj9XFl+zyNMAP7OCOzBi3DccolUzBQM3i57yBKX
+  "secrets/vtt_deploy_id_ed25519.age".publicKeys = management ++ [ nas ];
 }
