@@ -75,7 +75,7 @@ in
     };
 
     firewall.enable = true;
-    firewall.allowedTCPPorts = [ 80 443 ];
+    firewall.allowedTCPPorts = [ 80 443 2222 ];
     firewall.interfaces = {
       "${lanInterface}" = {
         allowedUDPPorts = [
@@ -155,12 +155,19 @@ in
       frontend all_https
         bind :443
         default_backend nas_https
+
+      frontend nas_ssh_2222
+        bind :2222
+        default_backend nas_ssh
     
       backend nas_http
         server s1 ${nasIpAddress}:80
 
       backend nas_https
         server s1 ${nasIpAddress}:443 send-proxy-v2
+
+      backend nas_ssh
+        server s1 ${nasIpAddress}:22
     '';
   };
 
