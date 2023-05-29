@@ -92,7 +92,7 @@ in
         User = cfg.user;
         Group = cfg.group;
         ExecStart = "${launcher}/bin/launch-vtt";
-        Restart = "on-failure";
+        Restart = "always";
       };
     };
 
