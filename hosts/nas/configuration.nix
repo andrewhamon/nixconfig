@@ -49,10 +49,18 @@
   services.vtt.virtualHostName = "vtt.adh.io";
   services.vtt.enableACME = true;
   services.vtt.forceSSL = true;
+
+  # To ssh in, use ssh vtt@vtt.adh.io -p 2222
+  # You will land in /var/lib/vtt which is also the configured --dataPath
+  # Source code is in /var/lib/vtt/src
   services.vtt.serviceUserAuthorizedKeys = [
     # Steven
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM4g7jMEeIdC2kBUJhAzlsytXEJcAFADQ7lDgm6OgfkK"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMthdXEUzb45EhLormneQq7ue145ObRJt0MyVWjcKSlT"
+
+    # Zach
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDONff0YGHxbGbW0FFZhnniARrPOQEgtZkZ3LNwYQSl8"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdcgyt8YosGRKVimJJbO5/bIt1BAHdwuPI0gCA9o2s4"
   ];
 
   age.secrets.mulvad.file = ../../secrets/mulvad.age;
