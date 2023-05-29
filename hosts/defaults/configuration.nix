@@ -6,14 +6,15 @@
 
   environment.systemPackages = with pkgs; [
     dig
+    ethtool
     git
     htop
     iftop
     iperf
     nmap
     pciutils
-    ethtool
     pstree
+    restic
     speedtest-cli
     traceroute
     tree

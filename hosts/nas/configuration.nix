@@ -9,6 +9,7 @@
       ./hardware-configuration.nix
       ./jwst.nix
       ./nginx-defaults.nix
+      ./restic.nix
       ./seedbox.nix
       ./smart-home.nix
       ./users.nix

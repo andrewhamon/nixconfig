@@ -23,4 +23,7 @@ in
 
   # Public key is ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBNIRHj9XFl+zyNMAP7OCOzBi3DccolUzBQM3i57yBKX
   "secrets/vtt_deploy_id_ed25519.age".publicKeys = management ++ [ nas ];
+
+  "secrets/nas_restic_repository.age".publicKeys = management ++ [ nas ];
+  "secrets/nas_restic_password.age".publicKeys = management ++ [ nas ];
 }
