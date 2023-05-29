@@ -44,6 +44,11 @@ in
       forceSSL = mkOption {
         type = types.bool;
       };
+
+      serviceUserAuthorizedKeys = mkOption {
+        type = types.listOf types.str;
+        default = [];
+      };
     };
   };
 
@@ -101,6 +106,7 @@ in
         isNormalUser = true;
         home = cfg.dataDir;
         group = cfg.group;
+        openssh.authorizedKeys.keys = cfg.serviceUserAuthorizedKeys;
       };
     };
 
@@ -118,5 +124,16 @@ in
         };
       };
     };
+
+    security.sudo.extraRules = [
+      {
+        users = [ cfg.user ];
+        commands = [
+          { command = "/run/current-system/sw/bin/systemctl stop vtt"; options = [ "NOPASSWD" ]; }
+          { command = "/run/current-system/sw/bin/systemctl start vtt"; options = [ "NOPASSWD" ]; }
+          { command = "/run/current-system/sw/bin/systemctl restart vtt"; options = [ "NOPASSWD" ]; }
+        ];
+      }
+    ];
   };
 }

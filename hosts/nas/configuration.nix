@@ -49,6 +49,11 @@
   services.vtt.virtualHostName = "vtt.adh.io";
   services.vtt.enableACME = true;
   services.vtt.forceSSL = true;
+  services.vtt.serviceUserAuthorizedKeys = [
+    # Steven
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM4g7jMEeIdC2kBUJhAzlsytXEJcAFADQ7lDgm6OgfkK"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMthdXEUzb45EhLormneQq7ue145ObRJt0MyVWjcKSlT"
+  ];
 
   age.secrets.mulvad.file = ../../secrets/mulvad.age;
 
