@@ -27,9 +27,6 @@ let
 in
 
 {
-  deployment.targetHost = "10.69.42.1";
-  nixpkgs.system = "x86_64-linux";
-
   imports = [
     ./hardware-configuration.nix
   ];

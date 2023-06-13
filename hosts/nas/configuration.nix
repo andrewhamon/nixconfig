@@ -1,8 +1,5 @@
 { config, pkgs, inputs, lib, ... }:
 {
-  deployment.targetHost = "nas.lan.adh.io";
-  nixpkgs.system = "x86_64-linux";
-
   imports =
     [
       ./acme.nix
@@ -20,9 +17,9 @@
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  hardware.nvidia.package = inputs.arc.packages.x86_64-linux.nvidia-patch.override {
-    nvidia_x11 = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
+  # hardware.nvidia.package = inputs.arc.packages.x86_64-linux.nvidia-patch.override {
+  #   nvidia_x11 = config.boot.kernelPackages.nvidiaPackages.stable;
+  # };
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
     "nvidia-patch"
@@ -39,7 +36,7 @@
   hardware.opengl.enable = true;
 
   services.authfish.enable = true;
-  services.authfish.domains = ".adh.io";
+  services.authfish.domains = [ ".adh.io" ];
   services.authfish.virtualHostName = "login.adh.io";
   services.authfish.enableACME = true;
   services.authfish.forceSSL = true;

@@ -8,6 +8,7 @@ let
     runtimeInputs = [ rage age-plugin-yubikey ];
     text = builtins.readFile ./script/activate-macos-secrets;
   };
+  deploy-rs = inputs.deploy-rs.defaultPackage.${pkgs.system};
 
   # Wrap agenix to point it at the yubikey identity
   agenix = writeShellApplication {
@@ -27,8 +28,8 @@ mkShell {
     activate-macos-secrets
     age-plugin-yubikey
     agenix
-    colmena
     cowsay
+    deploy-rs
     nixpkgs-fmt
     rage
     rnix-lspPkg

@@ -6,32 +6,26 @@ darwin-rebuild switch --flake .
 
 ## Deploying nixos
 
-Currently NixOS hosts are deployed using [Colmena](https://github.com/zhaofengli/colmena).
+Currently NixOS hosts are deployed using [deploy-rs](https://github.com/serokell/deploy-rs).
 
 
 ### Check if config builds
 
 ```sh
-colmena build
+nix flake check
 ```
 
 ### Dry run activation
 
 ```sh
-colmena apply -v dry-activate
+nix run .#deploy -- --dry-activate
 ```
 
 
 ### Apply config to all hosts
 
 ```sh
-colmena apply
-```
-
-### Test config on all hosts (reboot to restore previous)
-
-```sh
-colmena apply test
+nix run .#deploy
 ```
 
 ## Secrets

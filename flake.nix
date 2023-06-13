@@ -26,15 +26,20 @@
   inputs.arc.url = "github:arcnmx/nixexprs";
   inputs.arc.inputs.nixpkgs.follows = "nixpkgs";
 
+  inputs.deploy-rs.url = "github:serokell/deploy-rs";
+  inputs.deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.deploy-rs.inputs.utils.follows = "flake-utils";
+
   outputs =
     { self
     , darwin
+    , deploy-rs
     , flake-utils
     , nixos-generators
     , nixpkgs
     , ...
-    }@inputs: {
-      colmena = import ./hive.nix { inherit inputs; };
+    }@inputs: let
+    in {
       darwinConfigurations."andrewhamon-NNF39W2LMJ-mbp" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         specialArgs = { inherit inputs; };
@@ -49,21 +54,73 @@
           ./hosts/andrewhamon-V269DF914J-mbp/darwin-configuration.nix
         ];
       };
+      nixosConfigurations."nas" = inputs.nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        pkgs = import inputs.nixpkgs {
+          config.allowUnfree = true;
+          system = "x86_64-linux";
+        };
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/defaults/configuration.nix
+          ./hosts/nas/configuration.nix
+        ];
+      };
+
+      deploy.nodes.nas = {
+        hostname = "nas.lan.adh.io";
+        user = "root";
+        profiles.system = {
+          path = deploy-rs.lib.x86_64-linux.activate.nixos (inputs.nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = { inherit inputs; };
+            modules = [
+              ./hosts/defaults/configuration.nix
+              ./hosts/nas/configuration.nix
+            ];
+          });
+        };
+      };
+
+      deploy.nodes.router = {
+        hostname = "router.adh.io";
+        user = "root";
+        profiles.system = {
+          path = deploy-rs.lib.x86_64-linux.activate.nixos (inputs.nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = { inherit inputs; };
+            modules = [
+              ./hosts/defaults/configuration.nix
+              ./hosts/router/configuration.nix
+            ];
+          });
+        };
+      };
+
+      installIso = nixos-generators.nixosGenerate {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/defaults/configuration.nix
+        ];
+        format = "install-iso";
+      };
+
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     } // flake-utils.lib.eachDefaultSystem
       (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in
-      {
-        devShells.default = import ./shell.nix { inherit pkgs inputs; };
-        packages.installIso = nixos-generators.nixosGenerate {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/defaults/configuration.nix
-          ];
-          format = "install-iso";
-        };
-      }
+        let
+          pkgs = import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;   
+          };
+        in
+        {
+          devShells.default = import ./shell.nix { inherit pkgs inputs; };
+          apps.deploy = {
+            type = "app";
+            program = "${deploy-rs.defaultPackage.${system}}/bin/deploy";
+          };
+        }
       );
 }
