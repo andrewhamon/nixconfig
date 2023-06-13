@@ -12,14 +12,13 @@
       ./users.nix
       ./vtt/vtt.nix
       inputs.authfish.nixosModules.default
+      inputs.nvidia-patch.nixosModules.default
     ];
   boot.loader.systemd-boot.enable = true;
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  # hardware.nvidia.package = inputs.arc.packages.x86_64-linux.nvidia-patch.override {
-  #   nvidia_x11 = config.boot.kernelPackages.nvidiaPackages.stable;
-  # };
+  hardware.nvidia.patch.enable = true;
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
     "nvidia-patch"

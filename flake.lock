@@ -20,26 +20,6 @@
         "type": "github"
       }
     },
-    "arc": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1671574154,
-        "narHash": "sha256-3d3KF0LTPSXTl8S14vV/8IWOSxUzm8fXSK2RbBJ4yxQ=",
-        "owner": "arcnmx",
-        "repo": "nixexprs",
-        "rev": "08a680c787becec40bb773a34ff6f7075222f003",
-        "type": "github"
-      },
-      "original": {
-        "owner": "arcnmx",
-        "repo": "nixexprs",
-        "type": "github"
-      }
-    },
     "authfish": {
       "inputs": {
         "flake-utils": [
@@ -108,6 +88,22 @@
         "type": "github"
       }
     },
+    "fl-config": {
+      "locked": {
+        "lastModified": 1653159448,
+        "narHash": "sha256-PvB9ha0r4w6p412MBPP71kS/ZTBnOjxL0brlmyucPBA=",
+        "owner": "flakelib",
+        "repo": "fl",
+        "rev": "fcefb9738d5995308a24cda018a083ccb6b0f460",
+        "type": "github"
+      },
+      "original": {
+        "owner": "flakelib",
+        "ref": "config",
+        "repo": "fl",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -136,6 +132,25 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flakelib": {
+      "inputs": {
+        "fl-config": "fl-config",
+        "std": "std"
+      },
+      "locked": {
+        "lastModified": 1683326042,
+        "narHash": "sha256-PRjFKmEzzoE0BeDM8zRdwMcUkMq4Ue340O4jv71PzBw=",
+        "owner": "flakelib",
+        "repo": "fl",
+        "rev": "d4be0a0007aeae09b8faced2e297b1062dc05b1e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "flakelib",
+        "repo": "fl",
         "type": "github"
       }
     },
@@ -181,6 +196,21 @@
         "type": "github"
       }
     },
+    "nix-std": {
+      "locked": {
+        "lastModified": 1671170529,
+        "narHash": "sha256-015C6x3tZMEd83Vd2rpfLC86PSRJrbUca1U3Rysranw=",
+        "owner": "chessai",
+        "repo": "nix-std",
+        "rev": "3b307d64ef7d7e8769d36b8c8bf33983efd1415a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chessai",
+        "repo": "nix-std",
+        "type": "github"
+      }
+    },
     "nixlib": {
       "locked": {
         "lastModified": 1636849918,
@@ -219,17 +249,55 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1672170105,
-        "narHash": "sha256-RabUtQyG7VCTlWgSu8/nzfF48sWaoO9xAPpRRoVDd18=",
+        "lastModified": 1686431482,
+        "narHash": "sha256-oPVQ/0YP7yC2ztNsxvWLrV+f0NQ2QAwxbrZ+bgGydEM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "619a61fcfde0cce679708b8644d136e455e84eac",
+        "rev": "d3bb401dcfc5a46ce51cdfb5762e70cc75d082d2",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixos-22.11",
+        "ref": "nixos-23.05",
         "type": "indirect"
+      }
+    },
+    "nvidia-patch": {
+      "inputs": {
+        "flakelib": "flakelib",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nvidia-patch-src": "nvidia-patch-src"
+      },
+      "locked": {
+        "lastModified": 1685868426,
+        "narHash": "sha256-ggOacquolWF/wX++gkMzrPugZs0j64BVmMnQR8zi8B4=",
+        "owner": "arcnmx",
+        "repo": "nvidia-patch.nix",
+        "rev": "c0fbce2d6f01cb6a8b2ddbb94a3bc9474d1d356f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arcnmx",
+        "repo": "nvidia-patch.nix",
+        "type": "github"
+      }
+    },
+    "nvidia-patch-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1685806938,
+        "narHash": "sha256-Cr7tTSj3LR3FEBgZ15IEOBa1ogqXDGYPfASc7uDfBnM=",
+        "owner": "keylase",
+        "repo": "nvidia-patch",
+        "rev": "3358c5d92e61d42c1557432e82ccda445d3fa082",
+        "type": "github"
+      },
+      "original": {
+        "owner": "keylase",
+        "repo": "nvidia-patch",
+        "type": "github"
       }
     },
     "rnix-lsp": {
@@ -259,7 +327,6 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "arc": "arc",
         "authfish": "authfish",
         "darwin": "darwin",
         "deploy-rs": "deploy-rs",
@@ -267,7 +334,26 @@
         "home-manager": "home-manager",
         "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs",
+        "nvidia-patch": "nvidia-patch",
         "rnix-lsp": "rnix-lsp"
+      }
+    },
+    "std": {
+      "inputs": {
+        "nix-std": "nix-std"
+      },
+      "locked": {
+        "lastModified": 1671225084,
+        "narHash": "sha256-EzqxFHRifPyjUXQY4B8GJH75fTmWqFnQdj10Q984bR8=",
+        "owner": "flakelib",
+        "repo": "std",
+        "rev": "8546115941a5498ddb03a239aacdba151d433f09",
+        "type": "github"
+      },
+      "original": {
+        "owner": "flakelib",
+        "repo": "std",
+        "type": "github"
       }
     }
   },
