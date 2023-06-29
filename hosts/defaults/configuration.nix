@@ -1,6 +1,7 @@
 { config, pkgs, inputs, ... }:
 {
   imports = [
+    ./enable-flakes.nix
     inputs.agenix.nixosModule
   ];
 
@@ -27,7 +28,7 @@
 
   services.openssh.enable = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.flakes.enable = true;
 
   security.sudo.wheelNeedsPassword = false;
   users.users.andrewhamon = {
