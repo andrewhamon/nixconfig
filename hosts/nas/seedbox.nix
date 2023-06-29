@@ -88,6 +88,7 @@ in
     # systemd.services.transmission = config.services.namespaced-wg.systemdMods;
 
     services.jellyfin.enable = true;
+    services.jellyseerr.enable = true;
 
     # https://github.com/NixOS/nixpkgs/issues/152008#issuecomment-1029281497
     # systemd.services."jellyfin".serviceConfig = {
@@ -108,6 +109,15 @@ in
           proxy_set_header   X-Forwarded-Proto  $scheme;
           proxy_set_header   X-Forwarded-For    $proxy_protocol_addr;
         '';
+      };
+    };
+
+    services.nginx.virtualHosts."requests.adh.io" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:5055";
+        proxyWebsockets = true;
       };
     };
 
