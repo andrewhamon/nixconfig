@@ -9,12 +9,15 @@
   casks = [
     "1password"
     "alacritty"
+    "balenaetcher"
+    "discord"
     "element"
     "logseq"
     "prusaslicer"
     "psst"
     "snowflake-snowsql"
     "tailscale"
+    "utm"
     "virtualbuddy"
     "visual-studio-code"
   ];

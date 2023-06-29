@@ -4,10 +4,15 @@
 
   home.packages = [
     pkgs.cargo
+    pkgs.delve
     pkgs.direnv
     pkgs.flyctl
+    pkgs.go
+    pkgs.go-tools
+    pkgs.gopls
     pkgs.nixpkgs-fmt
     pkgs.nmap
+    pkgs.nodejs
     pkgs.postgresql_11
     pkgs.redis
     pkgs.ripgrep
