@@ -77,8 +77,6 @@
   networking.domain = "lan.adh.io";
   networking.hostId = "e20e1d8d";
 
-  services.tailscale.enable = true;
-
   services.octoprint.enable = true;
 
 
