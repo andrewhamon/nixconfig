@@ -67,6 +67,18 @@
         ];
       };
 
+      nixosConfigurations."vader" = inputs.nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        pkgs = import inputs.nixpkgs {
+          config.allowUnfree = true;
+          system = "x86_64-linux";
+        };
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/vader/configuration.nix
+        ];
+      };
+
       deploy.nodes.nas = {
         hostname = "nas.platypus-banana.ts.net";
         user = "root";
@@ -100,7 +112,6 @@
       deploy.nodes.vader = {
         hostname = "vader.platypus-banana.ts.net";
         user = "root";
-        sshUser = "root";
         profiles.system = {
           path = deploy-rs.lib.x86_64-linux.activate.nixos (inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";

@@ -34,6 +34,7 @@ static const MonitorRule monrules[] = {
 	*/
 	/* defaults */
 	{ "eDP-1",    0.5,  1,      1.25,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
+	{ "DP-1",   0.5,  1,      2.00,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
 	{ NULL,       0.55, 1,      1,       &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
 };
 
@@ -105,12 +106,31 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 
 /* commands */
 static const char *termcmd[] = { "alacritty", NULL };
-static const char *menucmd[] = { "dmenu_run", NULL };
+static const char *menucmd[] = { "bemenu-run", NULL };
+static const char *brightness_up_cmd[] = { "brightnessctl", "set", "5%+", NULL };
+static const char *brightness_down_cmd[] = { "brightnessctl", "set", "5%-", NULL };
+
+static const char *toggle_mute_cmd[] = { "pulsemixer", "--toggle-mute", NULL };
+static const char *volume_up_cmd[] = { "pulsemixer", "--change-volume", "+5", NULL };
+static const char *volume_down_cmd[] = { "pulsemixer", "--change-volume", "-5", NULL };
+
+#define BRIGHTNESS_UP   XKB_KEY_XF86MonBrightnessUp
+#define BRIGHTNESS_DOWN XKB_KEY_XF86MonBrightnessDown
+
+#define TOGGLE_MUTE XKB_KEY_XF86AudioMute
+#define VOLUME_UP   XKB_KEY_XF86AudioRaiseVolume
+#define VOLUME_DOWN XKB_KEY_XF86AudioLowerVolume
 
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
+	{ NULL,                      BRIGHTNESS_UP,      spawn,          {.v = brightness_up_cmd} },
+	{ NULL,                      BRIGHTNESS_DOWN,    spawn,          {.v = brightness_down_cmd} },
+	{ NULL,                      TOGGLE_MUTE,        spawn,          {.v = toggle_mute_cmd} },
+	{ NULL,                      VOLUME_UP,          spawn,          {.v = volume_up_cmd} },
+	{ NULL,                      VOLUME_DOWN,        spawn,          {.v = volume_down_cmd} },
 	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = menucmd} },
+	{ MODKEY,                    XKB_KEY_space,      spawn,          {.v = menucmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Return,     spawn,          {.v = termcmd} },
 	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,          focusstack,     {.i = -1} },
@@ -121,9 +141,9 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_Return,     zoom,           {0} },
 	{ MODKEY,                    XKB_KEY_Tab,        view,           {0} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_C,          killclient,     {0} },
-	{ MODKEY,                    XKB_KEY_t,          setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                    XKB_KEY_f,          setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                    XKB_KEY_m,          setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_T,          setlayout,      {.v = &layouts[0]} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_F,          setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_M,          setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                    XKB_KEY_space,      setlayout,      {0} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,      togglefloating, {0} },
 	{ MODKEY,                    XKB_KEY_e,         togglefullscreen, {0} },

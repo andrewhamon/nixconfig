@@ -2,14 +2,26 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ../defaults/configuration.nix
       ./hardware-configuration.nix
+      inputs.home-manager.nixosModules.home-manager
     ];
+
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.users.andrewhamon = import ../../home/andrewhamon/home.nix;
+  home-manager.extraSpecialArgs = { inherit inputs; };
+
+  hardware.bluetooth.enable = true;
+
+  services.fwupd.enable = true;
+
+  
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -48,10 +60,20 @@
     xkbVariant = "";
   };
 
-  programs.sway.enable = true;
+  security.polkit.enable = true;
+  security.pam.services.swaylock = {};
+  hardware.opengl.enable = true;
+  fonts.enableDefaultFonts = true;
+  programs.dconf.enable = true;
+  programs.xwayland.enable = true;
+  # For screen sharing (this option only has an effect with xdg.portal.enable):
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
+  xdg.portal.enable = true;
+  
+  programs.wireshark.enable = true;
+  programs.wireshark.package = pkgs.wireshark;
 
   sound.enable = true;
-  sound.mediaKeys.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -60,53 +82,13 @@
 
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.andrew = {
-    isNormalUser = true;
-    description = "Andrew Hamon";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    ];
-  };
-
-  # Enable automatic login for the user.
-  services.getty.autologinUser = "andrewhamon";
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim
-    ((dwl.override { conf = ./dwl_config.h; }).overrideAttrs (final: prev: {
-      src = pkgs.fetchFromGitHub {
-        owner = "djpohly";
-        repo = "dwl";
-        rev = "68a17f962e05895603d0f409fb8da4493cbe52aa";
-        hash = "sha256-MnEylBPuqZuZgRybMQt8OfnFMEVzUuntOQJrWlDr5p8=";
-      };
-    }))
-    somebar
-    waylock
-    mpv
-    git
-    alacritty
-    xorg.xeyes
-    wlr-randr
-    vscodium
-    swaybg
-    _1password-gui
-    librewolf
-  ];
+  environment.systemPackages = with pkgs; [];
   security.pam.services.waylock = {};
-
-  services.fprintd.enable = true;
-  services.fprintd.tod.enable = true;
-  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
-
-
-  services.fwupd.enable = true;
 
   services.upower.enable = true;
 
