@@ -21,6 +21,7 @@
     pkgs.tree
     pkgs.wget
     pkgs.yubikey-manager
+    pkgs.bazelisk
   ];
 
   home.sessionPath = [
