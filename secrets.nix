@@ -5,8 +5,9 @@ let
   allSystems = [ nas router ];
 
   management = [
-    "age1yubikey1q22jrgz9lpsg6qswva505mrl7gk40vv39acc9cfdkwz8ffa7ytsf5qanlrj"
-    "age1yubikey1q0e6wwr0cwnsqvvaazfgkhmt43j44glwzvyygsa7tdmtgp98qczjcdtwmjp"
+    "age1yubikey1q22jrgz9lpsg6qswva505mrl7gk40vv39acc9cfdkwz8ffa7ytsf5qanlrj" # keychain
+    "age1yubikey1q0e6wwr0cwnsqvvaazfgkhmt43j44glwzvyygsa7tdmtgp98qczjcdtwmjp" # macbook pro 14
+    "age1yubikey1qtpdv5gm6q0hv8xd7x5txqys5j7p579r08q9n2495vxkgj5kc9mm7l6uhdd" # desk yhubikey
   ];
 in
 {
