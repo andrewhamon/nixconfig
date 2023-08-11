@@ -24,6 +24,7 @@
     vim
     wget
     usbutils
+    file
   ];
 
   time.timeZone = "America/Los_Angeles";

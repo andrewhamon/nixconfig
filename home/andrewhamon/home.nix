@@ -7,6 +7,9 @@
 
   fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
+    element-desktop
+    virt-manager
+    prusa-slicer
     btlejack
     firefox
     waybar
@@ -19,10 +22,7 @@
     delve
     direnv
     flyctl
-    go
     fd
-    go-tools
-    gopls
     nixpkgs-fmt
     nmap
     nodejs
@@ -53,7 +53,7 @@
     xorg.xeyes
     xorg.xev
     wlr-randr
-    vscodium
+    vscode
     _1password-gui
     librewolf
     captive-browser
@@ -77,14 +77,13 @@
 
   home.shellAliases = {
     gs = "git status";
-    nix-system-configuration = "code ~/.config/nix";
     idea = "open -na \"IntelliJ IDEA.app\"";
-    bastion = "/Users/andrewhamon/flexport/flexport/env-improvement/bin/bastion";
+    bastion = "~/flexport/flexport/env-improvement/bin/bastion";
     mpr = "./mpr --branch-prefix=ah";
     snowflake = "/Applications/SnowSQL.app/Contents/MacOS/snowsql --accountname FLEXPORT --username \"ANDREW.HAMON@FLEXPORT.COM\" --rolename ENGINEERING_ROLE --warehouse REPORTING_WH --authenticator externalbrowser";
     nixconfig = "cd ~/nixconfig";
     nixpkgs = "cd ~/nixpkgs";
-    flexport = "cd ~/flexport/flexport; code .";
+    flexport = "cd ~/flexport/flexport";
   };
 
   programs.zsh = {

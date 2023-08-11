@@ -79,6 +79,32 @@
         ];
       };
 
+      nixosConfigurations."thumper" = inputs.nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        pkgs = import inputs.nixpkgs {
+          config.allowUnfree = true;
+          system = "x86_64-linux";
+        };
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/thumper/configuration.nix
+        ];
+      };
+
+      deploy.nodes.thumper = {
+        hostname = "thumper.platypus-banana.ts.net";
+        user = "root";
+        profiles.system = {
+          path = deploy-rs.lib.x86_64-linux.activate.nixos (inputs.nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = { inherit inputs; };
+            modules = [
+              ./hosts/thumper/configuration.nix
+            ];
+          });
+        };
+      };
+
       deploy.nodes.nas = {
         hostname = "nas.platypus-banana.ts.net";
         user = "root";
