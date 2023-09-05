@@ -33,6 +33,7 @@
     BUILDKITE_TOKEN = "$(cat ~/.config/secrets/buildkite_api_key)";
     GITHUB_TOKEN = "$(cat ~/.config/secrets/github_token)";
     JUPYTER_TOKEN = "$(cat ~/.config/secrets/jupyter_token)";
+    ARTIFACTORY_TOKEN = "$(cat ~/.config/secrets/artifactory_token)";
     DIRENV_LOG_FORMAT = "";
   };
 

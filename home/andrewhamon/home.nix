@@ -1,4 +1,7 @@
 { config, pkgs, inputs, lib, ... }:
+let
+  bambu-studio = import ./bambu-studio.nix { inherit pkgs; };
+in
 {
   imports = [
     ./nvim.nix
@@ -7,6 +10,7 @@
 
   fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
+    jellyfin-mpv-shim
     element-desktop
     virt-manager
     prusa-slicer
@@ -72,6 +76,7 @@
     BUILDKITE_TOKEN = "$(cat ~/.config/secrets/buildkite_api_key)";
     GITHUB_TOKEN = "$(cat ~/.config/secrets/github_token)";
     JUPYTER_TOKEN = "$(cat ~/.config/secrets/jupyter_token)";
+    ARTIFACTORY_TOKEN = "$(cat ~/.config/secrets/artifactory_token)";
     DIRENV_LOG_FORMAT = "";
   };
 
@@ -84,6 +89,7 @@
     nixconfig = "cd ~/nixconfig";
     nixpkgs = "cd ~/nixpkgs";
     flexport = "cd ~/flexport/flexport";
+    gch = "git checkout $(git branch --all | fzf| tr -d '[:space:]')";
   };
 
   programs.zsh = {
