@@ -8,7 +8,6 @@
   };
   casks = [
     "1password"
-    "alacritty"
     "balenaetcher"
     "betterdisplay"
     "discord"

@@ -1,6 +1,8 @@
 { config, pkgs, inputs, lib, ... }:
 let
   bambu-studio = import ./bambu-studio.nix { inherit pkgs; };
+  firefox = pkgs.firefox;
+  xdg-firefox-wrapper = import ./xdg-firefox-wrapper.nix { inherit pkgs firefox; };
 in
 {
   imports = [
@@ -10,6 +12,8 @@ in
 
   fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
+    inputs.nil.packages."${pkgs.system}".default
+    slack
     jellyfin-mpv-shim
     element-desktop
     virt-manager
@@ -63,6 +67,9 @@ in
     captive-browser
     bemenu
     yambar
+    libsecret
+    xdg-utils
+    wpaperd
   ];
 
   home.sessionPath = [
@@ -78,6 +85,7 @@ in
     JUPYTER_TOKEN = "$(cat ~/.config/secrets/jupyter_token)";
     ARTIFACTORY_TOKEN = "$(cat ~/.config/secrets/artifactory_token)";
     DIRENV_LOG_FORMAT = "";
+    # BROWSER = "${xdg-firefox-wrapper}/bin/xdg-firefox-wrapper";
   };
 
   home.shellAliases = {
@@ -125,8 +133,12 @@ in
 
   programs.ssh = import ./ssh;
 
-  programs.alacritty = {
+  programs.kitty = {
     enable = true;
+    extraConfig = ''
+      map ctrl+v paste_from_clipboard
+      map ctrl+c copy_or_interrupt
+    '';
   };
 
   home.stateVersion = "22.05";

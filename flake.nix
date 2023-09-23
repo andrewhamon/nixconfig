@@ -12,9 +12,7 @@
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  inputs.rnix-lsp.url = "github:nix-community/rnix-lsp";
-  inputs.rnix-lsp.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.rnix-lsp.inputs.utils.follows = "flake-utils";
+  inputs.nil.url = "github:oxalica/nil";
 
   inputs.nixos-generators.url = "github:nix-community/nixos-generators";
   inputs.nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
@@ -29,6 +27,8 @@
   inputs.deploy-rs.url = "github:serokell/deploy-rs";
   inputs.deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
   inputs.deploy-rs.inputs.utils.follows = "flake-utils";
+
+  inputs.hyprland.url = "github:hyprwm/Hyprland";
 
   outputs =
     { self

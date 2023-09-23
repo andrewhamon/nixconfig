@@ -15,7 +15,6 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
   services.fwupd.enable = true;
   programs.appgate-sdp.enable = true;
-  xdg.portal.xdgOpenUsePortal = true; # required for appgate to open firefox
 
   # Needed for yubikey
   services.pcscd.enable = true;
@@ -28,8 +27,6 @@
   virtualisation.libvirtd.enable = true;
 
   programs.kdeconnect.enable = true;
-
-  programs.hyprland.enable = true;
 
   hardware.bluetooth.enable = true;
 
@@ -61,6 +58,10 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
+  # https://google.com
+
+  
+
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -82,12 +83,33 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  # # Enable the X11 windowing system.
+  # services.xserver.enable = true;
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
+  # # Enable the KDE Plasma Desktop Environment.
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
+
+  security.polkit.enable = true;
+  security.pam.services.swaylock = {};
+  hardware.opengl.enable = true;
+  fonts.enableDefaultFonts = true;
+  programs.dconf.enable = true;
+  programs.xwayland.enable = true;
+  # For screen sharing (this option only has an effect with xdg.portal.enable):
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
+  xdg.portal.enable = true;
+  # xdg.portal.xdgOpenUsePortal = false; # required for appgate to open firefox
+  security.pam.services.waylock = {};
+  services.gnome.gnome-keyring.enable = true;
+  programs.seahorse.enable = true;
+
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  };
+
+  programs.thunar.enable = true;
 
   # Configure keymap in X11
   services.xserver = {
@@ -124,19 +146,6 @@
     isNormalUser = true;
     description = "Andrew";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      spotify
-      audacity
-      firefox
-      kate
-      slack
-      _1password-gui
-      htop
-      neofetch
-      vim
-      git
-    #  thunderbird
-    ];
   };
 
   # Enable automatic login for the user.

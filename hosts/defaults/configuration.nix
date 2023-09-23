@@ -2,6 +2,7 @@
 {
   imports = [
     ./enable-flakes.nix
+    ./fonts.nix
     inputs.agenix.nixosModule
   ];
 

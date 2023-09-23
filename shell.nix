@@ -2,7 +2,6 @@
 with pkgs;
 let
   agenixPkg = inputs.agenix.defaultPackage.${pkgs.system};
-  rnix-lspPkg = inputs.rnix-lsp.defaultPackage.${pkgs.system};
   activate-macos-secrets = writeShellApplication {
     name = "activate-macos-secrets";
     runtimeInputs = [ rage age-plugin-yubikey ];
@@ -32,6 +31,6 @@ mkShell {
     deploy-rs
     nixpkgs-fmt
     rage
-    rnix-lspPkg
+    inputs.nil.packages.${pkgs.system}.default
   ];
 }
