@@ -52,7 +52,7 @@
 
     # Zach
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDONff0YGHxbGbW0FFZhnniARrPOQEgtZkZ3LNwYQSl8"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdcgyt8YosGRKVimJJbO5/bIt1BAHdwuPI0gCA9o2s4"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKsM/xhozqXI+OOVmPOfPqGY57SavqKJxnO3MrQWsPxP"
   ];
 
   age.secrets.mulvad.file = ../../secrets/mulvad.age;
