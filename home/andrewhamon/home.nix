@@ -1,8 +1,9 @@
-{ config, pkgs, inputs, lib, ... }:
+{ config, pkgs, pkgsUnstable, inputs, lib, ... }:
 let
   bambu-studio = import ./bambu-studio.nix { inherit pkgs; };
   firefox = pkgs.firefox;
   xdg-firefox-wrapper = import ./xdg-firefox-wrapper.nix { inherit pkgs firefox; };
+  volctl = import ../../packages/volctl/default.nix { inherit pkgs; };
 in
 {
   imports = [
@@ -12,6 +13,10 @@ in
 
   fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
+    pkgs.discord
+    wl-clipboard
+    playerctl
+    volctl
     inputs.nil.packages."${pkgs.system}".default
     slack
     jellyfin-mpv-shim
@@ -20,7 +25,7 @@ in
     prusa-slicer
     btlejack
     firefox
-    waybar
+    pkgsUnstable.waybar
     font-awesome
     pulseaudioFull
     bluez
@@ -29,7 +34,6 @@ in
     cargo
     delve
     direnv
-    flyctl
     fd
     nixpkgs-fmt
     nmap
@@ -61,7 +65,7 @@ in
     xorg.xeyes
     xorg.xev
     wlr-randr
-    vscode
+    pkgsUnstable.vscode
     _1password-gui
     librewolf
     captive-browser
@@ -70,6 +74,8 @@ in
     libsecret
     xdg-utils
     wpaperd
+    pkgsUnstable.flyctl
+    wireguard-tools
   ];
 
   home.sessionPath = [

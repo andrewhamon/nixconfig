@@ -15,12 +15,13 @@
     ];
     extraBackupArgs = [
       "--exclude-caches"
+      "--exclude=/var/lib/jellyfin/transcodes/"
       "--exclude=/var/lib/containers/"
       "--exclude=/var/lib/docker/"
       "--exclude=/var/lib/prometheus2/"
       "--exclude=/var/lib/transmission/Downloads/"
       "--exclude=/var/lib/transmission/.incomplete/"
-      "--exclude=/home/media/downloads/"
+      "--exclude=/home/media/"
     ];
   };
 }

@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, pkgsUnstable, ... }:
 
 {
   imports =
@@ -22,7 +22,9 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.andrewhamon = import ../../home/andrewhamon/home.nix;
-  home-manager.extraSpecialArgs = { inherit inputs; };
+  home-manager.extraSpecialArgs = { inherit inputs pkgsUnstable; };
+
+  programs.steam.enable = true;
 
   virtualisation.libvirtd.enable = true;
 
@@ -83,23 +85,7 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
-  # # Enable the KDE Plasma Desktop Environment.
-  # services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
-
-  security.polkit.enable = true;
   security.pam.services.swaylock = {};
-  hardware.opengl.enable = true;
-  fonts.enableDefaultFonts = true;
-  programs.dconf.enable = true;
-  programs.xwayland.enable = true;
-  # For screen sharing (this option only has an effect with xdg.portal.enable):
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
-  xdg.portal.enable = true;
-  # xdg.portal.xdgOpenUsePortal = false; # required for appgate to open firefox
   security.pam.services.waylock = {};
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;

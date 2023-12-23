@@ -1,6 +1,8 @@
 {
   inputs.nixpkgs.url = "nixpkgs/nixos-23.05";
 
+  inputs.nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
+
   inputs.darwin.url = "github:lnl7/nix-darwin/master";
   inputs.darwin.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -39,53 +41,57 @@
     , nixpkgs
     , ...
     }@inputs: let
+      mkPkgsUnstable = system: import inputs.nixpkgs-unstable {
+          config.allowUnfree = true;
+          system = system;
+        };
     in {
-      darwinConfigurations."andrewhamon-NNF39W2LMJ-mbp" = darwin.lib.darwinSystem {
+      darwinConfigurations."andrewhamon-NNF39W2LMJ-mbp" = darwin.lib.darwinSystem rec {
         system = "aarch64-darwin";
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
         modules = [
           ./hosts/andrewhamon-NNF39W2LMJ-mbp/darwin-configuration.nix
         ];
       };
-      darwinConfigurations."andrewhamon-V269DF914J-mbp" = darwin.lib.darwinSystem {
+      darwinConfigurations."andrewhamon-V269DF914J-mbp" = darwin.lib.darwinSystem rec {
         system = "aarch64-darwin";
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
         modules = [
           ./hosts/andrewhamon-V269DF914J-mbp/darwin-configuration.nix
         ];
       };
-      nixosConfigurations."nas" = inputs.nixpkgs.lib.nixosSystem {
+      nixosConfigurations."nas" = inputs.nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         pkgs = import inputs.nixpkgs {
           config.allowUnfree = true;
           system = "x86_64-linux";
         };
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
         modules = [
           ./hosts/defaults/configuration.nix
           ./hosts/nas/configuration.nix
         ];
       };
 
-      nixosConfigurations."vader" = inputs.nixpkgs.lib.nixosSystem {
+      nixosConfigurations."vader" = inputs.nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         pkgs = import inputs.nixpkgs {
           config.allowUnfree = true;
           system = "x86_64-linux";
         };
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
         modules = [
           ./hosts/vader/configuration.nix
         ];
       };
 
-      nixosConfigurations."thumper" = inputs.nixpkgs.lib.nixosSystem {
+      nixosConfigurations."thumper" = inputs.nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         pkgs = import inputs.nixpkgs {
           config.allowUnfree = true;
           system = "x86_64-linux";
         };
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
         modules = [
           ./hosts/thumper/configuration.nix
         ];
