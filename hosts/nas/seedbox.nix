@@ -99,7 +99,7 @@ in
 
     services.nginx.virtualHosts."jellyfin.adh.io" = {
       enableACME = true;
-      forceSSL = true;
+      onlySSL = true;
       locations."/" = {
         proxyPass = "http://localhost:8096";
         proxyWebsockets = true;
@@ -114,7 +114,7 @@ in
 
     services.nginx.virtualHosts."requests.adh.io" = {
       enableACME = true;
-      forceSSL = true;
+      onlySSL = true;
       locations."/" = {
         proxyPass = "http://localhost:5055";
         proxyWebsockets = true;
@@ -123,7 +123,7 @@ in
 
     services.nginx.virtualHosts."transmission.adh.io" = protectWithAuthfish {
       enableACME = true;
-      forceSSL = true;
+      onlySSL = true;
       locations."/" = {
         proxyPass = "http://${cfg.netNamespaceSeedboxIP}:8080";
         proxyWebsockets = true;
@@ -140,7 +140,7 @@ in
 
     services.nginx.virtualHosts."nzb.adh.io" = protectWithAuthfish {
       enableACME = true;
-      forceSSL = true;
+      onlySSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:6789";
         proxyWebsockets = true;
@@ -159,7 +159,7 @@ in
 
     services.nginx.virtualHosts."sonarr.adh.io" = protectWithAuthfish {
       enableACME = true;
-      forceSSL = true;
+      onlySSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:8989";
         proxyWebsockets = true;
@@ -176,7 +176,7 @@ in
 
     services.nginx.virtualHosts."radarr.adh.io" = protectWithAuthfish {
       enableACME = true;
-      forceSSL = true;
+      onlySSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:7878";
         proxyWebsockets = true;
@@ -193,7 +193,7 @@ in
 
     services.nginx.virtualHosts."bazarr.adh.io" = protectWithAuthfish {
       enableACME = true;
-      forceSSL = true;
+      onlySSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:6767";
         proxyWebsockets = true;
@@ -205,7 +205,7 @@ in
 
     services.nginx.virtualHosts."prowlarr.adh.io" = protectWithAuthfish {
       enableACME = true;
-      forceSSL = true;
+      onlySSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:9696";
         proxyWebsockets = true;
@@ -214,7 +214,7 @@ in
 
     services.nginx.virtualHosts."media.adh.io" = protectWithAuthfish {
       enableACME = true;
-      forceSSL = true;
+      onlySSL = true;
       locations."/" = {
         root = "/media";
         extraConfig = ''

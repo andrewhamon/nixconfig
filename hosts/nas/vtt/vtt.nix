@@ -117,7 +117,7 @@ in
     services.nginx.virtualHosts = {
       "${cfg.virtualHostName}" = {
         enableACME = cfg.enableACME;
-        forceSSL = cfg.forceSSL;
+        onlySSL = true;
         locations."/" = {
           proxyPass = "http://localhost:${toString cfg.port}";
           proxyWebsockets = true;

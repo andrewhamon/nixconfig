@@ -11,14 +11,15 @@
       ./smart-home.nix
       ./users.nix
       ./vtt/vtt.nix
+      ./adh-io.nix
       inputs.authfish.nixosModules.default
-      inputs.nvidia-patch.nixosModules.default
+      # inputs.nvidia-patch.nixosModules.default
     ];
   boot.loader.systemd-boot.enable = true;
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  hardware.nvidia.patch.enable = true;
+  # hardware.nvidia.patch.enable = true;
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
     "nvidia-patch"
@@ -123,7 +124,7 @@
 
   services.nginx.virtualHosts."grafana.adh.io" = {
     enableACME = true;
-    forceSSL = true;
+    onlySSL = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
       proxyWebsockets = true;
