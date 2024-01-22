@@ -10,7 +10,6 @@
     pkgs.nixpkgs-fmt
     pkgs.nmap
     pkgs.nodejs
-    pkgs.postgresql_11
     pkgs.redis
     pkgs.ripgrep
     pkgs.ruby

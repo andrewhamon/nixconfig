@@ -12,9 +12,8 @@
       inputs.home-manager.nixosModules.home-manager
     ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
   services.fwupd.enable = true;
-  programs.appgate-sdp.enable = true;
 
   # Needed for yubikey
   services.pcscd.enable = true;
@@ -92,7 +91,7 @@
 
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   };
 
   programs.thunar.enable = true;
@@ -138,9 +137,7 @@
   services.xserver.displayManager.autoLogin.enable = true;
   services.xserver.displayManager.autoLogin.user = "andrewhamon";
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
+  hardware.opengl.enable = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [

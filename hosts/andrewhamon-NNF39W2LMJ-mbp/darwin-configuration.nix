@@ -1,7 +1,4 @@
 { config, pkgs, inputs, ... }:
-let
-  postgresPkg = pkgs.postgresql_11;
-in
 {
   imports = [
     inputs.home-manager.darwinModules.home-manager

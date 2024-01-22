@@ -1,12 +1,12 @@
 {
-  inputs.nixpkgs.url = "nixpkgs/nixos-23.05";
+  inputs.nixpkgs.url = "nixpkgs/nixos-23.11";
 
   inputs.nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
   inputs.darwin.url = "github:lnl7/nix-darwin/master";
   inputs.darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-  inputs.home-manager.url = "github:nix-community/home-manager/release-23.05";
+  inputs.home-manager.url = "github:nix-community/home-manager/release-23.11";
   inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.agenix.url = "github:ryantm/agenix";
@@ -31,6 +31,7 @@
   inputs.deploy-rs.inputs.utils.follows = "flake-utils";
 
   inputs.hyprland.url = "github:hyprwm/Hyprland";
+  # inputs.hyprland.inputs.nixpkgs = "nixpkgs";
 
   inputs.roc.url = "github:roc-lang/roc";
 
@@ -117,9 +118,9 @@
         hostname = "nas.platypus-banana.ts.net";
         user = "root";
         profiles.system = {
-          path = deploy-rs.lib.x86_64-linux.activate.nixos (inputs.nixpkgs.lib.nixosSystem {
+          path = deploy-rs.lib.x86_64-linux.activate.nixos (inputs.nixpkgs.lib.nixosSystem rec {
             system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
+            specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable "x86_64-linux"; };
             modules = [
               ./hosts/defaults/configuration.nix
               ./hosts/nas/configuration.nix

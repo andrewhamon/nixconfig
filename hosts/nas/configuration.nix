@@ -21,13 +21,6 @@
 
   # hardware.nvidia.patch.enable = true;
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
-    "nvidia-patch"
-    "nvidia-settings"
-    "nvidia-x11"
-    "unrar"
-  ];
-
   environment.systemPackages = with pkgs; [
     smartmontools
   ];

@@ -44,7 +44,6 @@ in
     nmap
     nodejs
     playerctl
-    postgresql_11
     prusa-slicer
     pulseaudioFull
     pulsemixer
