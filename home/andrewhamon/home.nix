@@ -15,58 +15,60 @@ in
   home.packages = with pkgs; [
     inputs.nil.packages."${pkgs.system}".default
     inputs.roc.packages."${pkgs.system}".cli
-    discord
-    swaybg
-    swayidle
-    wl-clipboard
-    playerctl
-    volctl
-    slack
-    jellyfin-mpv-shim
-    element-desktop
-    virt-manager
-    prusa-slicer
-    btlejack
-    firefox
+
+    pkgsUnstable.flyctl
+    pkgsUnstable.vscode
     pkgsUnstable.waybar
-    font-awesome
-    pulseaudioFull
+  
+    _1password-gui
+    bemenu
     bluez
-    pulsemixer
     brightnessctl
+    btlejack
+    captive-browser
     cargo
     delve
     direnv
+    discord
+    element-desktop
     fd
+    firefox
+    font-awesome
+    fprintd
+    git
+    jellyfin-mpv-shim
+    librewolf
+    libsecret
+    mpv
     nixpkgs-fmt
     nmap
     nodejs
+    playerctl
     postgresql_11
+    prusa-slicer
+    pulseaudioFull
+    pulsemixer
     redis
     ripgrep
     ruby
+    slack
+    swaybg
+    swayidle
+    swaylock
     tmate
     tree
+    virt-manager
+    volctl
     wget
-    yubikey-manager
-    swaylock
-    mpv
-    git
-    xorg.xeyes
-    xorg.xev
-    wlr-randr
-    pkgsUnstable.vscode
-    _1password-gui
-    librewolf
-    captive-browser
-    bemenu
-    yambar
-    libsecret
-    xdg-utils
-    wpaperd
-    pkgsUnstable.flyctl
     wireguard-tools
-    fprintd
+    wl-clipboard
+    wlr-randr
+    wpaperd
+    xdg-utils
+    xorg.xev
+    xorg.xeyes
+    yambar
+    yubikey-manager
   ];
 
   home.sessionPath = [
@@ -74,26 +76,14 @@ in
   ];
 
   home.sessionVariables = {
-    FLEXPORT_EMAIL = "andrew.hamon@flexport.com";
-    MPR_SKIP_BUNDLE = "1";
-    BUILDKITE_API_TOKEN = "$(cat ~/.config/secrets/buildkite_api_key)";
-    BUILDKITE_TOKEN = "$(cat ~/.config/secrets/buildkite_api_key)";
     GITHUB_TOKEN = "$(cat ~/.config/secrets/github_token)";
-    JUPYTER_TOKEN = "$(cat ~/.config/secrets/jupyter_token)";
-    ARTIFACTORY_TOKEN = "$(cat ~/.config/secrets/artifactory_token)";
     DIRENV_LOG_FORMAT = "";
-    # BROWSER = "${xdg-firefox-wrapper}/bin/xdg-firefox-wrapper";
   };
 
   home.shellAliases = {
     gs = "git status";
-    idea = "open -na \"IntelliJ IDEA.app\"";
-    bastion = "~/flexport/flexport/env-improvement/bin/bastion";
-    mpr = "./mpr --branch-prefix=ah";
-    snowflake = "/Applications/SnowSQL.app/Contents/MacOS/snowsql --accountname FLEXPORT --username \"ANDREW.HAMON@FLEXPORT.COM\" --rolename ENGINEERING_ROLE --warehouse REPORTING_WH --authenticator externalbrowser";
     nixconfig = "cd ~/nixconfig";
     nixpkgs = "cd ~/nixpkgs";
-    flexport = "cd ~/flexport/flexport";
     gch = "git checkout $(git branch --all | fzf| tr -d '[:space:]')";
   };
 
