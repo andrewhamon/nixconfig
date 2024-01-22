@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, pkgsUnstable, ... }:
 
 {
   imports =
@@ -11,13 +11,16 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.andrewhamon = import ../../home/andrewhamon/home.nix;
-  home-manager.extraSpecialArgs = { inherit inputs; };
+  home-manager.extraSpecialArgs = { inherit inputs pkgsUnstable; };
 
   hardware.bluetooth.enable = true;
 
   services.fwupd.enable = true;
 
-  
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

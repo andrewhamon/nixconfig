@@ -1,7 +1,7 @@
 { pkgs, inputs }:
 with pkgs;
 let
-  agenixPkg = inputs.agenix.defaultPackage.${pkgs.system};
+  agenixPkg = inputs.agenix.packages.${pkgs.system}.agenix;
   activate-macos-secrets = writeShellApplication {
     name = "activate-macos-secrets";
     runtimeInputs = [ rage age-plugin-yubikey ];

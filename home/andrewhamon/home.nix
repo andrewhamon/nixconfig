@@ -13,11 +13,14 @@ in
 
   fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
-    pkgs.discord
+    inputs.nil.packages."${pkgs.system}".default
+    inputs.roc.packages."${pkgs.system}".cli
+    discord
+    swaybg
+    swayidle
     wl-clipboard
     playerctl
     volctl
-    inputs.nil.packages."${pkgs.system}".default
     slack
     jellyfin-mpv-shim
     element-desktop
@@ -46,20 +49,7 @@ in
     tree
     wget
     yubikey-manager
-    ((dwl.override { conf = ./dwl_config.h; }).overrideAttrs (final: prev: {
-      src = pkgs.fetchFromGitHub {
-        owner = "djpohly";
-        repo = "dwl";
-        rev = "68a17f962e05895603d0f409fb8da4493cbe52aa";
-        hash = "sha256-MnEylBPuqZuZgRybMQt8OfnFMEVzUuntOQJrWlDr5p8=";
-      };
-    }))
-    ((somebar.override { conf = null; }).overrideAttrs (final: prev: {
-      patches = [
-        "${prev.src}/contrib/hide-vacant-tags.patch"
-      ];
-    }))
-    waylock
+    swaylock
     mpv
     git
     xorg.xeyes
@@ -76,6 +66,7 @@ in
     wpaperd
     pkgsUnstable.flyctl
     wireguard-tools
+    fprintd
   ];
 
   home.sessionPath = [

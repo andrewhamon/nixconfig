@@ -32,6 +32,8 @@
 
   inputs.hyprland.url = "github:hyprwm/Hyprland";
 
+  inputs.roc.url = "github:roc-lang/roc";
+
   outputs =
     { self
     , darwin
