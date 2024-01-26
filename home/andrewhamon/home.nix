@@ -1,4 +1,4 @@
-{ config, pkgs, pkgsUnstable, inputs, lib, ... }:
+{ config, pkgs, inputs, lib, homeDirectory, username, pkgsUnstable, ... }:
 let
   bambu-studio = import ./bambu-studio.nix { inherit pkgs; };
   firefox = pkgs.firefox;
@@ -8,65 +8,36 @@ in
 {
   imports = [
     ./nvim.nix
-    ./cursor.nix
   ];
 
   fonts.fontconfig.enable = true;
+
+  home.homeDirectory = homeDirectory;
+  home.username = username;
+
   home.packages = with pkgs; [
     inputs.nil.packages."${pkgs.system}".default
-    inputs.roc.packages."${pkgs.system}".cli
 
     pkgsUnstable.flyctl
     pkgsUnstable.vscode
-    pkgsUnstable.waybar
   
-    _1password-gui
-    bemenu
-    bluez
-    brightnessctl
-    btlejack
-    captive-browser
-    cargo
-    delve
     direnv
-    discord
-    element-desktop
     fd
-    firefox
     font-awesome
-    fprintd
     git
-    jellyfin-mpv-shim
-    librewolf
-    libsecret
+    home-manager
     mpv
     nixpkgs-fmt
     nmap
     nodejs
-    playerctl
-    prusa-slicer
-    pulseaudioFull
-    pulsemixer
     redis
     ripgrep
     ruby
-    slack
-    swaybg
-    swayidle
-    swaylock
     tmate
     tree
-    virt-manager
-    volctl
     wget
     wireguard-tools
-    wl-clipboard
-    wlr-randr
-    wpaperd
     xdg-utils
-    xorg.xev
-    xorg.xeyes
-    yambar
     yubikey-manager
   ];
 
@@ -89,10 +60,10 @@ in
   programs.zsh = {
     enable = true;
     dotDir = ".config/zsh";
-    enableSyntaxHighlighting = true;
     enableAutosuggestions = true;
     enableCompletion = true;
     autocd = false;
+    syntaxHighlighting.enable = true;
   };
 
   programs.zsh.oh-my-zsh.enable = true;
@@ -110,7 +81,7 @@ in
     extraConfig = (import ./git.nix);
 
     includes = [
-      (import ./git-flexport.nix)
+      (import ./git-work.nix)
     ];
   };
 

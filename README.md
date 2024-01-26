@@ -4,6 +4,12 @@
 darwin-rebuild switch --flake .
 ```
 
+## Bootstram home-manager
+
+```sh
+nix run .#home-manager -- switch --flake .
+```
+
 ## Deploying nixos
 
 Currently NixOS hosts are deployed using [deploy-rs](https://github.com/serokell/deploy-rs).

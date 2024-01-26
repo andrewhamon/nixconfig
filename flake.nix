@@ -40,6 +40,7 @@
     , darwin
     , deploy-rs
     , flake-utils
+    , home-manager
     , nixos-generators
     , nixpkgs
     , ...
@@ -48,27 +49,29 @@
           config.allowUnfree = true;
           system = system;
         };
+      mkPkgs = system: import inputs.nixpkgs {
+          config.allowUnfree = true;
+          system = system;
+      };
     in {
-      darwinConfigurations."andrewhamon-NNF39W2LMJ-mbp" = darwin.lib.darwinSystem rec {
-        system = "aarch64-darwin";
-        specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
+      # NOTE: I am deliberately using "aarch64-darwin" for packages even though this is placed under
+      # x86_64-darwin. This is to force aarch64 binaries even when I am using nix under rosetta.
+      packages.x86_64-darwin.homeConfigurations.andyhamon = home-manager.lib.homeManagerConfiguration {
+        pkgs = mkPkgs "aarch64-darwin";
+        extraSpecialArgs = {
+          inherit inputs;
+          pkgsUnstable = mkPkgsUnstable "aarch64-darwin";
+          username = "andyhamon";
+          homeDirectory = "/Users/andyhamon";
+        };
         modules = [
-          ./hosts/andrewhamon-NNF39W2LMJ-mbp/darwin-configuration.nix
+          ./home/andrewhamon/home-mac.nix
         ];
       };
-      darwinConfigurations."andrewhamon-V269DF914J-mbp" = darwin.lib.darwinSystem rec {
-        system = "aarch64-darwin";
-        specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
-        modules = [
-          ./hosts/andrewhamon-V269DF914J-mbp/darwin-configuration.nix
-        ];
-      };
+
       nixosConfigurations."nas" = inputs.nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
-        pkgs = import inputs.nixpkgs {
-          config.allowUnfree = true;
-          system = "x86_64-linux";
-        };
+        pkgs = mkPkgs system;
         specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
         modules = [
           ./hosts/defaults/configuration.nix
@@ -78,10 +81,7 @@
 
       nixosConfigurations."vader" = inputs.nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
-        pkgs = import inputs.nixpkgs {
-          config.allowUnfree = true;
-          system = "x86_64-linux";
-        };
+        pkgs = mkPkgs system;
         specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
         modules = [
           ./hosts/vader/configuration.nix
@@ -90,10 +90,7 @@
 
       nixosConfigurations."thumper" = inputs.nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
-        pkgs = import inputs.nixpkgs {
-          config.allowUnfree = true;
-          system = "x86_64-linux";
-        };
+        pkgs = mkPkgs system;
         specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
         modules = [
           ./hosts/thumper/configuration.nix
@@ -181,6 +178,10 @@
           apps.deploy = {
             type = "app";
             program = "${deploy-rs.defaultPackage.${system}}/bin/deploy";
+          };
+          apps.home-manager = {
+            type = "app";
+            program = "${pkgs.home-manager}/bin/home-manager";
           };
         }
       );
