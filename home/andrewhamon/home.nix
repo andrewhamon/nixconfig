@@ -88,7 +88,7 @@ in
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = false;
 
-  programs.ssh = import ./ssh;
+  programs.ssh = import ./ssh { inherit pkgs; };
 
   programs.kitty = {
     enable = true;
