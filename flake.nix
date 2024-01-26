@@ -57,21 +57,6 @@
           system = system;
       };
     in {
-      # NOTE: I am deliberately using "aarch64-darwin" for packages even though this is placed under
-      # x86_64-darwin. This is to force aarch64 binaries even when I am using nix under rosetta.
-      packages.x86_64-darwin.homeConfigurations.andyhamon = home-manager.lib.homeManagerConfiguration {
-        pkgs = mkPkgs "aarch64-darwin";
-        extraSpecialArgs = {
-          inherit inputs;
-          pkgsUnstable = mkPkgsUnstable "aarch64-darwin";
-          username = "andyhamon";
-          homeDirectory = "/Users/andyhamon";
-        };
-        modules = [
-          ./home/andrewhamon/home-mac.nix
-        ];
-      };
-
       nixosConfigurations."nas" = inputs.nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         pkgs = mkPkgs system;
@@ -171,10 +156,8 @@
     } // flake-utils.lib.eachDefaultSystem
       (system:
         let
-          pkgs = import inputs.nixpkgs {
-            inherit system;
-            config.allowUnfree = true;   
-          };
+          pkgs = mkPkgs system;
+          pkgsUnstable = mkPkgsUnstable system;
         in
         {
           devShells.default = import ./shell.nix { inherit pkgs inputs; };
@@ -185,6 +168,32 @@
           apps.home-manager = {
             type = "app";
             program = "${pkgs.home-manager}/bin/home-manager";
+          };
+          packages.homeConfigurations.andrewhamon = home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            extraSpecialArgs = {
+              inherit inputs pkgsUnstable;
+              username = "andrewhamon";
+              homeDirectory = "/home/andrewhamon";
+            };
+            modules = [
+              ./home/andrewhamon/home-linux.nix
+            ];
+          };
+          packages.homeConfigurations.andyhamon = let
+            # Mega-hack: force aarch64-darwin even when running nix with rosetta
+            systemOverride = if system == "x86_64-darwin" then "aarch64-darwin" else system;
+          in home-manager.lib.homeManagerConfiguration {
+            pkgs = mkPkgs systemOverride;
+            extraSpecialArgs = {
+              inherit inputs;
+              pkgsUnstable = mkPkgsUnstable systemOverride;
+              username = "andyhamon";
+              homeDirectory = "/Users/andyhamon";
+            };
+            modules = [
+              ./home/andrewhamon/home-mac.nix
+            ];
           };
         }
       );

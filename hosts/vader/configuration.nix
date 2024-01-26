@@ -11,11 +11,16 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.andrewhamon = import ../../home/andrewhamon/home.nix;
-  home-manager.extraSpecialArgs = { inherit inputs pkgsUnstable; };
+  home-manager.extraSpecialArgs = {
+    inherit inputs pkgsUnstable;
+    username = "andrewhamon";
+    homeDirectory = "/home/andrewhamon";
+  };
 
   hardware.bluetooth.enable = true;
 
   services.fwupd.enable = true;
+  services.pcscd.enable = true;
 
   programs.hyprland = {
     enable = true;
@@ -62,7 +67,7 @@
   security.polkit.enable = true;
   security.pam.services.swaylock = {};
   hardware.opengl.enable = true;
-  fonts.enableDefaultFonts = true;
+  fonts.enableDefaultPackages = true;
   programs.dconf.enable = true;
   programs.xwayland.enable = true;
   # For screen sharing (this option only has an effect with xdg.portal.enable):
@@ -87,14 +92,6 @@
   security.pam.services.waylock = {};
 
   services.upower.enable = true;
-
-  nixpkgs.overlays = with pkgs; [
-    (self: super: {
-      mpv-unwrapped = super.mpv-unwrapped.override {
-        ffmpeg_5 = ffmpeg_5-full;
-      };
-    })
-  ];
 
   system.stateVersion = "23.05"; # Did you read the comment?
 }
