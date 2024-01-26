@@ -7,6 +7,7 @@ let
 in
 {
   imports = [
+    inputs.homeage.homeManagerModules.homeage
     ./nvim.nix
   ];
 
@@ -88,7 +89,7 @@ in
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = false;
 
-  programs.ssh = import ./ssh { inherit pkgs; };
+  programs.ssh = import ./ssh { inherit config pkgs; };
 
   programs.kitty = {
     enable = true;
@@ -97,6 +98,19 @@ in
       map ctrl+c copy_or_interrupt
     '';
   };
+
+  homeage = {
+    identityPaths = [ "${../../secrets/yubikey-ids.txt}" ];
+    installationType = "activation";
+    mount = "${config.xdg.configHome}/secrets";
+
+    file."keychain_yubikey_ssh_key" = {
+      source = ../../secrets/id_ed25519_sk_rk_keychain-yubikey.age;
+    };
+  };
+
+  # homage cleanup is currently broken
+  home.activation.homeageCleanup = lib.mkForce (lib.hm.dag.entryAfter ["writeBoundary"] '''');
 
   home.stateVersion = "22.05";
 }

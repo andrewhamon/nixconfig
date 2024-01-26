@@ -35,6 +35,9 @@
 
   inputs.roc.url = "github:roc-lang/roc";
 
+  inputs.homeage.url = "github:jordanisaacs/homeage" ;
+  inputs.homeage.inputs.nixpkgs.follows = "nixpkgs";
+
   outputs =
     { self
     , darwin

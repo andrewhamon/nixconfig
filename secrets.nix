@@ -1,7 +1,6 @@
 let
   nas = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINTQXeLm3qzah6EyN/16NwiGLvxb5s/PFqQDGdYsyp4S";
   router = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO6BxZP+ryAC8wETOFF0KW0W4id9PsJi9lK6A4fUzWPD";
-  gollum = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILknJdrXAUQDxrIi8nETtfKeirAL7b0xXuUNh3Wzu3kU";
   allSystems = [ nas router ];
 
   management = [
@@ -25,4 +24,6 @@ in
 
   "secrets/nas_restic_repository.age".publicKeys = management ++ [ nas ];
   "secrets/nas_restic_password.age".publicKeys = management ++ [ nas ];
+
+  "secrets/id_ed25519_sk_rk_keychain-yubikey.age".publicKeys = management;
 }
