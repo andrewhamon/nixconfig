@@ -26,4 +26,5 @@ in
   "secrets/nas_restic_password.age".publicKeys = management ++ [ nas ];
 
   "secrets/id_ed25519_sk_rk_keychain-yubikey.age".publicKeys = management;
+  "secrets/id_ed25519_sk_rk_desk-yubikey.age".publicKeys = management;
 }

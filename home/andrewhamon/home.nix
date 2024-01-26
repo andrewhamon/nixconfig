@@ -107,6 +107,10 @@ in
     file."keychain_yubikey_ssh_key" = {
       source = ../../secrets/id_ed25519_sk_rk_keychain-yubikey.age;
     };
+
+    file."desk_yubikey_ssh_key" = {
+      source = ../../secrets/id_ed25519_sk_rk_desk-yubikey.age;
+    };
   };
 
   # homage cleanup is currently broken
