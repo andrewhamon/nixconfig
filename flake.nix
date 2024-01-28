@@ -56,92 +56,56 @@
           config.allowUnfree = true;
           system = system;
       };
-    in {
-      nixosConfigurations."nas" = inputs.nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
+
+      mkNixos = {system ? "x86_64-linux", modules}: inputs.nixpkgs.lib.nixosSystem {
+        inherit system modules;
         pkgs = mkPkgs system;
         specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
+      };
+
+      mkNixosDeploy = hostname: let
+        nixos = self.nixosConfigurations.${hostname};
+        system = nixos.pkgs.system;
+        activate = inputs.deploy-rs.lib.${system}.activate.nixos nixos;
+      in {
+        hostname = "${hostname}.platypus-banana.ts.net";
+        user = "root";
+        profiles.system.path = activate;
+      };
+
+    in {
+      nixosConfigurations."router" = mkNixos {
+        modules = [
+          ./hosts/defaults/configuration.nix
+          ./hosts/router/configuration.nix
+        ];
+      };
+
+      nixosConfigurations."nas" = mkNixos {
         modules = [
           ./hosts/defaults/configuration.nix
           ./hosts/nas/configuration.nix
         ];
       };
 
-      nixosConfigurations."vader" = inputs.nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        pkgs = mkPkgs system;
-        specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
+      nixosConfigurations."vader" = mkNixos {
         modules = [
           ./hosts/vader/configuration.nix
         ];
       };
 
-      nixosConfigurations."thumper" = inputs.nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        pkgs = mkPkgs system;
-        specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
+      nixosConfigurations."thumper" = mkNixos {
         modules = [
           ./hosts/thumper/configuration.nix
         ];
       };
 
-      deploy.nodes.thumper = {
-        hostname = "thumper.platypus-banana.ts.net";
-        user = "root";
-        profiles.system = {
-          path = deploy-rs.lib.x86_64-linux.activate.nixos (inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./hosts/thumper/configuration.nix
-            ];
-          });
-        };
-      };
+      
 
-      deploy.nodes.nas = {
-        hostname = "nas.platypus-banana.ts.net";
-        user = "root";
-        profiles.system = {
-          path = deploy-rs.lib.x86_64-linux.activate.nixos (inputs.nixpkgs.lib.nixosSystem rec {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable "x86_64-linux"; };
-            modules = [
-              ./hosts/defaults/configuration.nix
-              ./hosts/nas/configuration.nix
-            ];
-          });
-        };
-      };
-
-      deploy.nodes.router = {
-        hostname = "router.adh.io";
-        user = "root";
-        profiles.system = {
-          path = deploy-rs.lib.x86_64-linux.activate.nixos (inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./hosts/defaults/configuration.nix
-              ./hosts/router/configuration.nix
-            ];
-          });
-        };
-      };
-
-      deploy.nodes.vader = {
-        hostname = "vader.platypus-banana.ts.net";
-        user = "root";
-        profiles.system = {
-          path = deploy-rs.lib.x86_64-linux.activate.nixos (inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./hosts/vader/configuration.nix
-            ];
-          });
-        };
-      };
+      deploy.nodes.router = mkNixosDeploy "router";
+      deploy.nodes.nas = mkNixosDeploy "nas";
+      deploy.nodes.vader = mkNixosDeploy "vader";
+      deploy.nodes.thumper = mkNixosDeploy "thumper";
 
       installIso = nixos-generators.nixosGenerate {
         system = "x86_64-linux";

@@ -18,11 +18,6 @@
   # Needed for yubikey
   services.pcscd.enable = true;
 
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users.andrewhamon = import ../../home/andrewhamon/home-linux.nix;
-  home-manager.extraSpecialArgs = { inherit inputs pkgsUnstable; };
-
   programs.steam.enable = true;
 
   virtualisation.libvirtd.enable = true;
