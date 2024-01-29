@@ -4,7 +4,7 @@
 darwin-rebuild switch --flake .
 ```
 
-## Bootstram home-manager
+## Bootstrap home-manager
 
 ```sh
 nix run .#home-manager -- switch --flake .
