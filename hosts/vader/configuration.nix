@@ -2,7 +2,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ../defaults/configuration.nix
       ./hardware-configuration.nix
       inputs.home-manager.nixosModules.home-manager
@@ -65,7 +66,7 @@
   };
 
   security.polkit.enable = true;
-  security.pam.services.swaylock = {};
+  security.pam.services.swaylock = { };
   hardware.opengl.enable = true;
   fonts.enableDefaultPackages = true;
   programs.dconf.enable = true;
@@ -73,7 +74,7 @@
   # For screen sharing (this option only has an effect with xdg.portal.enable):
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
   xdg.portal.enable = true;
-  
+
   programs.wireshark.enable = true;
   programs.wireshark.package = pkgs.wireshark;
 
@@ -88,8 +89,8 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [];
-  security.pam.services.waylock = {};
+  environment.systemPackages = with pkgs; [ ];
+  security.pam.services.waylock = { };
 
   services.upower.enable = true;
 

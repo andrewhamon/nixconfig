@@ -1,7 +1,7 @@
 { pkgs, ... }:
 pkgs.writeShellApplication {
   name = "volctl";
-  runtimeInputs = [];
+  runtimeInputs = [ ];
   text = ''
     pactl=${pkgs.pulseaudio}/bin/pactl
     wpctl=${pkgs.wireplumber}/bin/wpctl

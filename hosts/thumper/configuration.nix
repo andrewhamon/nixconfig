@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ../defaults/configuration.nix
       ./hardware-configuration.nix
       inputs.home-manager.nixosModules.home-manager
@@ -56,7 +57,7 @@
 
   # https://google.com
 
-  
+
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -79,8 +80,8 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  security.pam.services.swaylock = {};
-  security.pam.services.waylock = {};
+  security.pam.services.swaylock = { };
+  security.pam.services.waylock = { };
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;
 
@@ -136,8 +137,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

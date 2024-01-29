@@ -1,12 +1,13 @@
-{
-  config,
-  pkgs,
-  lib,
-  inputs,
-  ...
-}: let
+{ config
+, pkgs
+, lib
+, inputs
+, ...
+}:
+let
   nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
-in {
+in
+{
   # This module ensures any non-flakes nix usage gets the same version
   # of nixpkgs as this flake.
   _file = ./enable-flake.nix;
@@ -15,7 +16,7 @@ in {
 
   config = lib.mkIf config.nix.flakes.enable {
     nix = {
-      settings.experimental-features = ["nix-command" "flakes"];
+      settings.experimental-features = [ "nix-command" "flakes" ];
 
       registry.nixpkgs.flake = inputs.nixpkgs;
 

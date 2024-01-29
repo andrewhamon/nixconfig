@@ -1,4 +1,4 @@
-{ lib, pkgs, config, inputs, ... }:{
+{ lib, pkgs, config, inputs, ... }: {
   age.secrets.nas_restic_repository.file = ../../secrets/nas_restic_repository.age;
   age.secrets.nas_restic_password.file = ../../secrets/nas_restic_password.age;
 
@@ -7,7 +7,7 @@
     repositoryFile = config.age.secrets.nas_restic_repository.path;
     passwordFile = config.age.secrets.nas_restic_password.path;
     timerConfig = {
-      OnCalendar="*-*-* 4:00:00";
+      OnCalendar = "*-*-* 4:00:00";
     };
     paths = [
       "/home"

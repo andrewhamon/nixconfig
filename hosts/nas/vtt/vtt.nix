@@ -47,7 +47,7 @@ in
 
       serviceUserAuthorizedKeys = mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
       };
     };
   };
@@ -65,41 +65,43 @@ in
       "d '${cfg.dataDir}' 0775 ${cfg.user} ${cfg.group} - -"
     ];
 
-    systemd.services.vtt = let
-      launcher = pkgs.writeShellApplication {
-        name = "launch-vtt";
-        runtimeInputs = with pkgs; [ nodejs git openssh ];
-        text = ''
-          export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    systemd.services.vtt =
+      let
+        launcher = pkgs.writeShellApplication {
+          name = "launch-vtt";
+          runtimeInputs = with pkgs; [ nodejs git openssh ];
+          text = ''
+            export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
-          if [ ! -d "${cfg.dataDir}/src" ]; then
-            # Check if a git repo has been cloned to REPO_ROOT, and if not, clone it
-              git clone git@github.com:stevenpetryk/vtt-private.git "${cfg.dataDir}/src"
-          else
-            # Otherwise, pull the latest changes
-            pushd ${cfg.dataDir}/src
-            git pull
-            popd
-          fi
+            if [ ! -d "${cfg.dataDir}/src" ]; then
+              # Check if a git repo has been cloned to REPO_ROOT, and if not, clone it
+                git clone git@github.com:stevenpetryk/vtt-private.git "${cfg.dataDir}/src"
+            else
+              # Otherwise, pull the latest changes
+              pushd ${cfg.dataDir}/src
+              git pull
+              popd
+            fi
 
-          cd ${cfg.dataDir}/src/resources/app/
+            cd ${cfg.dataDir}/src/resources/app/
 
-          node main.js --port=${toString cfg.port} --dataPath=${cfg.dataDir} --proxySSL=true --hostname=${cfg.virtualHostName}
-        '';
+            node main.js --port=${toString cfg.port} --dataPath=${cfg.dataDir} --proxySSL=true --hostname=${cfg.virtualHostName}
+          '';
+        };
+      in
+      {
+        description = "vtt";
+        after = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
+
+        serviceConfig = {
+          Type = "simple";
+          User = cfg.user;
+          Group = cfg.group;
+          ExecStart = "${launcher}/bin/launch-vtt";
+          Restart = "always";
+        };
       };
-    in {
-      description = "vtt";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
-
-      serviceConfig = {
-        Type = "simple";
-        User = cfg.user;
-        Group = cfg.group;
-        ExecStart = "${launcher}/bin/launch-vtt";
-        Restart = "always";
-      };
-    };
 
     users.users = mkIf (cfg.user == "vtt") {
       vtt = {
