@@ -1,4 +1,4 @@
-{pkgs, firefox}:
+{ pkgs, firefox }:
 pkgs.writeShellApplication {
   name = "xdg-firefox-wrapper";
 

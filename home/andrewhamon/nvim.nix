@@ -1,6 +1,6 @@
 { config, pkgs, inputs, lib, ... }:
 {
-  imports = [];
+  imports = [ ];
 
   programs.neovim = {
     enable = true;

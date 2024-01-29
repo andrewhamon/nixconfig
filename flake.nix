@@ -35,7 +35,7 @@
 
   inputs.roc.url = "github:roc-lang/roc";
 
-  inputs.homeage.url = "github:jordanisaacs/homeage" ;
+  inputs.homeage.url = "github:jordanisaacs/homeage";
   inputs.homeage.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs =
@@ -47,33 +47,38 @@
     , nixos-generators
     , nixpkgs
     , ...
-    }@inputs: let
+    }@inputs:
+    let
       mkPkgsUnstable = system: import inputs.nixpkgs-unstable {
-          config.allowUnfree = true;
-          system = system;
-        };
+        config.allowUnfree = true;
+        system = system;
+      };
       mkPkgs = system: import inputs.nixpkgs {
-          config.allowUnfree = true;
-          system = system;
+        config.allowUnfree = true;
+        system = system;
       };
 
-      mkNixos = {system ? "x86_64-linux", modules}: inputs.nixpkgs.lib.nixosSystem {
+      mkNixos = { system ? "x86_64-linux", modules }: inputs.nixpkgs.lib.nixosSystem {
         inherit system modules;
         pkgs = mkPkgs system;
         specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
       };
 
-      mkNixosDeploy = hostname: let
-        nixos = self.nixosConfigurations.${hostname};
-        system = nixos.pkgs.system;
-        activate = inputs.deploy-rs.lib.${system}.activate.nixos nixos;
-      in {
-        hostname = "${hostname}.platypus-banana.ts.net";
-        user = "root";
-        profiles.system.path = activate;
-      };
+      mkNixosDeploy = hostname:
+        let
+          nixos = self.nixosConfigurations.${hostname};
+          system = nixos.pkgs.system;
+          activate = inputs.deploy-rs.lib.${system}.activate.nixos nixos;
+        in
+        {
+          hostname = "${hostname}.platypus-banana.ts.net";
+          user = "root";
+          sshUser = "root";
+          profiles.system.path = activate;
+        };
 
-    in {
+    in
+    {
       nixosConfigurations."router" = mkNixos {
         modules = [
           ./hosts/defaults/configuration.nix
@@ -100,7 +105,7 @@
         ];
       };
 
-      
+
 
       deploy.nodes.router = mkNixosDeploy "router";
       deploy.nodes.nas = mkNixosDeploy "nas";
@@ -119,21 +124,25 @@
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     } // flake-utils.lib.eachDefaultSystem
       (system:
-        let
-          pkgs = mkPkgs system;
-          pkgsUnstable = mkPkgsUnstable system;
-        in
-        {
-          devShells.default = import ./shell.nix { inherit pkgs inputs; };
-          apps.deploy = {
-            type = "app";
-            program = "${deploy-rs.defaultPackage.${system}}/bin/deploy";
-          };
-          apps.home-manager = {
-            type = "app";
-            program = "${pkgs.home-manager}/bin/home-manager";
-          };
-          packages.homeConfigurations.andrewhamon = home-manager.lib.homeManagerConfiguration {
+      let
+        pkgs = mkPkgs system;
+        pkgsUnstable = mkPkgsUnstable system;
+      in
+      {
+        devShells.default = import ./shell.nix { inherit pkgs inputs; };
+        apps.deploy = {
+          type = "app";
+          program = "${deploy-rs.defaultPackage.${system}}/bin/deploy";
+        };
+        apps.home-manager = {
+          type = "app";
+          program = "${pkgs.home-manager}/bin/home-manager";
+        };
+
+        # Super mega hack - `nix flake show` complains if packages.<system>.homeConfigurations
+        # is not a derivation. So appease it by merging in pkgs.hello.
+        packages.homeConfigurations = pkgs.hello // {
+          andrewhamon = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             extraSpecialArgs = {
               inherit inputs pkgsUnstable;
@@ -141,24 +150,27 @@
               homeDirectory = "/home/andrewhamon";
             };
             modules = [
-              ./home/andrewhamon/home-linux.nix
+              ./home/andrewhamon/desktop-linux.nix
             ];
           };
-          packages.homeConfigurations.andyhamon = let
-            # Mega-hack: force aarch64-darwin even when running nix with rosetta
-            systemOverride = if system == "x86_64-darwin" then "aarch64-darwin" else system;
-          in home-manager.lib.homeManagerConfiguration {
-            pkgs = mkPkgs systemOverride;
-            extraSpecialArgs = {
-              inherit inputs;
-              pkgsUnstable = mkPkgsUnstable systemOverride;
-              username = "andyhamon";
-              homeDirectory = "/Users/andyhamon";
+          andyhamon =
+            let
+              # Mega-hack: force aarch64-darwin even when running nix with rosetta
+              systemOverride = if system == "x86_64-darwin" then "aarch64-darwin" else system;
+            in
+            home-manager.lib.homeManagerConfiguration {
+              pkgs = mkPkgs systemOverride;
+              extraSpecialArgs = {
+                inherit inputs;
+                pkgsUnstable = mkPkgsUnstable systemOverride;
+                username = "andyhamon";
+                homeDirectory = "/Users/andyhamon";
+              };
+              modules = [
+                ./home/andrewhamon/desktop-darwin.nix
+              ];
             };
-            modules = [
-              ./home/andrewhamon/home-mac.nix
-            ];
-          };
-        }
+        };
+      }
       );
 }
