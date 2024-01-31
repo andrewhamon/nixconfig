@@ -95,6 +95,9 @@ in
     extraConfig = ''
       map ctrl+v paste_from_clipboard
       map ctrl+c copy_or_interrupt
+
+      map alt+left send_text all \x1b\x62
+      map alt+right send_text all \x1b\x66
     '';
   };
 
