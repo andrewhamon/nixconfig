@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, lib, homeDirectory, username, pkgsUnstable, ... }:
+{ config, pkgs, inputs, lib, homeDirectory, username, pkgsUnstable, isDiscord, ... }:
 let
   bambu-studio = import ./bambu-studio.nix { inherit pkgs; };
   firefox = pkgs.firefox;
@@ -30,16 +30,18 @@ in
     nixpkgs-fmt
     nmap
     nodejs
-    redis
     ripgrep
     ruby
     tmate
     tree
-    wget
     wireguard-tools
     xdg-utils
     yubikey-manager
-  ];
+  ] ++ (lib.optionals (!isDiscord) [
+    # Since Discord also uses nix, there are some conflicts in my nix env
+    redis
+    wget
+  ]);
 
   home.sessionPath = [
     "/opt/homebrew/bin"

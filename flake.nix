@@ -146,6 +146,7 @@
             inherit pkgs;
             extraSpecialArgs = {
               inherit inputs pkgsUnstable;
+              isDiscord = false;
               username = "andrewhamon";
               homeDirectory = "/home/andrewhamon";
             };
@@ -162,12 +163,14 @@
               pkgs = mkPkgs systemOverride;
               extraSpecialArgs = {
                 inherit inputs;
+                isDiscord = true;
                 pkgsUnstable = mkPkgsUnstable systemOverride;
                 username = "andyhamon";
                 homeDirectory = "/Users/andyhamon";
               };
               modules = [
                 ./home/andrewhamon/desktop-darwin.nix
+                ./home/andrewhamon/discord.nix
               ];
             };
         };
