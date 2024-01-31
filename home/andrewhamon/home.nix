@@ -98,8 +98,5 @@ in
     '';
   };
 
-  # homage cleanup is currently broken
-  home.activation.homeageCleanup = lib.mkForce (lib.hm.dag.entryAfter [ "writeBoundary" ] '''');
-
   home.stateVersion = "22.05";
 }
