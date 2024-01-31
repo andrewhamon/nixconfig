@@ -15,4 +15,8 @@
       fi
     '';
   };
+
+  home.shellAliases = {
+    discord = "cd ~/discord/discord";
+  };
 }
