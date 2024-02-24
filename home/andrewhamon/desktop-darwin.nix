@@ -4,4 +4,10 @@
     ./home.nix
     ./desktop.nix
   ];
+
+  home.packages = with pkgs; [
+    lima
+    colima
+    docker
+  ];
 }
