@@ -16,7 +16,15 @@
     '';
   };
 
+  home.sessionVariables = {
+    CODER_SSH_CONFIG_FILE = "~/nixconfig/home/andrewhamon/ssh/discord-config";
+  };
+
   home.shellAliases = {
     discord = "cd ~/discord/discord";
   };
+
+  programs.ssh.includes = [
+    "${./ssh/discord-config}"
+  ];
 }
