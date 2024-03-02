@@ -173,6 +173,25 @@
                 ./home/andrewhamon/discord.nix
               ];
             };
+          discord =
+            let
+              # Mega-hack: force aarch64-darwin even when running nix with rosetta
+              systemOverride = if system == "x86_64-darwin" then "aarch64-darwin" else system;
+            in
+            home-manager.lib.homeManagerConfiguration {
+              pkgs = mkPkgs systemOverride;
+              extraSpecialArgs = {
+                inherit inputs;
+                isDiscord = true;
+                pkgsUnstable = mkPkgsUnstable systemOverride;
+                username = "discord";
+                homeDirectory = "/home/discord";
+              };
+              modules = [
+                ./home/andrewhamon/home.nix
+                ./home/andrewhamon/discord.nix
+              ];
+            };
         };
       }
       );
