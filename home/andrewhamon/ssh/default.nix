@@ -1,8 +1,6 @@
 { config, pkgs }: {
   enable = true;
 
-  package = pkgs.openssh;
-
   includes = [
     "~/.colima/ssh_config"
   ];

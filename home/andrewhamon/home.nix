@@ -74,6 +74,9 @@ in
 
   programs.fzf.enable = true;
 
+  programs.ssh.enable = true;
+  programs.ssh.package = pkgs.openssh;
+
   programs.git = {
     enable = true;
 
