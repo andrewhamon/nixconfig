@@ -13,6 +13,8 @@
       if [[ "$(basename -- ''${(%):-%x})" != "_clyde" ]]; then
         compdef _clyde clyde
       fi
+
+      source ${./ssh/fixup-ssh-auth-sock.sh}
     '';
   };
 
