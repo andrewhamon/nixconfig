@@ -67,6 +67,10 @@ in
     enableCompletion = true;
     autocd = false;
     syntaxHighlighting.enable = true;
+    initExtra = ''
+      # Keep nix in the PATH even after macos upgrades which overwrite files in /etc
+      [[ ! $(command -v nix) && -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]] && source "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+    '';
   };
 
   programs.zsh.oh-my-zsh.enable = true;
