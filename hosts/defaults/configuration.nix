@@ -26,6 +26,7 @@
     wget
     usbutils
     file
+    parted
   ];
 
   time.timeZone = "America/Los_Angeles";
@@ -36,6 +37,7 @@
   nix.flakes.enable = true;
 
   programs.zsh.enable = true;
+  programs.zsh.ohMyZsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
   security.sudo.wheelNeedsPassword = false;

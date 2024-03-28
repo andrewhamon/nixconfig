@@ -38,6 +38,9 @@
   inputs.homeage.url = "github:jordanisaacs/homeage";
   inputs.homeage.inputs.nixpkgs.follows = "nixpkgs";
 
+  inputs.terranix.url = "github:terranix/terranix";
+  inputs.terranix.inputs.nixpkgs.follows = "nixpkgs";
+
   outputs =
     { self
     , darwin
@@ -46,6 +49,7 @@
     , home-manager
     , nixos-generators
     , nixpkgs
+    , terranix
     , ...
     }@inputs:
     let
@@ -127,6 +131,11 @@
       let
         pkgs = mkPkgs system;
         pkgsUnstable = mkPkgsUnstable system;
+        tfJson = terranix.lib.terranixConfiguration {
+          inherit system;
+          modules = [ ./tf.nix ];
+          extraArgs = { inherit inputs; };
+        };
       in
       {
         devShells.default = import ./shell.nix { inherit pkgs inputs; };
@@ -137,6 +146,31 @@
         apps.home-manager = {
           type = "app";
           program = "${pkgs.home-manager}/bin/home-manager";
+        };
+
+        apps.tf-plan = let 
+          program = pkgs.writers.writeBash "tf-plan" ''
+            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
+            cp ${tfJson} config.tf.json \
+              && ${pkgs.terraform}/bin/terraform init \
+              && ${pkgs.terraform}/bin/terraform plan -out tf_plan
+          '';
+        in {
+          type = "app";
+          program = "${program}";
+        };
+
+        apps.tf-apply = let 
+          program = pkgs.writers.writeBash "tf-plan" ''
+            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
+            cp ${tfJson} config.tf.json \
+              && ${pkgs.terraform}/bin/terraform init \
+              && ${pkgs.terraform}/bin/terraform plan -out tf_plan \
+              && ${pkgs.terraform}/bin/terraform apply tf_plan
+          '';
+        in {
+          type = "app";
+          program = "${program}";
         };
 
         # Super mega hack - `nix flake show` complains if packages.<system>.homeConfigurations
