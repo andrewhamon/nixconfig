@@ -6,17 +6,7 @@
       # Include the results of the hardware scan.
       ../defaults/configuration.nix
       ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.home-manager
     ];
-
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users.andrewhamon = import ../../home/andrewhamon/home.nix;
-  home-manager.extraSpecialArgs = {
-    inherit inputs pkgsUnstable;
-    username = "andrewhamon";
-    homeDirectory = "/home/andrewhamon";
-  };
 
   hardware.bluetooth.enable = true;
 
