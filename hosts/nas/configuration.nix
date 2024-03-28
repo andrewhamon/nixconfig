@@ -66,6 +66,7 @@
   services.zfs.trim.enable = true;
   services.zfs.autoScrub.enable = true;
   services.zfs.autoScrub.pools = [ "rpool" "tank" ];
+  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
   networking.hostName = "nas";
   networking.domain = "lan.adh.io";
@@ -79,6 +80,7 @@
   # replicates the default behaviour.
   networking.useDHCP = false;
   networking.interfaces.enp38s0.useDHCP = true;
+  networking.interfaces.enp45s0f1np1.useDHCP = true;
 
   # networking.interfaces.enp39s0.useDHCP = false;
   # networking.interfaces.enp39s0.ipv4.addresses = [{
@@ -128,41 +130,5 @@
         proxy_set_header   X-Forwarded-For    $proxy_protocol_addr;
       '';
     };
-  };
-
-  services.prometheus = {
-    enable = true;
-    port = 9001;
-    exporters = {
-      node = {
-        enable = true;
-        enabledCollectors = [ "systemd" ];
-        port = 9002;
-      };
-      process = {
-        enable = true;
-      };
-      nginx = {
-        enable = true;
-      };
-      smartctl = {
-        enable = true;
-      };
-    };
-
-    scrapeConfigs = [
-      {
-        job_name = "nas_adh_io";
-        scrape_interval = "10s";
-        static_configs = [{
-          targets = [
-            "127.0.0.1:${toString config.services.prometheus.exporters.node.port}"
-            "127.0.0.1:${toString config.services.prometheus.exporters.process.port}"
-            "127.0.0.1:${toString config.services.prometheus.exporters.nginx.port}"
-            "127.0.0.1:${toString config.services.prometheus.exporters.smartctl.port}"
-          ];
-        }];
-      }
-    ];
   };
 }
