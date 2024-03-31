@@ -32,6 +32,6 @@ mkShell {
     nixpkgs-fmt
     rage
     inputs.nil.packages.${pkgs.system}.default
-    terraform
+    opentofu
   ];
 }

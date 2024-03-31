@@ -152,8 +152,8 @@
           program = pkgs.writers.writeBash "tf-plan" ''
             if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
             cp ${tfJson} config.tf.json \
-              && ${pkgs.terraform}/bin/terraform init \
-              && ${pkgs.terraform}/bin/terraform plan -out tf_plan
+              && ${pkgs.opentofu}/bin/tofu init \
+              && ${pkgs.opentofu}/bin/tofu plan -out tf_plan
           '';
         in {
           type = "app";
@@ -164,9 +164,9 @@
           program = pkgs.writers.writeBash "tf-plan" ''
             if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
             cp ${tfJson} config.tf.json \
-              && ${pkgs.terraform}/bin/terraform init \
-              && ${pkgs.terraform}/bin/terraform plan -out tf_plan \
-              && ${pkgs.terraform}/bin/terraform apply tf_plan
+              && ${pkgs.opentofu}/bin/tofu init \
+              && ${pkgs.opentofu}/bin/tofu plan -out tf_plan \
+              && ${pkgs.opentofu}/bin/tofu apply tf_plan
           '';
         in {
           type = "app";
