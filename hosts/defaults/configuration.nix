@@ -27,11 +27,17 @@
     usbutils
     file
     parted
+    unzip
+    zip
+    gzip
   ];
 
   time.timeZone = "America/Los_Angeles";
 
   services.openssh.enable = true;
+  services.openssh.settings.PermitRootLogin = "prohibit-password";
+  services.openssh.settings.PasswordAuthentication = false;
+
   services.tailscale.enable = true;
 
   nix.flakes.enable = true;
@@ -56,5 +62,6 @@
     "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIN76Sz97oDbJ+zA7I450zhdXqoYINSVv7cfdZwkJAOLZAAAAEHNzaDpkZXNrLXl1YmlrZXk= ssh:desk-yubikey"
   ];
 
+  users.users.root.hashedPassword = "$y$j9T$Ycl/ECpaJpRKUfzy0ABiO0$pZ3YsIxu4u0BG1bWDCbN532xGYS8mNsBCGl07F0/fW3";
   programs.tmux.enable = true;
 }
