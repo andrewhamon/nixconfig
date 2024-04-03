@@ -58,6 +58,9 @@ in
     nixconfig = "cd ~/nixconfig";
     nixpkgs = "cd ~/nixpkgs";
     gch = "git checkout $(git branch --all | fzf| tr -d '[:space:]')";
+    clear = ''
+      printf "\e[H\e[22J"
+    '';
   };
 
   programs.zsh = {

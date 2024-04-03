@@ -11,9 +11,4 @@
     IdentityFile ${config.homeage.file.desk_yubikey_ssh_key.path}
     IdentityFile ${config.homeage.file.keychain_yubikey_ssh_key.path}
   '';
-
-  # Keep SSH sessions open for two minutes to reduce the amount of interaction
-  # required for repeated ssh/git operations.
-  controlMaster = "auto";
-  controlPersist = "2m";
 }
