@@ -33,6 +33,7 @@ in
     pulseaudioFull
     pulsemixer
     slack
+    spotify
     swaybg
     swayidle
     swaylock
