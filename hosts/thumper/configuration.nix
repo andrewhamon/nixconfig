@@ -58,9 +58,17 @@
   # https://google.com
 
 
+  networking = {
+    networkmanager.enable = true;
+    vlans = {
+      mgmt13 = {
+        id = 13;
+        interface = "enp1s0";
+      };
+    };
+    interfaces.mgmt13.useDHCP = true;
+  };
 
-  # Enable networking
-  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";

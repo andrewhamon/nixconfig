@@ -45,6 +45,13 @@ in
     domain = domain;
     useDHCP = false;
 
+    vlans = {
+      mgmt13 = {
+        id = 13;
+        interface = lanInterface;
+      };
+    };
+
     interfaces = {
       # Wan, get IP address from ISP
       "${wanInterface}".useDHCP = true;
@@ -60,10 +67,10 @@ in
         }];
       };
 
-      enp3s0 = {
+      mgmt13 = {
         useDHCP = false;
         ipv4.addresses = [{
-          address = "10.69.43.1";
+          address = "10.69.13.1";
           prefixLength = 24;
         }];
       };
@@ -78,13 +85,19 @@ in
           67 # DHCP server
         ];
       };
+      mgmt13 = {
+        allowedUDPPorts = [
+          53 # DNS server
+          67 # DHCP server
+        ];
+      };
     };
 
     nat = {
       enable = true;
       externalInterface = wanInterface;
-      internalInterfaces = [ lanInterface "enp3s0" ];
-      internalIPs = [ lanV4Cidr ];
+      internalInterfaces = [ lanInterface "enp3s0" "mgmt13" ];
+      internalIPs = [ lanV4Cidr "10.69.13.0/24" ];
     };
   };
 
@@ -114,10 +127,13 @@ in
       local=/lan.${domain}/
       domain=lan.${domain}
 
-      dhcp-range=${lanV4DhcpStart},${lanV4DhcpEnd},12h
-      dhcp-option=option:router,${lanV4Address}
+      dhcp-range=${lanInterface},${lanV4DhcpStart},${lanV4DhcpEnd},12h
+      dhcp-option=${lanInterface},option:router,${lanV4Address}
+      dhcp-host=${lanInterface},${nasMacAddress},${nasIpAddress}
 
-      dhcp-host=${nasMacAddress},${nasIpAddress}
+      # DHCP for management network
+      dhcp-range=mgmt13,10.69.13.100,10.69.13.200,12h
+      dhcp-option=mgmt13,option:router,10.69.13.1
 
       dhcp-authoritative
     '';
