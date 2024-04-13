@@ -25,6 +25,7 @@ in
     firefox
     fprintd
     jellyfin-mpv-shim
+    kapow
     libsecret
     mpv
     playerctl
