@@ -11,6 +11,7 @@
       ../defaults/configuration.nix
       ./hardware-configuration.nix
       inputs.home-manager.nixosModules.home-manager
+      ./postgres.nix
     ];
 
   # boot.kernelPackages = pkgs.linuxPackages_latest;
