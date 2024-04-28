@@ -46,5 +46,6 @@ in
     xorg.xev
     xorg.xeyes
     yambar
+    localsend
   ];
 }
