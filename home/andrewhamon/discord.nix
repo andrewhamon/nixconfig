@@ -1,6 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, root, ... }: {
   home.packages = [
-    (import ./clyde.nix { inherit pkgs; })
+    root.packages.clyde
   ];
 
   programs.zsh = {
