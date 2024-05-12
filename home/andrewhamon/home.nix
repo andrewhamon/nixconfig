@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, lib, homeDirectory, username, pkgsUnstable, isDiscord, ... }:
+{ config, pkgs, inputs, lib, homeDirectory, username, isDiscord, ... }:
 let
   bambu-studio = import ./bambu-studio.nix { inherit pkgs; };
   firefox = pkgs.firefox;
@@ -18,9 +18,6 @@ in
   home.packages = with pkgs; [
     inputs.nil.packages."${pkgs.system}".default
 
-    pkgsUnstable.flyctl
-    pkgsUnstable.vscode
-
     direnv
     fd
     font-awesome
@@ -35,6 +32,7 @@ in
     ruby
     tmate
     tree
+    vscode
     wireguard-tools
     xdg-utils
     yubikey-manager

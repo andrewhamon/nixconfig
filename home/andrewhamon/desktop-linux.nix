@@ -1,4 +1,4 @@
-{ pkgs, pkgsUnstable, inputs, ... }:
+{ pkgs, inputs, ... }:
 let
   volctl = import ../../packages/volctl/default.nix { inherit pkgs; };
 in
@@ -13,14 +13,12 @@ in
   home.packages = with pkgs; [
     inputs.roc.packages."${pkgs.system}".cli
 
-    pkgsUnstable.bambu-studio
-    pkgsUnstable.waybar
-
     _1password-gui
     bemenu
     bluez
     brightnessctl
     captive-browser
+    chromium
     discord
     element-desktop
     firefox
@@ -28,6 +26,7 @@ in
     jellyfin-mpv-shim
     kapow
     libsecret
+    localsend
     mpv
     playerctl
     prusa-slicer
@@ -40,6 +39,7 @@ in
     swaylock
     virt-manager
     volctl
+    waybar
     winbox
     wl-clipboard
     wlr-randr
@@ -47,7 +47,5 @@ in
     xorg.xev
     xorg.xeyes
     yambar
-    localsend
-    chromium
   ];
 }

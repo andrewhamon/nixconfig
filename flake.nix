@@ -1,8 +1,6 @@
 {
   inputs.nixpkgs.url = "nixpkgs/nixos-23.11";
 
-  inputs.nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
-
   inputs.darwin.url = "github:lnl7/nix-darwin/master";
   inputs.darwin.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -59,10 +57,6 @@
     let
       mkTree = import ./lib/mkTree.nix { };
       root = mkTree { inherit inputs; system = "x86_64-linux";};
-      mkPkgsUnstable = system: import inputs.nixpkgs-unstable {
-        config.allowUnfree = true;
-        system = system;
-      };
       mkPkgs = system: import inputs.nixpkgs {
         config.allowUnfree = true;
         system = system;
@@ -71,7 +65,7 @@
       mkNixos = { system ? "x86_64-linux", modules }: inputs.nixpkgs.lib.nixosSystem {
         inherit system modules;
         pkgs = mkPkgs system;
-        specialArgs = { inherit inputs; pkgsUnstable = mkPkgsUnstable system; };
+        specialArgs = { inherit inputs; };
       };
 
       mkNixosDeploy = hostname:
@@ -138,7 +132,6 @@
       let
         root = mkTree { inherit inputs system; };
         pkgs = mkPkgs system;
-        pkgsUnstable = mkPkgsUnstable system;
       in
       {
         devShells.default = root.devShells.default;
@@ -150,7 +143,7 @@
           andrewhamon = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             extraSpecialArgs = {
-              inherit inputs pkgsUnstable;
+              inherit inputs;
               isDiscord = false;
               username = "andrewhamon";
               homeDirectory = "/home/andrewhamon";
@@ -169,7 +162,6 @@
               extraSpecialArgs = {
                 inherit inputs;
                 isDiscord = true;
-                pkgsUnstable = mkPkgsUnstable systemOverride;
                 username = "andyhamon";
                 homeDirectory = "/Users/andyhamon";
               };
@@ -188,7 +180,6 @@
               extraSpecialArgs = {
                 inherit inputs;
                 isDiscord = true;
-                pkgsUnstable = mkPkgsUnstable systemOverride;
                 username = "discord";
                 homeDirectory = "/home/discord";
               };
