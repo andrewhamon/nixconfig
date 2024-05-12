@@ -42,10 +42,6 @@
 
   nix.flakes.enable = true;
 
-  programs.zsh.enable = true;
-  programs.zsh.ohMyZsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
-
   security.sudo.wheelNeedsPassword = false;
   users.users.andrewhamon = {
     isNormalUser = true;
