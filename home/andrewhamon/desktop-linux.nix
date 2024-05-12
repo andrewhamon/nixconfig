@@ -7,6 +7,7 @@ in
     ./home.nix
     ./desktop.nix
     ./cursor.nix
+    ./hyprland.nix
   ];
 
   home.packages = with pkgs; [
@@ -47,5 +48,6 @@ in
     xorg.xeyes
     yambar
     localsend
+    chromium
   ];
 }
