@@ -130,6 +130,18 @@
       (system:
       let
         pkgs = mkPkgs system;
+        agenixPkg = inputs.agenix.packages.${pkgs.system}.agenix;
+        # Wrap agenix to point it at the yubikey identity
+        agenix = pkgs.writeShellApplication {
+          name = "agenix";
+          runtimeInputs = with pkgs; [ rage age-plugin-yubikey ];
+          text = ''
+            yubikey_identities="$(mktemp)"
+            age-plugin-yubikey --identity > "$yubikey_identities"
+            "${agenixPkg}/bin/agenix" -i "$yubikey_identities" "$@"
+            rm "$yubikey_identities"
+          '';
+        };
         pkgsUnstable = mkPkgsUnstable system;
         tfJson = terranix.lib.terranixConfiguration {
           inherit system;
@@ -150,6 +162,7 @@
 
         apps.tf-plan = let 
           program = pkgs.writers.writeBash "tf-plan" ''
+            export PROXMOX_VE_API_TOKEN="$(${agenix}/bin/agenix -d secrets/proxmox_api_token.age)"
             if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
             cp ${tfJson} config.tf.json \
               && ${pkgs.opentofu}/bin/tofu init \
@@ -162,6 +175,7 @@
 
         apps.tf-apply = let 
           program = pkgs.writers.writeBash "tf-plan" ''
+            export PROXMOX_VE_API_TOKEN="$(${agenix}/bin/agenix -d secrets/proxmox_api_token.age)"
             if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
             cp ${tfJson} config.tf.json \
               && ${pkgs.opentofu}/bin/tofu init \

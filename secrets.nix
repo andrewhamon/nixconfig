@@ -27,4 +27,6 @@ in
 
   "secrets/id_ed25519_sk_rk_keychain-yubikey.age".publicKeys = management;
   "secrets/id_ed25519_sk_rk_desk-yubikey.age".publicKeys = management;
+
+  "secrets/proxmox_api_token.age".publicKeys = management;
 }
