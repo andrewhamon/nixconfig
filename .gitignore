@@ -1,2 +1,10 @@
 result
 .direnv
+
+.terraform
+.terraform.lock.hcl
+.terraform.lock.hcl.backup
+terraform.tfstate
+terraform.tfstate.backup
+tf_plan
+config.tf.json
