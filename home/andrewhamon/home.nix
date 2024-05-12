@@ -1,19 +1,10 @@
-{ config, pkgs, inputs, lib, homeDirectory, username, isDiscord, ... }:
-let
-  bambu-studio = import ./bambu-studio.nix { inherit pkgs; };
-  firefox = pkgs.firefox;
-  xdg-firefox-wrapper = import ./xdg-firefox-wrapper.nix { inherit pkgs firefox; };
-  volctl = import ../../packages/volctl/default.nix { inherit pkgs; };
-in
+{ config, pkgs, inputs, lib, isDiscord, ... }:
 {
   imports = [
     ./nvim.nix
   ];
 
   fonts.fontconfig.enable = true;
-
-  home.homeDirectory = homeDirectory;
-  home.username = username;
 
   home.packages = with pkgs; [
     inputs.nil.packages."${pkgs.system}".default

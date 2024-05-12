@@ -3,7 +3,12 @@
 let
   readTree = import "${inputs.kit}/readTree" { };
 
-  mkPkgs = system: import inputs.nixpkgs { localSystem = system; };
+  mkPkgs = system: import inputs.nixpkgs {
+    localSystem = system;
+    config = {
+      allowUnfree = true;
+    };
+  };
 
   mkArgs = system: {
     pkgs = mkPkgs system;

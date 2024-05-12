@@ -130,65 +130,17 @@
     } // flake-utils.lib.eachDefaultSystem
       (system:
       let
-        root = mkTree { inherit inputs system; };
+        realSystem = if system == "x86_64-darwin" then "aarch64-darwin" else system;
+        root = mkTree { inherit inputs; system = realSystem; };
         pkgs = mkPkgs system;
       in
       {
-        devShells.default = root.devShells.default;
-        apps = root.apps;
+        devShells = root.lib.cleanReadTreeAttrs root.devShells;
+        apps = root.lib.cleanReadTreeAttrs root.apps;
 
         # Super mega hack - `nix flake show` complains if packages.<system>.homeConfigurations
         # is not a derivation. So appease it by merging in pkgs.hello.
-        packages.homeConfigurations = pkgs.hello // {
-          andrewhamon = home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            extraSpecialArgs = {
-              inherit inputs;
-              isDiscord = false;
-              username = "andrewhamon";
-              homeDirectory = "/home/andrewhamon";
-            };
-            modules = [
-              ./home/andrewhamon/desktop-linux.nix
-            ];
-          };
-          andyhamon =
-            let
-              # Mega-hack: force aarch64-darwin even when running nix with rosetta
-              systemOverride = if system == "x86_64-darwin" then "aarch64-darwin" else system;
-            in
-            home-manager.lib.homeManagerConfiguration {
-              pkgs = mkPkgs systemOverride;
-              extraSpecialArgs = {
-                inherit inputs;
-                isDiscord = true;
-                username = "andyhamon";
-                homeDirectory = "/Users/andyhamon";
-              };
-              modules = [
-                ./home/andrewhamon/desktop-darwin.nix
-                ./home/andrewhamon/discord.nix
-              ];
-            };
-          discord =
-            let
-              # Mega-hack: force aarch64-darwin even when running nix with rosetta
-              systemOverride = if system == "x86_64-darwin" then "aarch64-darwin" else system;
-            in
-            home-manager.lib.homeManagerConfiguration {
-              pkgs = mkPkgs systemOverride;
-              extraSpecialArgs = {
-                inherit inputs;
-                isDiscord = true;
-                username = "discord";
-                homeDirectory = "/home/discord";
-              };
-              modules = [
-                ./home/andrewhamon/home.nix
-                ./home/andrewhamon/discord.nix
-              ];
-            };
-        };
+        packages.homeConfigurations = pkgs.hello // root.homeConfigurations;
       }
       );
 }

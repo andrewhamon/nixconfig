@@ -1,7 +1,6 @@
 { pkgs, inputs, root, ... }:
 with pkgs;
 mkShell {
-  NIXPKGS_ALLOW_UNFREE = "1";
   buildInputs = [
     age-plugin-yubikey
     cowsay
