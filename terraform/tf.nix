@@ -3,7 +3,7 @@
     system = "x86_64-linux";
     specialArgs = { inherit inputs; };
     modules = [
-      ./hosts/defaults/configuration.nix
+      ../hosts/defaults/configuration.nix
       {
         services.qemuGuest.enable = true;
 
@@ -21,7 +21,7 @@
     system = "x86_64-linux";
     specialArgs = { inherit inputs; };
     modules = [
-      ./hosts/defaults/configuration.nix
+      ../hosts/defaults/configuration.nix
     ];
     format = "proxmox-lxc";
   };

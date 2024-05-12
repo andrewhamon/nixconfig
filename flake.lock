@@ -411,6 +411,22 @@
         "type": "github"
       }
     },
+    "kit": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1714322366,
+        "narHash": "sha256-JCyPBtjMDexcsEcjpkW/LPNCVuzz6xxKTcKKVAS8FFU=",
+        "owner": "tvlfyi",
+        "repo": "kit",
+        "rev": "331b4803f467b00d070c1d18dde9a75c29f5ed8a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tvlfyi",
+        "repo": "kit",
+        "type": "github"
+      }
+    },
     "nil": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -655,6 +671,7 @@
         "home-manager": "home-manager_2",
         "homeage": "homeage",
         "hyprland": "hyprland",
+        "kit": "kit",
         "nil": "nil",
         "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs_3",

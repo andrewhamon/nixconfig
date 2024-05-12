@@ -41,6 +41,9 @@
   inputs.terranix.url = "github:terranix/terranix";
   inputs.terranix.inputs.nixpkgs.follows = "nixpkgs";
 
+  inputs.kit.url = "github:tvlfyi/kit";
+  inputs.kit.flake = false;
+
   outputs =
     { self
     , darwin
@@ -50,9 +53,12 @@
     , nixos-generators
     , nixpkgs
     , terranix
+    , kit
     , ...
     }@inputs:
     let
+      mkTree = import ./lib/mkTree.nix { };
+      root = mkTree { inherit inputs; system = "x86_64-linux";};
       mkPkgsUnstable = system: import inputs.nixpkgs-unstable {
         config.allowUnfree = true;
         system = system;
@@ -83,6 +89,7 @@
 
     in
     {
+      root = root;
       nixosConfigurations."router" = mkNixos {
         modules = [
           ./hosts/defaults/configuration.nix
@@ -129,63 +136,13 @@
     } // flake-utils.lib.eachDefaultSystem
       (system:
       let
+        root = mkTree { inherit inputs system; };
         pkgs = mkPkgs system;
-        agenixPkg = inputs.agenix.packages.${pkgs.system}.agenix;
-        # Wrap agenix to point it at the yubikey identity
-        agenix = pkgs.writeShellApplication {
-          name = "agenix";
-          runtimeInputs = with pkgs; [ rage age-plugin-yubikey ];
-          text = ''
-            yubikey_identities="$(mktemp)"
-            age-plugin-yubikey --identity > "$yubikey_identities"
-            "${agenixPkg}/bin/agenix" -i "$yubikey_identities" "$@"
-            rm "$yubikey_identities"
-          '';
-        };
         pkgsUnstable = mkPkgsUnstable system;
-        tfJson = terranix.lib.terranixConfiguration {
-          inherit system;
-          modules = [ ./tf.nix ];
-          extraArgs = { inherit inputs; };
-        };
       in
       {
-        devShells.default = import ./shell.nix { inherit pkgs inputs; };
-        apps.deploy = {
-          type = "app";
-          program = "${deploy-rs.defaultPackage.${system}}/bin/deploy";
-        };
-        apps.home-manager = {
-          type = "app";
-          program = "${pkgs.home-manager}/bin/home-manager";
-        };
-
-        apps.tf-plan = let 
-          program = pkgs.writers.writeBash "tf-plan" ''
-            export PROXMOX_VE_API_TOKEN="$(${agenix}/bin/agenix -d secrets/proxmox_api_token.age)"
-            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
-            cp ${tfJson} config.tf.json \
-              && ${pkgs.opentofu}/bin/tofu init \
-              && ${pkgs.opentofu}/bin/tofu plan -out tf_plan
-          '';
-        in {
-          type = "app";
-          program = "${program}";
-        };
-
-        apps.tf-apply = let 
-          program = pkgs.writers.writeBash "tf-plan" ''
-            export PROXMOX_VE_API_TOKEN="$(${agenix}/bin/agenix -d secrets/proxmox_api_token.age)"
-            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
-            cp ${tfJson} config.tf.json \
-              && ${pkgs.opentofu}/bin/tofu init \
-              && ${pkgs.opentofu}/bin/tofu plan -out tf_plan \
-              && ${pkgs.opentofu}/bin/tofu apply tf_plan
-          '';
-        in {
-          type = "app";
-          program = "${program}";
-        };
+        devShells.default = root.devShells.default;
+        apps = root.apps;
 
         # Super mega hack - `nix flake show` complains if packages.<system>.homeConfigurations
         # is not a derivation. So appease it by merging in pkgs.hello.
