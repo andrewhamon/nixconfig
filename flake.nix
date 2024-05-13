@@ -98,12 +98,7 @@
         ];
       };
 
-      nixosConfigurations."vader" = mkNixos {
-        modules = [
-          ./hosts/vader/configuration.nix
-        ];
-      };
-
+      nixosConfigurations.vader = root.nixosConfigurations.vader;
       nixosConfigurations.thumper = root.nixosConfigurations.thumper;
 
       deploy.nodes.router = mkNixosDeploy "router";

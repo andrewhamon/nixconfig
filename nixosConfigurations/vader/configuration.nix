@@ -4,7 +4,7 @@
   imports =
     [
       # Include the results of the hardware scan.
-      ../defaults/configuration.nix
+      ../../hosts/defaults/configuration.nix
       ./hardware-configuration.nix
     ];
 
