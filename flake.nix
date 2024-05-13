@@ -57,16 +57,6 @@
     let
       mkTree = import ./lib/mkTree.nix { };
       root = mkTree { inherit inputs; system = "invalid-system";};
-      mkPkgs = system: import inputs.nixpkgs {
-        config.allowUnfree = true;
-        system = system;
-      };
-
-      mkNixos = { system ? "x86_64-linux", modules }: inputs.nixpkgs.lib.nixosSystem {
-        inherit system modules;
-        pkgs = mkPkgs system;
-        specialArgs = { inherit inputs; };
-      };
 
       mkNixosDeploy = hostname:
         let
@@ -83,11 +73,7 @@
 
     in
     {
-      root = root;
-      nixosConfigurations.router = root.nixosConfigurations.router;
-      nixosConfigurations.nas = root.nixosConfigurations.nas;
-      nixosConfigurations.vader = root.nixosConfigurations.vader;
-      nixosConfigurations.thumper = root.nixosConfigurations.thumper;
+      nixosConfigurations = root.lib.cleanReadTreeAttrs root.nixosConfigurations;
 
       deploy.nodes.router = mkNixosDeploy "router";
       deploy.nodes.nas = mkNixosDeploy "nas";
@@ -109,7 +95,6 @@
       let
         realSystem = if system == "x86_64-darwin" then "aarch64-darwin" else system;
         root = mkTree { inherit inputs; system = realSystem; };
-        pkgs = mkPkgs system;
       in
       {
         devShells = root.lib.cleanReadTreeAttrs root.devShells;
@@ -117,7 +102,7 @@
 
         # Super mega hack - `nix flake show` complains if packages.<system>.homeConfigurations
         # is not a derivation. So appease it by merging in pkgs.hello.
-        packages.homeConfigurations = pkgs.hello // root.homeConfigurations;
+        packages.homeConfigurations = root.pkgs.hello // root.homeConfigurations;
       }
       );
 }
