@@ -1,8 +1,8 @@
-{ config, pkgs, inputs, ... }:
+{ root, pkgs, inputs, ... }:
 {
   imports = [
-    ./enable-flakes.nix
-    ./fonts.nix
+    root.nixosModules.enable-flakes
+    root.nixosModules.fonts
     inputs.agenix.nixosModules.default
   ];
 

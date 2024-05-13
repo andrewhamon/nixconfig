@@ -73,6 +73,7 @@
 
     in
     {
+      inherit root;
       nixosConfigurations = root.lib.cleanReadTreeAttrs root.nixosConfigurations;
 
       deploy.nodes.router = mkNixosDeploy "router";

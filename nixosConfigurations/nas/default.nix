@@ -1,7 +1,7 @@
 { root, ... }:
 root.lib.mkNixosConfiguration {
   modules = [
-    ../../hosts/defaults/configuration.nix
+    root.nixosModules.shared
     ./configuration.nix
   ];
 }
