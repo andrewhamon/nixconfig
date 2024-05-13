@@ -44,52 +44,17 @@
 
   outputs =
     { self
-    , darwin
     , deploy-rs
     , flake-utils
-    , home-manager
-    , nixos-generators
-    , nixpkgs
-    , terranix
-    , kit
     , ...
     }@inputs:
     let
       mkTree = import ./lib/mkTree.nix { };
-      root = mkTree { inherit inputs; system = "invalid-system";};
-
-      mkNixosDeploy = hostname:
-        let
-          nixos = self.nixosConfigurations.${hostname};
-          system = nixos.pkgs.system;
-          activate = inputs.deploy-rs.lib.${system}.activate.nixos nixos;
-        in
-        {
-          hostname = "${hostname}.platypus-banana.ts.net";
-          user = "root";
-          sshUser = "root";
-          profiles.system.path = activate;
-        };
-
     in
     {
-      inherit root;
-      nixosConfigurations = root.lib.cleanReadTreeAttrs root.nixosConfigurations;
-
-      deploy.nodes.router = mkNixosDeploy "router";
-      deploy.nodes.nas = mkNixosDeploy "nas";
-      deploy.nodes.vader = mkNixosDeploy "vader";
-      deploy.nodes.thumper = mkNixosDeploy "thumper";
-
-      installIso = nixos-generators.nixosGenerate {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/defaults/configuration.nix
-        ];
-        format = "install-iso";
-      };
-
+      root = mkTree { inherit inputs; system = "invalid-system";};
+      nixosConfigurations = self.root.lib.cleanReadTreeAttrs self.root.nixosConfigurations;
+      deploy = self.root.deploy;
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     } // flake-utils.lib.eachDefaultSystem
       (system:

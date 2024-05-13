@@ -30,6 +30,7 @@
     unzip
     zip
     gzip
+    zsh
   ];
 
   time.timeZone = "America/Los_Angeles";
