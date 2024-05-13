@@ -84,13 +84,7 @@
     in
     {
       root = root;
-      nixosConfigurations."router" = mkNixos {
-        modules = [
-          ./hosts/defaults/configuration.nix
-          ./hosts/router/configuration.nix
-        ];
-      };
-
+      nixosConfigurations.router = root.nixosConfigurations.router;
       nixosConfigurations.nas = root.nixosConfigurations.nas;
       nixosConfigurations.vader = root.nixosConfigurations.vader;
       nixosConfigurations.thumper = root.nixosConfigurations.thumper;
