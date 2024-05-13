@@ -1,4 +1,4 @@
-{ pkgs, inputs, root, ...}:
+{ pkgs, inputs, root, ... }:
 { username, modules, extraSpecialArgs }:
 let
   homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
@@ -10,8 +10,8 @@ inputs.home-manager.lib.homeManagerConfiguration {
   };
   modules = modules ++ [
     {
-        home.homeDirectory = homeDirectory;
-        home.username = username;
+      home.homeDirectory = homeDirectory;
+      home.username = username;
     }
   ];
 }

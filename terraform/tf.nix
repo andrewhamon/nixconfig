@@ -1,4 +1,5 @@
-{ config, lib, pkgs, inputs, ... }: let
+{ config, lib, pkgs, inputs, ... }:
+let
   proxmoxImage = inputs.nixos-generators.nixosGenerate {
     system = "x86_64-linux";
     specialArgs = { inherit inputs; };
@@ -25,7 +26,8 @@
     ];
     format = "proxmox-lxc";
   };
-in {
+in
+{
   terraform.required_providers.proxmox = {
     source = "bpg/proxmox";
     version = "0.54.0";
@@ -36,7 +38,7 @@ in {
       # API token set in flake.nix wrapper
       endpoint = "https://10.69.13.2:8006/";
       insecure = true;
-      tmp_dir  = "/var/tmp";
+      tmp_dir = "/var/tmp";
       ssh = {
         agent = true;
         username = "root";
@@ -76,7 +78,7 @@ in {
     disk = {
       datastore_id = "local-zfs";
       file_id = "local:iso/nixos_base_2.img";
-      interface    = "scsi0";
+      interface = "scsi0";
       size = 208;
     };
 
@@ -90,7 +92,7 @@ in {
       bridge = "vmbr0";
     };
 
-    serial_device = {};
+    serial_device = { };
 
     cpu = {
       cores = 4;
@@ -113,7 +115,7 @@ in {
       datastore_id = "local-zfs";
       version = "v2.0";
     };
-  
+
 
     depends_on = [
       "proxmox_virtual_environment_file.nixos_base"
@@ -128,7 +130,7 @@ in {
     disk = {
       datastore_id = "local-zfs";
       file_id = "local:iso/nixos_base_2.img";
-      interface    = "scsi0";
+      interface = "scsi0";
       size = 208;
     };
 
@@ -142,7 +144,7 @@ in {
       bridge = "vmbr0";
     };
 
-    serial_device = {};
+    serial_device = { };
 
     cpu = {
       cores = 4;
@@ -165,7 +167,7 @@ in {
       datastore_id = "local-zfs";
       version = "v2.0";
     };
-  
+
 
     depends_on = [
       "proxmox_virtual_environment_file.nixos_base"

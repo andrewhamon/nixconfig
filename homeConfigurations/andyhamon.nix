@@ -1,4 +1,4 @@
-{ root, ...}:
+{ root, ... }:
 root.lib.mkHomeConfiguration {
   username = "andyhamon";
   modules = [

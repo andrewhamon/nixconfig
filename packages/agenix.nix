@@ -1,7 +1,8 @@
 { pkgs, inputs, ... }:
 let
   agenixPkg = inputs.agenix.packages.${pkgs.system}.agenix;
-in pkgs.writeShellApplication {
+in
+pkgs.writeShellApplication {
   name = "agenix";
   runtimeInputs = with pkgs; [ rage age-plugin-yubikey ];
   text = ''

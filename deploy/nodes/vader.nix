@@ -1,2 +1,2 @@
-{ root, ...}:
+{ root, ... }:
 root.lib.mkNixosDeploy "vader"

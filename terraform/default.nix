@@ -1,4 +1,4 @@
-{ pkgs, root, inputs, ...}:
+{ pkgs, root, inputs, ... }:
 let
   terranix = inputs.terranix;
   json = terranix.lib.terranixConfiguration {
@@ -6,6 +6,7 @@ let
     modules = [ ./tf.nix ];
     extraArgs = { inherit root inputs; };
   };
-in {
+in
+{
   inherit json;
 }

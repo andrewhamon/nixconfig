@@ -52,7 +52,7 @@
       mkTree = import ./lib/mkTree.nix { };
     in
     {
-      root = mkTree { inherit inputs; system = "invalid-system";};
+      root = mkTree { inherit inputs; system = "invalid-system"; };
       nixosConfigurations = self.root.lib.cleanReadTreeAttrs self.root.nixosConfigurations;
       deploy = self.root.deploy;
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;

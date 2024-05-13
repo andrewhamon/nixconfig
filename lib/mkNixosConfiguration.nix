@@ -10,7 +10,8 @@ let
   systemRoot = root.lib.mkTree {
     inherit system inputs;
   };
-in inputs.nixpkgs.lib.nixosSystem {
+in
+inputs.nixpkgs.lib.nixosSystem {
   inherit system modules;
   pkgs = systemRoot.pkgs;
   specialArgs = {

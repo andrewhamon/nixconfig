@@ -8,7 +8,7 @@ in
     enable = true;
     systemd.enable = false;
     settings = {
-      monitor=",preferred,auto,auto";
+      monitor = ",preferred,auto,auto";
 
       exec-once = [
         "${pkgs.waybar}/bin/waybar"

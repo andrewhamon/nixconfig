@@ -16,10 +16,13 @@ let
     inherit inputs;
   };
 
-  mkRoot = system: let
-    args = mkArgs system;
-    path = ../.;
-    root = readTree { inherit args path; };
-  in root // args;
+  mkRoot = system:
+    let
+      args = mkArgs system;
+      path = ../.;
+      root = readTree { inherit args path; };
+    in
+    root // args;
 
-in mkRoot system
+in
+mkRoot system
