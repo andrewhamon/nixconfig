@@ -91,13 +91,7 @@
         ];
       };
 
-      nixosConfigurations."nas" = mkNixos {
-        modules = [
-          ./hosts/defaults/configuration.nix
-          ./hosts/nas/configuration.nix
-        ];
-      };
-
+      nixosConfigurations.nas = root.nixosConfigurations.nas;
       nixosConfigurations.vader = root.nixosConfigurations.vader;
       nixosConfigurations.thumper = root.nixosConfigurations.thumper;
 
