@@ -56,7 +56,7 @@
     }@inputs:
     let
       mkTree = import ./lib/mkTree.nix { };
-      root = mkTree { inherit inputs; system = "x86_64-linux";};
+      root = mkTree { inherit inputs; system = "invalid-system";};
       mkPkgs = system: import inputs.nixpkgs {
         config.allowUnfree = true;
         system = system;
@@ -104,13 +104,7 @@
         ];
       };
 
-      nixosConfigurations."thumper" = mkNixos {
-        modules = [
-          ./hosts/thumper/configuration.nix
-        ];
-      };
-
-
+      nixosConfigurations.thumper = root.nixosConfigurations.thumper;
 
       deploy.nodes.router = mkNixosDeploy "router";
       deploy.nodes.nas = mkNixosDeploy "nas";
