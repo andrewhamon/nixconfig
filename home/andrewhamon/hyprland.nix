@@ -6,12 +6,10 @@ in
 {
   wayland.windowManager.hyprland = {
     enable = true;
-    systemd.enable = false;
     settings = {
       monitor = ",preferred,auto,auto";
 
       exec-once = [
-        "${pkgs.waybar}/bin/waybar"
         "${pkgs.swaybg}/bin/swaybg -i ~/spidy.png"
         "${pkgs.swayidle}/bin/swayidle timeout ${toString lock_time} 'hyprctl dispatcher dpms off' resume 'hyprctl dispatcher dpms on' timeout ${toString (lock_grace + lock_time)} swaylock"
       ];

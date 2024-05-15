@@ -27,6 +27,7 @@
     wireguard-tools
     xdg-utils
     yubikey-manager
+    libnotify
   ] ++ (lib.optionals (!isDiscord) [
     # Since Discord also uses nix, there are some conflicts in my nix env
     redis
