@@ -1,10 +1,10 @@
 {
-  inputs.nixpkgs.url = "nixpkgs/nixos-23.11";
+  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
 
   inputs.darwin.url = "github:lnl7/nix-darwin/master";
   inputs.darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-  inputs.home-manager.url = "github:nix-community/home-manager/release-23.11";
+  inputs.home-manager.url = "github:nix-community/home-manager";
   inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.agenix.url = "github:ryantm/agenix";

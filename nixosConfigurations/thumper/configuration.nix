@@ -102,8 +102,11 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    enable = false;
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
   };
 
   # Enable CUPS to print documents.
@@ -137,9 +140,6 @@
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
-  # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "andrewhamon";
 
   hardware.opengl.enable = true;
   # List packages installed in system profile. To search, run:

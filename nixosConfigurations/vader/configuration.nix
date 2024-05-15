@@ -51,7 +51,10 @@
   services.xserver = {
     enable = false;
     layout = "us";
-    xkbVariant = "";
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
   };
 
   security.polkit.enable = true;
