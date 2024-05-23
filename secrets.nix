@@ -7,11 +7,11 @@ let
     "age1yubikey1q22jrgz9lpsg6qswva505mrl7gk40vv39acc9cfdkwz8ffa7ytsf5qanlrj" # keychain
     "age1yubikey1q0e6wwr0cwnsqvvaazfgkhmt43j44glwzvyygsa7tdmtgp98qczjcdtwmjp" # macbook pro 14
     "age1yubikey1qtpdv5gm6q0hv8xd7x5txqys5j7p579r08q9n2495vxkgj5kc9mm7l6uhdd" # desk yhubikey
+    "age1yubikey1qvpmtv4k576dxxp6z850w8acvw9vqx7cwdlszyw63rzcf0ydlmswxnlsa5m" # discord desk yubikey
   ];
 in
 {
   "secrets/cloudflare.age".publicKeys = management ++ [ router ];
-  "secrets/github_token.age".publicKeys = management;
   "secrets/grafana.age".publicKeys = management ++ [ nas ];
   "secrets/lego_cloudflare_env.age".publicKeys = management ++ [ nas ];
   "secrets/mulvad.age".publicKeys = management ++ [ nas ];
@@ -27,6 +27,7 @@ in
 
   "secrets/id_ed25519_sk_rk_keychain-yubikey.age".publicKeys = management;
   "secrets/id_ed25519_sk_rk_desk-yubikey.age".publicKeys = management;
+  "secrets/id_ed25519_sk_rk_discord-desk.age".publicKeys = management;
 
   "secrets/proxmox_api_token.age".publicKeys = management;
 }
