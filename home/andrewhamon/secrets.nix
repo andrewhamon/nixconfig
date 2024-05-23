@@ -19,12 +19,16 @@ in
     installationType = "activation";
     mount = "${config.xdg.configHome}/secrets";
 
-    file."keychain_yubikey_ssh_key" = {
+    file.keychain_yubikey_ssh_key = {
       source = ../../secrets/id_ed25519_sk_rk_keychain-yubikey.age;
     };
 
-    file."desk_yubikey_ssh_key" = {
+    file.desk_yubikey_ssh_key = {
       source = ../../secrets/id_ed25519_sk_rk_desk-yubikey.age;
+    };
+
+    file.discord_desk_yubikey_ssh_key = {
+      source = ../../secrets/id_ed25519_sk_rk_discord-desk.age;
     };
   };
 

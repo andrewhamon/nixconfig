@@ -27,6 +27,10 @@
         if [ -f ${config.homeage.file.keychain_yubikey_ssh_key.path} ]; then
           ssh-add ${config.homeage.file.keychain_yubikey_ssh_key.path}
         fi
+
+        if [ -f ${config.homeage.file.discord_desk_yubikey_ssh_key.path} ]; then
+          ssh-add ${config.homeage.file.discord_desk_yubikey_ssh_key.path}
+        fi
       else
         source ''${HOME}/.ssh/agent-env
       fi
