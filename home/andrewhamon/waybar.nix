@@ -11,7 +11,7 @@ in
       height = 30;
       spacing = 4;
       modules-left = [ "hyprland/workspaces" "custom/media" ];
-      modules-right = [ "pulseaudio" "network" "cpu" "memory" "clock" "tray" "custom/notification" ];
+      modules-right = [ "pulseaudio" "network" "cpu" "memory" "clock" "tray" "battery" "custom/notification" ];
       "hyprland/workspaces" = {
         disable-scroll = true;
         all-outputs = true;
