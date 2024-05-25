@@ -35,6 +35,14 @@ in
         scroll_method = "2fg";
       };
 
+      device = [
+        {
+          # Swap alt and super on Thinkpad keyboard (i.e. use macos layout)
+          name = "at-translated-set-2-keyboard";
+          kb_options = "altwin:swap_alt_win";
+        }
+      ];
+
       misc = {
         force_default_wallpaper = 0;
       };
