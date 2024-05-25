@@ -66,4 +66,7 @@
 
   users.users.root.hashedPassword = "$y$j9T$Ycl/ECpaJpRKUfzy0ABiO0$pZ3YsIxu4u0BG1bWDCbN532xGYS8mNsBCGl07F0/fW3";
   programs.tmux.enable = true;
+
+  # Allow non-nixos binaries to run, such as vscode-remote
+  programs.nix-ld.enable = true;
 }
