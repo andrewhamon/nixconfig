@@ -80,6 +80,7 @@ in
       "$mainMod" = "SUPER";
 
       bind = [
+        "$mainMod CTRL SHIFT, 4, exec, ${pkgs.grimblast}/bin/grimblast --freeze --notify copy area"
         "$mainMod SHIFT, return, exec, kitty -o allow_remote_control=yes"
         "$mainMod, P, exec, bemenu-run"
         "$mainMod SHIFT, C, killactive,"
