@@ -23,7 +23,7 @@ let
   lanV4DhcpEnd = "10.69.42.200";
 
   nasIpAddress = "10.69.42.2";
-  nasMacAddress = "9c:6b:00:45:2d:51";
+  nasMacAddress = "50:6b:4b:0a:67:84";
 in
 
 {
