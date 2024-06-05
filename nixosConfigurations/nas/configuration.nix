@@ -90,27 +90,4 @@
 
   # See https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion
   system.stateVersion = "22.05"; # Did you read the comment?
-
-  age.secrets.grafana.file = ../../secrets/grafana.age;
-  age.secrets.grafana.owner = "grafana";
-
-  services.grafana.enable = true;
-  services.grafana.settings.server.domain = "grafana.adh.io";
-  services.grafana.settings.server.protocol = "http";
-  services.grafana.settings.security.secret_key = "$__file{${config.age.secrets.grafana.path}}";
-
-  services.nginx.virtualHosts."grafana.adh.io" = {
-    enableACME = true;
-    onlySSL = true;
-    locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
-      proxyWebsockets = true;
-      extraConfig = ''
-        proxy_set_header   Host               $host;
-        proxy_set_header   X-Real-IP          $proxy_protocol_addr;
-        proxy_set_header   X-Forwarded-Proto  $scheme;
-        proxy_set_header   X-Forwarded-For    $proxy_protocol_addr;
-      '';
-    };
-  };
 }
