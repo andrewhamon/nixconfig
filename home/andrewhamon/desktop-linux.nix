@@ -42,7 +42,6 @@ in
     virt-manager
     volctl
     waybar
-    winbox
     wl-clipboard
     wlr-randr
     wpaperd

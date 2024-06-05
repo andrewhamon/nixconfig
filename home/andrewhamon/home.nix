@@ -41,6 +41,7 @@
   home.sessionVariables = {
     GITHUB_TOKEN = "$(cat ~/.config/secrets/github_token)";
     DIRENV_LOG_FORMAT = "";
+    NIXOS_OZONE_WL = "1";
   };
 
   home.shellAliases = {

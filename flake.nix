@@ -63,10 +63,7 @@
       {
         devShells = root.lib.cleanReadTreeAttrs root.devShells;
         apps = root.lib.cleanReadTreeAttrs root.apps;
-
-        # Super mega hack - `nix flake show` complains if packages.<system>.homeConfigurations
-        # is not a derivation. So appease it by merging in pkgs.hello.
-        packages.homeConfigurations = root.pkgs.hello // root.homeConfigurations;
+        packages = root.lib.cleanReadTreeAttrs root.packages;
       }
       );
 }
