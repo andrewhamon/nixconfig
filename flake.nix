@@ -1,5 +1,5 @@
 {
-  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
+  inputs.nixpkgs.url = "nixpkgs/nixos-24.05";
 
   inputs.darwin.url = "github:lnl7/nix-darwin/master";
   inputs.darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -18,8 +18,6 @@
   inputs.nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.authfish.url = "github:andrewhamon/authfish";
-  inputs.authfish.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.authfish.inputs.flake-utils.follows = "flake-utils";
 
   inputs.nvidia-patch.url = "github:arcnmx/nvidia-patch.nix";
   inputs.nvidia-patch.inputs.nixpkgs.follows = "nixpkgs";
