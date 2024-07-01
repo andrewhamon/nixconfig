@@ -28,6 +28,7 @@
     xdg-utils
     yubikey-manager
     libnotify
+    age-plugin-yubikey
   ] ++ (lib.optionals (!isDiscord) [
     # Since Discord also uses nix, there are some conflicts in my nix env
     redis
