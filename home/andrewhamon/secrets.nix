@@ -15,6 +15,13 @@ in
   ];
 
   homeage = {
+    pkg = pkgs.writeShellApplication {
+      name = "age";
+      runtimeInputs = with pkgs; [ age age-plugin-yubikey ];
+      text = ''
+        age "$@"
+      '';
+    };
     identityPaths = [ "/tmp/current-yubikey-identities" ];
     installationType = "activation";
     mount = "${config.xdg.configHome}/secrets";
