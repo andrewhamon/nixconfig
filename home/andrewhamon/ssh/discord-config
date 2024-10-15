@@ -21,6 +21,26 @@ Host coder.a.main
 	UserKnownHostsFile=/dev/null
 	LogLevel ERROR
 	ProxyCommand /Users/andyhamon/discord/discord/.local/bin/coder2 --global-config "/Users/andyhamon/Library/Application Support/coderv2" ssh --stdio a.main
+	ServerAliveCountMax 3
+	ServerAliveInterval 60
+	ForwardAgent yes
+Host coder.b
+	HostName coder.b
+	ConnectTimeout=0
+	StrictHostKeyChecking=no
+	UserKnownHostsFile=/dev/null
+	LogLevel ERROR
+	ProxyCommand /Users/andyhamon/discord/discord/.local/bin/coder2 --global-config "/Users/andyhamon/Library/Application Support/coderv2" ssh --stdio b
+	ForwardAgent yes
+	ServerAliveCountMax 3
+	ServerAliveInterval 60
+Host coder.b.main
+	HostName coder.b.main
+	ConnectTimeout=0
+	StrictHostKeyChecking=no
+	UserKnownHostsFile=/dev/null
+	LogLevel ERROR
+	ProxyCommand /Users/andyhamon/discord/discord/.local/bin/coder2 --global-config "/Users/andyhamon/Library/Application Support/coderv2" ssh --stdio b.main
 	ForwardAgent yes
 	ServerAliveCountMax 3
 	ServerAliveInterval 60

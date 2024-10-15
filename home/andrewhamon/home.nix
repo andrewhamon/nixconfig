@@ -2,14 +2,17 @@
 {
   imports = [
     ./nvim.nix
+    ./shell.nix
   ];
 
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
     inputs.nil.packages."${pkgs.system}".default
-
+    gh
+    gh-dash
     direnv
+    bun
     fd
     font-awesome
     git
@@ -40,7 +43,7 @@
   ];
 
   home.sessionVariables = {
-    GITHUB_TOKEN = "$(cat ~/.config/secrets/github_token)";
+    # GITHUB_TOKEN = "$(cat ~/.config/secrets/github_token)";
     DIRENV_LOG_FORMAT = "";
     NIXOS_OZONE_WL = "1";
   };
@@ -55,23 +58,6 @@
     '';
   };
 
-  programs.zsh = {
-    enable = true;
-    dotDir = ".config/zsh";
-    autosuggestion.enable = true;
-    enableCompletion = true;
-    autocd = false;
-    syntaxHighlighting.enable = true;
-    initExtra = ''
-      # Keep nix in the PATH even after macos upgrades which overwrite files in /etc
-      [[ ! $(command -v nix) && -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]] && source "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
-    '';
-  };
-
-  programs.zsh.oh-my-zsh.enable = true;
-  programs.zsh.oh-my-zsh.theme = "robbyrussell";
-
-  programs.fzf.enable = true;
 
   programs.ssh.enable = true;
   programs.ssh.package = pkgs.openssh;

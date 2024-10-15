@@ -27,6 +27,7 @@
   };
 
   programs.ssh.includes = [
-    "${./ssh/discord-config}"
+    "/Users/andyhamon/nixconfig/home/andrewhamon/ssh/discord-config"
+    "/Users/andrewhamon/nixconfig/home/andrewhamon/ssh/discord-config"
   ];
 }
