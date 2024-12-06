@@ -21,7 +21,7 @@
     ncdu
     nixpkgs-fmt
     nmap
-    nodejs
+    (pkgs.lib.lowPrio nodejs)
     ripgrep
     ruby
     tmate
