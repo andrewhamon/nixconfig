@@ -1,4 +1,4 @@
-{ root, pkgs, inputs, ... }:
+{ root, pkgs, lib, inputs, ... }:
 {
   imports = [
     root.nixosModules.enable-flakes
@@ -33,10 +33,15 @@
     zsh
   ];
 
+  # temporary: enable latest kernel (which doesn't support zfs) for some
+  # hardware debugging.
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  boot.supportedFilesystems = lib.mkForce [ "btrfs" "cifs" "f2fs" "ntfs" "vfat" "xfs" ];
+
   time.timeZone = "America/Los_Angeles";
 
   services.openssh.enable = true;
-  services.openssh.settings.PermitRootLogin = "prohibit-password";
+  services.openssh.settings.PermitRootLogin = lib.mkDefault "prohibit-password";
   services.openssh.settings.PasswordAuthentication = false;
 
   services.tailscale.enable = true;
@@ -71,7 +76,7 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILyChNHysPl+l01JT1cldQcs9oy3MnXBs0Fjl5WWY6bk 1Password"
   ];
 
-  users.users.root.hashedPassword = "$y$j9T$Ycl/ECpaJpRKUfzy0ABiO0$pZ3YsIxu4u0BG1bWDCbN532xGYS8mNsBCGl07F0/fW3";
+  users.users.root.hashedPassword = lib.mkDefault "$y$j9T$Ycl/ECpaJpRKUfzy0ABiO0$pZ3YsIxu4u0BG1bWDCbN532xGYS8mNsBCGl07F0/fW3";
   programs.tmux.enable = true;
 
   # Allow non-nixos binaries to run, such as vscode-remote
