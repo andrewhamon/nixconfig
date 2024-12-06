@@ -4,7 +4,7 @@
   programs.atuin.settings = {
     enter_accept = false;
   };
-  
+
   programs.zsh = {
     enable = true;
     dotDir = ".config/zsh";

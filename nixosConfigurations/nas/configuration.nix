@@ -20,6 +20,7 @@
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # hardware.nvidia.patch.enable = true;
+  hardware.nvidia.open = true;
 
   environment.systemPackages = with pkgs; [
     smartmontools
@@ -62,18 +63,16 @@
 
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.devNodes = "/dev/";
+  # boot.zfs.package = pkgs.linuxPackages_6_11.zfs_unstable;
 
   services.zfs.trim.enable = true;
   services.zfs.autoScrub.enable = true;
   services.zfs.autoScrub.pools = [ "rpool" "tank" ];
-  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+  boot.kernelPackages = pkgs.linuxPackages_6_6;
 
   networking.hostName = "nas";
   networking.domain = "lan.adh.io";
   networking.hostId = "e20e1d8d";
-
-  services.octoprint.enable = true;
-
 
   networking.useDHCP = true;
   networking.interfaces.enp66s0f0.useDHCP = true;

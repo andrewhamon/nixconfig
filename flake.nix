@@ -1,10 +1,11 @@
 {
-  inputs.nixpkgs.url = "nixpkgs/nixos-24.05";
+  inputs.nixpkgs.url = "nixpkgs/nixos-24.11";
+  inputs.nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
   inputs.darwin.url = "github:lnl7/nix-darwin/master";
   inputs.darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-  inputs.home-manager.url = "github:nix-community/home-manager";
+  inputs.home-manager.url = "github:nix-community/home-manager/release-24.11";
   inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.agenix.url = "github:ryantm/agenix";
@@ -52,7 +53,7 @@
     {
       root = mkTree { inherit inputs; system = "invalid-system"; };
       nixosConfigurations = self.root.lib.cleanReadTreeAttrs self.root.nixosConfigurations;
-      deploy = self.root.deploy;
+      deploy.nodes = self.root.lib.cleanReadTreeAttrs self.root.deploy.nodes;
     } // flake-utils.lib.eachDefaultSystem
       (system:
       let

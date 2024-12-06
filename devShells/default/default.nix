@@ -11,5 +11,6 @@ mkShell {
     opentofu
     rage
     root.packages.agenix
+    pkgs.incus.client
   ];
 }

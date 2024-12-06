@@ -104,7 +104,7 @@ in
         ExecStop = "ip netns del ${cfg.name}";
       };
       script = ''
-        ipCmd="${pkgs.iproute}/bin/ip"
+        ipCmd="${pkgs.iproute2}/bin/ip"
         set -x
 
         # Delete the ns if it already exists. Mostly handy for developemt, in
