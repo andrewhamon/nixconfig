@@ -33,11 +33,6 @@
     zsh
   ];
 
-  # temporary: enable latest kernel (which doesn't support zfs) for some
-  # hardware debugging.
-  # boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-  # boot.supportedFilesystems = lib.mkForce [ "btrfs" "cifs" "f2fs" "ntfs" "vfat" "xfs" ];
-
   time.timeZone = "America/Los_Angeles";
 
   services.openssh.enable = true;

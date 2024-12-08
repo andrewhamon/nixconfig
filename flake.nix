@@ -41,6 +41,9 @@
   inputs.kit.url = "github:tvlfyi/kit";
   inputs.kit.flake = false;
 
+  inputs.disko.url = "github:nix-community/disko";
+  inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
+
   outputs =
     { self
     , deploy-rs
