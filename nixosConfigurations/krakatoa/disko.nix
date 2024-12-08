@@ -65,6 +65,11 @@ in
         '';
 
         datasets = {
+          "local" = {
+            type = "zfs_fs";
+            mountpoint = null;
+          };
+
           "local/root" = {
             type = "zfs_fs";
             mountpoint = "/";
@@ -73,6 +78,11 @@ in
           "local/nix" = {
             type = "zfs_fs";
             mountpoint = "/nix";
+          };
+
+          "safe" = {
+            type = "zfs_fs";
+            mountpoint = null;
           };
 
           "safe/home" = {
