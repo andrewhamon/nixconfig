@@ -2,6 +2,9 @@
 -- wezterm already imported by home manager
 local config = wezterm.config_builder()
 
+-- https://github.com/wez/wezterm/issues/5990#issuecomment-2509141230
+config.front_end = "WebGpu"
+
 config.color_scheme = 'Tokyo Night'
 
 -- config.font = wezterm.font({ family = "gg sans mono" })
