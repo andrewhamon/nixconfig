@@ -25,5 +25,7 @@
   #   ssh.port = 2222;
   # };
 
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
+
   system.stateVersion = "24.11";
 }
