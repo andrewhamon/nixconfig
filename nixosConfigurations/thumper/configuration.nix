@@ -12,6 +12,7 @@
       inputs.home-manager.nixosModules.home-manager
       ./postgres.nix
       root.nixosModules.winbox
+      ./steam.nix
     ];
 
   # boot.kernelPackages = pkgs.linuxPackages_latest;
