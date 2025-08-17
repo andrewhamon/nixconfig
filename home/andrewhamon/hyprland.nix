@@ -111,6 +111,8 @@ in
         "$mainMod, 9, workspace, 9"
         "$mainMod, 0, workspace, 10"
 
+        "$mainMod SHIFT, F, fullscreen"
+
         # Move active window to a workspace with mainMod + SHIFT + [0-9]
         "$mainMod SHIFT, 1, movetoworkspace, 1"
         "$mainMod SHIFT, 2, movetoworkspace, 2"
@@ -144,6 +146,10 @@ in
         ", XF86AudioPlay, exec, playerctl play-pause"
         ", XF86AudioNext, exec, playerctl next"
         ", XF86AudioPrev, exec, playerctl previous"
+      ];
+
+      windowrulev2 = [
+        "idleinhibit fullscreen, fullscreen:1"
       ];
     };
   };
