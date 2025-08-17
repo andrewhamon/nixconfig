@@ -31,6 +31,7 @@
     zip
     gzip
     zsh
+    qpwgraph
   ];
 
   time.timeZone = "America/Los_Angeles";
