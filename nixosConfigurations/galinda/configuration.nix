@@ -2,12 +2,19 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./audio.nix
+    ./hyprland.nix
+    ./kde.nix
+    ./streaming.nix
+    ./ai.nix
     inputs.disko.nixosModules.disko
   ];
 
   networking.hostName = "galinda";
   networking.domain = "hamcorp.net";
   networking.hostId = "8243f0ad";
+
+  services.pcscd.enable = true;
 
   systemd.network.enable = true;
   networking.useNetworkd = true;
@@ -25,7 +32,16 @@
   #   ssh.port = 2222;
   # };
 
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  boot.kernelPackages = pkgs.linuxPackages_6_14;
+
+  services.flatpak.enable = true;
+
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia.open = true;
+
+  hardware.graphics.enable = true;
+
+  hardware.enableRedistributableFirmware = true;
 
   system.stateVersion = "24.11";
 }
