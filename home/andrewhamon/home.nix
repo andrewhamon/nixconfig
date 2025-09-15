@@ -17,16 +17,18 @@
     font-awesome
     git
     home-manager
+    hyperfine
     mpv
     ncdu
     nixpkgs-fmt
     nmap
     (pkgs.lib.lowPrio nodejs)
+    #raycast
     ripgrep
     ruby
     tmate
     tree
-    vscode
+    # vscode
     wireguard-tools
     xdg-utils
     yubikey-manager
@@ -57,6 +59,8 @@
     clear = ''
       printf "\e[H\e[22J"
     '';
+    wip = "git commit -m WIP -n";
+    gfm = "git fetch origin main:main";
   };
 
 
@@ -68,6 +72,9 @@
 
     delta = {
       enable = true;
+      options = {
+        navigate = true;
+      };
     };
 
     extraConfig = (import ./git.nix);

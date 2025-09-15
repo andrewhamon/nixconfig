@@ -9,6 +9,7 @@
     lima
     colima
     docker
+    # raycast
   ];
 
   programs.zsh = {

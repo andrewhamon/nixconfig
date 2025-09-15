@@ -4,44 +4,25 @@
 # You should not hand-edit this section unless you are removing it, all
 # changes will be lost when running "coder config-ssh".
 #
-Host coder.a
-	HostName coder.a
+Host coder.*
+	ForwardAgent yes
+	ServerAliveCountMax 3
+	ServerAliveInterval 60
 	ConnectTimeout=0
 	StrictHostKeyChecking=no
 	UserKnownHostsFile=/dev/null
 	LogLevel ERROR
-	ProxyCommand /Users/andyhamon/discord/discord/.local/bin/coder2 --global-config "/Users/andyhamon/Library/Application Support/coderv2" ssh --stdio a
+	ProxyCommand /Users/andyhamon/discord/discord/.local/bin/coder --global-config "/Users/andyhamon/Library/Application Support/coderv2" ssh --stdio --ssh-host-prefix coder. %h
+
+Host *.coder
 	ForwardAgent yes
 	ServerAliveCountMax 3
 	ServerAliveInterval 60
-Host coder.a.main
-	HostName coder.a.main
 	ConnectTimeout=0
 	StrictHostKeyChecking=no
 	UserKnownHostsFile=/dev/null
 	LogLevel ERROR
-	ProxyCommand /Users/andyhamon/discord/discord/.local/bin/coder2 --global-config "/Users/andyhamon/Library/Application Support/coderv2" ssh --stdio a.main
-	ServerAliveCountMax 3
-	ServerAliveInterval 60
-	ForwardAgent yes
-Host coder.b
-	HostName coder.b
-	ConnectTimeout=0
-	StrictHostKeyChecking=no
-	UserKnownHostsFile=/dev/null
-	LogLevel ERROR
-	ProxyCommand /Users/andyhamon/discord/discord/.local/bin/coder2 --global-config "/Users/andyhamon/Library/Application Support/coderv2" ssh --stdio b
-	ForwardAgent yes
-	ServerAliveCountMax 3
-	ServerAliveInterval 60
-Host coder.b.main
-	HostName coder.b.main
-	ConnectTimeout=0
-	StrictHostKeyChecking=no
-	UserKnownHostsFile=/dev/null
-	LogLevel ERROR
-	ProxyCommand /Users/andyhamon/discord/discord/.local/bin/coder2 --global-config "/Users/andyhamon/Library/Application Support/coderv2" ssh --stdio b.main
-	ForwardAgent yes
-	ServerAliveCountMax 3
-	ServerAliveInterval 60
+
+Match host *.coder !exec "/Users/andyhamon/discord/discord/.local/bin/coder connect exists %h"
+	ProxyCommand /Users/andyhamon/discord/discord/.local/bin/coder --global-config "/Users/andyhamon/Library/Application Support/coderv2" ssh --stdio --hostname-suffix coder %h
 # ------------END-CODER------------
