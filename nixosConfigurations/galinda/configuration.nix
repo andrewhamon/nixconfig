@@ -10,6 +10,10 @@
     inputs.disko.nixosModules.disko
   ];
 
+  environment.systemPackages = [
+    pkgs.bambu-studio
+  ];
+
   networking.hostName = "galinda";
   networking.domain = "hamcorp.net";
   networking.hostId = "8243f0ad";
