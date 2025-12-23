@@ -1,2 +1,2 @@
 { pkgs, inputs, ... }:
-inputs.disko.packages."${pkgs.system}".disko-install
+if pkgs.stdenv.isDarwin then pkgs.hello else inputs.disko.packages."${pkgs.system}".disko-install
