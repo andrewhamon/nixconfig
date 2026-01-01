@@ -50,6 +50,8 @@
   programs.zsh.oh-my-zsh.enable = true;
   programs.zsh.oh-my-zsh.theme = "ys";
 
+  programs.direnv.enable = true;
+
   security.sudo.wheelNeedsPassword = false;
   users.users.andrewhamon = {
     isNormalUser = true;
