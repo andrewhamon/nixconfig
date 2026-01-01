@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   programs.atuin.enable = true;
   programs.atuin.settings = {
@@ -7,7 +7,7 @@
 
   programs.zsh = {
     enable = true;
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     autosuggestion.enable = true;
     enableCompletion = true;
     autocd = false;
@@ -15,6 +15,7 @@
     initExtra = ''
       # Keep nix in the PATH even after macos upgrades which overwrite files in /etc
       [[ ! $(command -v nix) && -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]] && source "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+      export PATH="$PATH:/Users/andyhamon/discord/discord/.local/bin"
     '';
   };
 

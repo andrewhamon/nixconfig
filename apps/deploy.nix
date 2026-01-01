@@ -1,5 +1,5 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 {
   type = "app";
-  program = "${inputs.deploy-rs.defaultPackage.${pkgs.system}}/bin/deploy";
+  program = "${pkgs.deploy-rs}/bin/deploy";
 }

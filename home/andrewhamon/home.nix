@@ -67,17 +67,17 @@
   programs.ssh.enable = true;
   programs.ssh.package = pkgs.openssh;
 
-  programs.git = {
-    enable = true;
-
-    delta = {
+  programs.delta = {
       enable = true;
       options = {
         navigate = true;
       };
     };
 
-    extraConfig = (import ./git.nix);
+  programs.git = {
+    enable = true;
+
+    settings = (import ./git.nix);
 
     includes = [
       (import ./git-work.nix)
