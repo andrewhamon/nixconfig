@@ -35,6 +35,7 @@
     libnotify
     age-plugin-yubikey
     gleam
+    duckdb
   ] ++ (lib.optionals (!isDiscord) [
     # Since Discord also uses nix, there are some conflicts in my nix env
     redis
