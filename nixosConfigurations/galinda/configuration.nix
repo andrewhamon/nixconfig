@@ -6,8 +6,8 @@
     ./hyprland.nix
     ./kde.nix
     ./streaming.nix
-    ./ai.nix
     inputs.disko.nixosModules.disko
+    # ./ai.nix
   ];
 
   environment.systemPackages = [
@@ -36,7 +36,7 @@
   #   ssh.port = 2222;
   # };
 
-  boot.kernelPackages = pkgs.linuxPackages_6_14;
+  boot.kernelPackages = pkgs.linuxPackages_6_16;
 
   services.flatpak.enable = true;
 
