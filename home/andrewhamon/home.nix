@@ -36,6 +36,7 @@
     age-plugin-yubikey
     gleam
     duckdb
+    zed-editor
   ] ++ (lib.optionals (!isDiscord) [
     # Since Discord also uses nix, there are some conflicts in my nix env
     redis

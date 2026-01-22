@@ -10,8 +10,10 @@ in
       monitor = ",preferred,auto,auto";
 
       exec-once = [
-        "${pkgs.swaybg}/bin/swaybg -i ~/spidy.png"
+        # "${pkgs.swaybg}/bin/swaybg -i ~/spidy.png"
         "${pkgs.swayidle}/bin/swayidle timeout ${toString lock_time} 'hyprctl dispatcher dpms off' resume 'hyprctl dispatcher dpms on' timeout ${toString (lock_grace + lock_time)} swaylock"
+        "${pkgs.ashell}/bin/ashell -c /home/andrewhamon/nixconfig/home/andrewhamon/ashell.toml"
+        "${pkgs.swaynotificationcenter}/bin/swaync"
       ];
 
       # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
@@ -75,10 +77,6 @@ in
       master = {
         #new_is_master = true;
         new_on_top = false;
-      };
-
-      gestures = {
-        workspace_swipe = false;
       };
 
       "$mainMod" = "SUPER";

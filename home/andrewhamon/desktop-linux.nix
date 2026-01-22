@@ -8,8 +8,6 @@ in
     ./desktop.nix
     ./cursor.nix
     ./hyprland.nix
-    ./waybar.nix
-    ./notifications.nix
   ];
 
   home.packages = with pkgs; [
@@ -39,9 +37,9 @@ in
     swaybg
     swayidle
     swaylock
+    swaynotificationcenter
     virt-manager
     volctl
-    waybar
     wl-clipboard
     wlr-randr
     wpaperd

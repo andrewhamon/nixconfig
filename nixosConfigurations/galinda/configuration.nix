@@ -27,8 +27,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.systemd.enable = true;
-  boot.initrd.systemd.emergencyAccess = true;
-  boot.initrd.systemd.initrdBin = [ pkgs.iproute2 pkgs.unixtools.nettools ];
+  boot.initrd.systemd.emergencyAccess = false;
+  # boot.initrd.systemd.initrdBin = [ pkgs.iproute2 pkgs.unixtools.net-tools ];
   # boot.initrd.network = {
   #   enable = true;
   #   ssh.enable = true;
@@ -36,7 +36,7 @@
   #   ssh.port = 2222;
   # };
 
-  boot.kernelPackages = pkgs.linuxPackages_6_16;
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
 
   services.flatpak.enable = true;
 
