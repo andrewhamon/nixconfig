@@ -1,7 +1,7 @@
 {...}:
 let
   rpoolName = "rpool";
-  rootDevice = "/dev/disk/by-id/nvme-WD_BLACK_SN850X_1000GB_23116K800567";
+  rootDevice = "/dev/disk/by-id/nvme-SHPP41-2000GM_BNE4N55271130533V";
 in
 {
   disko.devices = {
@@ -54,8 +54,8 @@ in
           atime = "on";
           relatime = "on";
           compression = "lz4";
-          encryption = "aes-256-gcm";
-          keyformat = "passphrase";
+          # encryption = "aes-256-gcm";
+          # keyformat = "passphrase";
           normalization="formD";
           utf8only="on";
         };

@@ -17,10 +17,13 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.systemd.enable = true;
   boot.initrd.systemd.emergencyAccess = true;
-  boot.initrd.systemd.initrdBin = [ pkgs.iproute2 pkgs.unixtools.nettools ];
+  boot.initrd.systemd.initrdBin = [ pkgs.iproute2 pkgs.unixtools.net-tools ];
   boot.initrd.network = {
-    enable = true;
+    enable = false;
     ssh.enable = true;
+    # generate with:
+    #   sudo mkdir -p /etc/secrets/initrd
+    #   sudo ssh-keygen -t ed25519 -f /etc/secrets/initrd/ssh_host_ed25519_key
     ssh.hostKeys = [ "/etc/secrets/initrd/ssh_host_ed25519_key" ];
     ssh.port = 2222;
   };
