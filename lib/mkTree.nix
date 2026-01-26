@@ -12,6 +12,7 @@ let
         "aspnetcore-runtime-6.0.36"
         "dotnet-sdk-wrapped-6.0.428"
         "dotnet-sdk-6.0.428"
+        "1password-cli-2.32.0"
       ];
     };
   };

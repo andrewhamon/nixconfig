@@ -13,7 +13,6 @@ in
   home.packages = with pkgs; [
     inputs.roc.packages."${pkgs.stdenv.hostPlatform.system}".cli
 
-    _1password-gui
     bemenu
     bluez
     brightnessctl
