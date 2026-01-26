@@ -104,39 +104,40 @@ in
   services.dnsmasq = {
     enable = true;
     resolveLocalQueries = true;
-    servers = dnsServers;
-    extraConfig = ''
+    settings = {
+      server = dnsServers;
       # Enable DHCP logs
-      log-dhcp
-
-      # Uncomment to enable dns logs. They are quite noisy.
-      # log-queries
-
+      log-dhcp = true;
       # never forward queries for plain names, without dots or domain parts, to
       # upstream nameservers
-      domain-needed
+      domain-needed = true;
+      # logs are noiy
+      log-queries = false;
+      no-resolv = true;
+      no-hosts = true;
+      bogus-priv = true;
+      dhcp-authoritative = true;
 
-      # Don't listen on WAN
-      except-interface=${wanInterface}
+      local = "/lan.${domain}/";
+      domain = "lan.${domain}";
 
-      no-resolv
-      no-hosts
+      dhcp-range = [
+       "${lanInterface},${lanV4DhcpStart},${lanV4DhcpEnd},12h"
+       "mgmt13,10.69.13.100,10.69.13.200,12h"
 
-      bogus-priv
+      ];
+      dhcp-option = [
+        "${lanInterface},option:router,${lanV4Address}"
+        "mgmt13,option:router,10.69.13.1"
+      ];
+      dhcp-host = [
+        "${nasMacAddress},${nasIpAddress},nas.lan.adh.io"
+        "F4:90:EA:01:9A:63,10.69.42.5,krakatoa.lan.adh.io"
+      ];
 
-      local=/lan.${domain}/
-      domain=lan.${domain}
+      except-interface = wanInterface;
 
-      dhcp-range=${lanInterface},${lanV4DhcpStart},${lanV4DhcpEnd},12h
-      dhcp-option=${lanInterface},option:router,${lanV4Address}
-      dhcp-host=${lanInterface},${nasMacAddress},${nasIpAddress}
-
-      # DHCP for management network
-      dhcp-range=mgmt13,10.69.13.100,10.69.13.200,12h
-      dhcp-option=mgmt13,option:router,10.69.13.1
-
-      dhcp-authoritative
-    '';
+    };
   };
 
   age.secrets.cloudflare.file = ../../secrets/cloudflare.age;
@@ -150,7 +151,7 @@ in
     username = "and.ham95@gmail.com";
     passwordFile = config.age.secrets.cloudflare.path;
     interval = "10min";
-    use = "if, if=${wanInterface}";
+    usev4 = "if, if=${wanInterface}";
   };
 
   services.haproxy = {
@@ -170,7 +171,7 @@ in
       frontend nas_ssh_2222
         bind :2222
         default_backend nas_ssh
-    
+
       backend nas_http
         server s1 ${nasIpAddress}:80
 

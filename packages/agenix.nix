@@ -1,6 +1,6 @@
 { pkgs, inputs, ... }:
 let
-  agenixPkg = inputs.agenix.packages.${pkgs.system}.agenix;
+  agenixPkg = inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.agenix;
 in
 pkgs.writeShellApplication {
   name = "agenix";

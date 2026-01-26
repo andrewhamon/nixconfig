@@ -1,2 +1,2 @@
 { root, ... }:
-root.lib.mkNixosDeploy "vader"
+root.lib.mkNixosDeploy { name = "vader"; }

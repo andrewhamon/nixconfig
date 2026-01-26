@@ -57,7 +57,7 @@ in
 
   # Set up transmission
   config = mkIf cfg.enable {
-    services.namespaced-wg.enable = true;
+    services.namespaced-wg.enable = false;
     services.namespaced-wg.name = cfg.netNamespaceName;
     services.namespaced-wg.ips = cfg.wgIps;
     services.namespaced-wg.peerPublicKey = cfg.wgPeerPublicKey;

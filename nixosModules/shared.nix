@@ -48,8 +48,8 @@
   programs.zsh.enableCompletion = true;
   programs.zsh.autosuggestions.enable = true;
   programs.zsh.syntaxHighlighting.enable = true;
-  programs.zsh.oh-my-zsh.enable = true;
-  programs.zsh.oh-my-zsh.theme = "ys";
+  programs.zsh.ohMyZsh.enable = true;
+  programs.zsh.ohMyZsh.theme = "ys";
 
   programs.direnv.enable = true;
 
@@ -74,7 +74,7 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILyChNHysPl+l01JT1cldQcs9oy3MnXBs0Fjl5WWY6bk 1Password"
   ];
 
-  users.users.root.hashedPassword = lib.mkDefault "$y$j9T$Ycl/ECpaJpRKUfzy0ABiO0$pZ3YsIxu4u0BG1bWDCbN532xGYS8mNsBCGl07F0/fW3";
+  users.users.root.initialHashedPassword = lib.mkDefault "$y$j9T$Ycl/ECpaJpRKUfzy0ABiO0$pZ3YsIxu4u0BG1bWDCbN532xGYS8mNsBCGl07F0/fW3";
   programs.tmux.enable = true;
 
   # Allow non-nixos binaries to run, such as vscode-remote

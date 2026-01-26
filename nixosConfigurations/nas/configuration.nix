@@ -27,7 +27,7 @@
   ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
 
   services.authfish.enable = true;
   services.authfish.domains = [ ".adh.io" ];

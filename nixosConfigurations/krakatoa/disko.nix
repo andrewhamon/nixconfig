@@ -61,7 +61,7 @@ in
         };
 
         postCreateHook = ''
-          zfs list -t snapshot -H -o name | grep -E '^${rpoolName}@blank$' || zfs snapshot ${rpoolName}@blank
+          zfs list -t snapshot -H -o name | grep -E '^${rpoolName}/local/root@blank$' || zfs snapshot ${rpoolName}/local/root@blank
         '';
 
         datasets = {

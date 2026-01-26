@@ -8,7 +8,7 @@
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
-    inputs.nil.packages."${pkgs.system}".default
+    inputs.nil.packages."${pkgs.stdenv.hostPlatform.system}".default
     gh
     gh-dash
     direnv

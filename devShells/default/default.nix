@@ -5,7 +5,7 @@ mkShell {
     age-plugin-yubikey
     cowsay
     deploy-rs
-    inputs.nil.packages.${pkgs.system}.default
+    inputs.nil.packages.${pkgs.stdenv.hostPlatform.system}.default
     nixpkgs-fmt
     opentofu
     rage

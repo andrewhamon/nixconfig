@@ -14,7 +14,7 @@
 
   programs.hyprland = {
     enable = true;
-    # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   };
 
   # Bootloader.
@@ -58,7 +58,7 @@
 
   security.polkit.enable = true;
   security.pam.services.swaylock = { };
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
   fonts.enableDefaultPackages = true;
   programs.dconf.enable = true;
   programs.xwayland.enable = true;
@@ -69,7 +69,6 @@
   programs.wireshark.enable = true;
   programs.wireshark.package = pkgs.wireshark;
 
-  sound.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;

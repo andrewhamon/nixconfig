@@ -1,12 +1,12 @@
 { root, inputs, ... }:
-hostname:
+{ name, hostname ? "${name}.platypus-banana.ts.net" }:
 let
-  nixos = root.nixosConfigurations.${hostname};
-  system = nixos.pkgs.system;
+  nixos = root.nixosConfigurations.${name};
+  system = nixos.pkgs.stdenv.hostPlatform.system;
   activate = inputs.deploy-rs.lib.${system}.activate.nixos nixos;
 in
 {
-  hostname = "${hostname}.platypus-banana.ts.net";
+  hostname = hostname;
   user = "root";
   sshUser = "root";
   profiles.system.path = activate;

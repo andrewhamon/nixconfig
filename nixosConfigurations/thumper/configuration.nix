@@ -97,7 +97,7 @@
 
   programs.hyprland = {
     enable = true;
-    # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   };
 
   programs.thunar.enable = true;
@@ -115,7 +115,6 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -142,7 +141,7 @@
   };
 
 
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [

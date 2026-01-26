@@ -62,7 +62,6 @@
       in
       {
         devShells = root.lib.cleanReadTreeAttrs root.devShells;
-        apps = root.lib.cleanReadTreeAttrs root.apps;
         packages = root.lib.cleanReadTreeAttrs root.packages;
       }
       );
