@@ -11,5 +11,6 @@ mkShell {
     rage
     root.packages.agenix
     pkgs.incus.client
+    claude-code
   ];
 }

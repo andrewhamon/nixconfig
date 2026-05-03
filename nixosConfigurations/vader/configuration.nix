@@ -3,19 +3,16 @@
 {
   imports =
     [
-      # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./hyprland.nix
+      ./kde.nix
+      ./audio.nix
     ];
 
   hardware.bluetooth.enable = true;
 
   services.fwupd.enable = true;
   services.pcscd.enable = true;
-
-  programs.hyprland = {
-    enable = true;
-    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -57,30 +54,16 @@
   };
 
   security.polkit.enable = true;
-  security.pam.services.swaylock = { };
   hardware.graphics.enable = true;
   fonts.enableDefaultPackages = true;
   programs.dconf.enable = true;
   programs.xwayland.enable = true;
-  # For screen sharing (this option only has an effect with xdg.portal.enable):
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
-  xdg.portal.enable = true;
-
   programs.wireshark.enable = true;
   programs.wireshark.package = pkgs.wireshark;
-
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-
-  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [ ];
-  security.pam.services.waylock = { };
 
   services.upower.enable = true;
 
